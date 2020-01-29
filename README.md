@@ -4,7 +4,7 @@ This may become a pool of ideas for usage in future smartVISU releases or stay j
 
 Rules:
 - there is a branch named "new" where everybody wishing to contribute can place pull requests or send new code inside the 
-  forum knx-user-forum.de/smartvisu. Pull requests which do not harm any of the existing code will be accepted openly but the code and it's function will not be tested in detail. The supported version of smartVISU should be at least V2.9 A short documentations should be included in readme.md.
+  forum knx-user-forum.de/smartvisu. Pull requests which do not harm any of the existing code will be accepted openly but the code and it's function will not be tested in detail. The supported version of smartVISU should be at least V2.9. A short documentation should be included in readme.md.
   
 - a branch called "master" contains tested widgets which are considered to be stable. The maintaining crew once in a while decides on the integration of code out of the branch "new"
 
