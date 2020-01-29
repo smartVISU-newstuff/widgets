@@ -11,5 +11,7 @@ Rules:
 Here is a link list of other repositories containing interesting stuff:
 
 https://github.com/herrmannj/smartvisu-widgets from April 2015 (SV 2.7, maybe SV 2.8)
+
 https://github.com/ddtlabs/smartvisu-widgets from Nov. 2017 (SV 2.8)
+
 https://github.com/HansMustermann/widgets from March 2017 (SV 2.9) graphics, gauges, steelseries
