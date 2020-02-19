@@ -4,7 +4,9 @@ The shutter widget contains a set of control assemblies for shutters.
 
 Call:
 {{ shutter.one (id, 'Text', 'item.move', 'item.stop', 'item.pos', 'item.saved') }}
+
 {{ shutter.two (id, 'Text', 'item.move', 'item.stop', 'item.pos', 'item.saved') }}
+
 {{ shutter.three (id, 'Text', 'item.pos', 'item.saved') }}
 
 ![](https://github.com/smartVISU-newstuff/widgets/blob/master/shutter/pics/One.png)&nbsp;&nbsp;![](https://github.com/smartVISU-newstuff/widgets/blob/master/shutter/pics/Two.png)&nbsp;&nbsp;![](https://github.com/smartVISU-newstuff/widgets/blob/master/shutter/pics/Three.png)
