@@ -11,5 +11,5 @@ After v2.9.1 smartVISU will read the file version-info.php on github master bran
 
 ## Installing update checker
 
-You can download the new version handling for testing purposes here. To install it, just exchange the existing files in your
+You can download the new version handling for testing purposes here. To install it, just exchange the existing files - exept README.md - in your
 smartVISU installation with the files provided in the `updatecheck` folder. Folder names correspond to those in your installation.  
