@@ -3,11 +3,26 @@
  * -----------------------------------------------------------------------------
  * @package     smartVISU
  * @author      knatter
- * @copyright   13.04.2020
+ * @copyright   30.04.2020
  * @license     GPL [http://www.gnu.de]
  * -----------------------------------------------------------------------------
+ *
+ * Releasenotes:
+ * 13.04.20 : Initial Version
+ * 30.04.20 : fixed overflow issue to next month
  */
- 
+
+/*
+Readme: 
+1. copy this file to smartVISU/lib/weather/service (smartVISU2.8)
+2. edit your language file according to the following 4 lines (smartVISU/lang/lang_de_txt)
+// ----- openweathermap.org ------------------------------------------------------
+$lang['openweathermap']['lang']			= 'de';
+$lang['openweathermap']['humidity']		= 'Luftfeuchte';
+$lang['openweathermap']['wind']			= 'Wind';
+3. register at openweathermap.org to get a key and choose openweather in SmartVISU config page 
+
+*/
 
 require_once '../../../lib/includes.php';
 require_once const_path_system.'weather/weather.php';
@@ -57,33 +72,41 @@ class weather_openweathermap extends weather
 
 			// forecast
 			// openweathermap provides forecast infos for 5days in 3h slots (free account)
-			$i = 0;
+			$i = -1;
 			$tempMin = 100;
 			$tempMax = -100;
+			$nextday = (date('w', (int)$parsed_json->{'today'}->{'dt'})+1) %7;
 			foreach ($parsed_json->{'forecast'}->{'list'} as $day)
 			{
+				$fday = date('w', (int)$day->{'dt'});
+				if($fday == $nextday)
+				{ 
+					if($i >= 0)
+					{
+						$init = false;
+						$this->data['forecast'][$i]['temp'] = round($tempMax, 0).'&deg;/'.round($tempMin, 0).'&deg;';
+						$add = $add." ID:".$i.$this->data['forecast'][$i]['temp'];
+					}
+					$nextday = ($fday+1) % 7;
+					$tempMin = 100;
+					$tempMax = -100;					
+					if (++$i>3)
+					  break;				
+				}
 				// take min/max temps from night/day
 				if((float)$day->{'main'}->{'temp'} >  $tempMax)
 					$tempMax = (float)$day->{'main'}->{'temp'};
 				if((float)$day->{'main'}->{'temp'} <  $tempMin)
 					$tempMin = (float)$day->{'main'}->{'temp'};
 
-				if(date('d', (int)$day->{'dt'}) > date('d', time())+$i+1)
-				{ 
-					$this->data['forecast'][$i]['temp'] = round($tempMax, 0).'&deg;/'.round($tempMin, 0).'&deg;';
-					$tempMin = 100;
-					$tempMax = -100;	
-					if (++$i>3)
-					  break;				
-				}
-
-				if((date('G', (int)$day->{'dt'}) >= 11)&&(date('G', (int)$day->{'dt'}) < 14))
+				if(($i >=0)&&(date('G', (int)$day->{'dt'}) > 11)&&(date('G', (int)$day->{'dt'}) <= 14))
 				{ // take forecast icons and descriptions out of midday
 					$this->data['forecast'][$i]['date'] = date('Y-m-d', (int)$day->{'dt'});
 					$this->data['forecast'][$i]['conditions'] = (string)$day->{'weather'}[0]->{'description'};
 					$this->data['forecast'][$i]['icon'] = $this->icon(substr((string)$day->{'weather'}[0]->{'icon'}, 0, -1));
+					$add = $add." ".$this->data['forecast'][$i]['date'].$this->data['forecast'][$i]['conditions'].$this->data['forecast'][$i]['icon'];
 				}
-			}					
+			}
 		}
 		else
 		{
