@@ -1,3 +1,5 @@
+# already released as of v2.9.2. Do not copy from here into versions later than v2.9.1
+
 ## New versioning systematics in smartvisu
 
 Until v2.9 only a 2-digit version number was implemented in smartVISU. To introduce a standard 3-digit versioning
