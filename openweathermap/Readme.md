@@ -1,4 +1,4 @@
-# integrated in smartvISU as of v2.9.2 - use only for older versions
+# integrated in smartVISU as of v2.9.2 - use only for older versions
 
 ## Openweathermap.org weather service for smartVISU
 
