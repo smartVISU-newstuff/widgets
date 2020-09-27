@@ -474,7 +474,8 @@
 * @param {color_off_disabled(colour)='grey'} the color for the 'off' state for disabled entries, e.g. '#f00' for red (default 'grey' of the design)
 * @param {fill(bool)='true'} fill the times from ON to OFF with ON-color (default 'true' )
 * @param {granularity(text)='1h'} granularity of the timetable, valid values '5m', '10m','15m','30m','1h' (default '1h' )
-* @param {borderstyle(text)='solid,horizontal,none'} style of the cell border, valid valus solid,horizontal, none (default 'solid' )
+* @param {borderstyle(text)='solid,horizontal,none'} style of the cell border, valid valus solid,horizontal,hourly, none (default 'solid' )
+	list:  ['5m:solid','10m:hourly','15m:hourly','30m:horizontal','1h:horizontal']
 * @param {showzoombutton(bool)='true'} show the zoom button for different granularity (default 'true' )
 * @param {showtooltip(bool)='true'} show the switching times in a tooltip (default 'true' )
 * @param {showsun(bool)='true'} show the sunrise/sunset-times as line on the table (default 'true' )
@@ -498,12 +499,12 @@
 		data-val-on="{{ value_on|default(1) }}" data-val-off="{{ value_off|default(0) }}" data-granularity="{{ granularity|default('1h') }}"
 		data-color-on="{{ color_on|default('green') }}" data-color-off="{{ color_off|default('red') }}"
 		data-color-on-disabled="{{ color_on_disabled|default('lightgrey') }}" data-color-off-disabled="{{ color_off_disabled|default('grey') }}"
-		data-fill="{{ fill|default('true') }}" data-borderstyle="{{ borderstyle|default('solid') }}"
+		data-fill="{{ fill|default('true') }}" data-borderstyle="{{ implode(borderstyle)|default('solid') }}"
 		data-showtooltip="{{ showtooltip|default('true') }}" data-showsun="{{ showsun|default('true') }}" data-showactualtime="{{ showactualtime|default('true') }}"
 		data-valueType="{{ valueType|default('bool') }}" data-valueParameterList="{{ implode(valueparameterlist)|default(implode(['on:1','off:0'])) }}"
 		data-showzoombutton="{{ showzoombutton|default('true') }}" data-inactivestyle="{{ inactivestyle|default('1') }}">
 		
-		<svg id="{{ uid(page, item) }}" width="100%" viewbox="0 0 200 160" xmlns="http://www.w3.org/2000/svg" version="1.1"> 
+		<svg id="{{ uid(page, item) }}" class="highcharts-root" width="100%" viewbox="0 0 200 160" xmlns="http://www.w3.org/2000/svg" version="1.1"> 
 		</svg>
 
 
