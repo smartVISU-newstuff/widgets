@@ -1767,18 +1767,18 @@ $.widget("sv.device_uzsutable", $.sv.widget, {
 	   'color-off' 		: null,
 	   'fill'      		: null,	   
 	   'color-on-disabled'	: null,
-   	   'color-off-disabled'	: null,
+ 	   'color-off-disabled'	: null,
 	   'borderstyle' 	: null,
 	   'granularity'	: null,
 	   'showtooltip'	: null,
 	   'showsun'		: null,
 	   'showactualtime'	: null,
-           'designtype'		: null,
+     'designtype'		: null,
 	   'valuetype'		: 'bool',
-           'valueparameterlist'	: null,
-           'headline'		: '',
-           'showzoombutton'	: '',
-           'inactivestyle'	: 1,
+     'valueparameterlist'	: null,
+     'headline'		: '',
+     'showzoombutton'	: '',
+     'inactivestyle'	: 1,
 	   'mySvgWidth'		: 0
 
 	 },
@@ -1794,7 +1794,7 @@ $.widget("sv.device_uzsutable", $.sv.widget, {
 	 },
 	_update : function(response)
 	{
-   	 this._super(response);
+ 	 this._super(response);
 	 this._uzsudata = jQuery.extend(true, {}, response[0]);
 	 this._DrawTimeTable(this.uuid,this.options,this._uzsudata)
 	 // Function to keep Data actual
@@ -1815,7 +1815,7 @@ $.widget("sv.device_uzsutable", $.sv.widget, {
 		 case '10m' : {	this.options.granularity = "10m";this._DrawTimeTable(this.uuid,this.options,this._uzsudata);break }
  		 case '15m' : {	this.options.granularity = "15m";this._DrawTimeTable(this.uuid,this.options,this._uzsudata);break }
  		 case '30m' : {	this.options.granularity = "30m";this._DrawTimeTable(this.uuid,this.options,this._uzsudata);break } 		 
-  		 case '1h' : {	this.options.granularity = "1h";this._DrawTimeTable(this.uuid,this.options,this._uzsudata);break }
+ 		 case '1h' : {	this.options.granularity = "1h";this._DrawTimeTable(this.uuid,this.options,this._uzsudata);break }
   		 case 'btnActive' :
   		 		{
 				if (event.bubbles === true)
@@ -1845,12 +1845,36 @@ $.widget("sv.device_uzsutable", $.sv.widget, {
 	// function for drawing the time-table
 	//*****************************************************
 	_DrawTimeTable: function (TableName,options, myDict) {
-
-
+		var	myJson = {}
+		var myBorderStyle = ''
 		myOptions = $.extend(true, [], options);
-
-		switch (myOptions['borderstyle'])
+		if (myOptions.borderstyle.explode().length == 1)
 		{
+			myJson[myOptions['granularity']] = myOptions.borderstyle.explode()[0]
+		}
+		else 
+		{
+			for (key in myOptions.borderstyle.explode())
+			{  myJson[myOptions.borderstyle.explode()[key].split(":")[0]]=myOptions.borderstyle.explode()[key].split(":")[1]}
+			if (myJson[myOptions['granularity']] != undefined)
+				{
+					myBorderStyle = myJson[myOptions['granularity']]
+				}
+			else
+				{
+					myBorderStyle = 'solid'
+				}
+			
+		}
+
+		switch (myBorderStyle)
+		{
+		 case 'hourly':
+		 {
+		   myBorder = 0.0
+		   overlayFill = 0.2
+		   break;
+		 }
 		 case 'solid':
 		 {
 		   myBorder = 0.2
@@ -1922,15 +1946,15 @@ $.widget("sv.device_uzsutable", $.sv.widget, {
 		}
 		}
 
-		if (sv_lang.uzsu.tu = 'TU')		// Check language
-		  {
-		   var myDays = [ "Mo", "Tu", "We", "Th", "Fr", "Sa", "Su" ]
-		   txtActive = 'Inactive'
-		  }
-		else
+		if (sv_lang.uzsu.th = 'Do')		// Check language
 		  {
   		   var myDays = [ "Mo", "Di", "Mi", "Do", "Fr", "Sa", "So" ]
   		   txtActive='inaktiv'
+		  }
+		else
+		  {
+				 var myDays = [ "Mo", "Tu", "We", "Th", "Fr", "Sa", "Su" ]
+				 txtActive = 'Inactive'
 		  }
 		var preFix = TableName
 		var HeadlineHeight = 40
@@ -1956,7 +1980,7 @@ $.widget("sv.device_uzsutable", $.sv.widget, {
 		offset = this.options.mySvgWidth/25
 
 		// Set the viewbox
-		this.element.find("svg")[0].viewBox.baseVal.width = this.options.mySvgWidth // viewWidth
+		this.element.find("svg")[0].viewBox.baseVal.width = this.options.mySvgWidth+2 // viewWidth
 		this.element.find("svg")[0].setAttribute('width','100%')
 
 		// add the Headline to Svg
@@ -1964,11 +1988,12 @@ $.widget("sv.device_uzsutable", $.sv.widget, {
 		if (this.options.headline != '')
 		 { 
 		   var tblHeadline = document.createElementNS("http://www.w3.org/2000/svg", 'text'); //Create a text in SVG's namespace
-		   tblHeadline.setAttribute("style", 'fill:white; text-anchor:middle; font-size:1.5em;')
+		   tblHeadline.setAttribute("style", 'text-anchor:middle;')
 		   tblHeadline.setAttributeNS(null, 'x', this.options.mySvgWidth/2);
 		   tblHeadline.setAttributeNS(null, 'y', 29);  
 		   tblHeadline.setAttribute("id", "tblHeadline");        		
 		   tblHeadline.setAttributeNS(null, 'width',this.options.mySvgWidth-40 );    
+		   tblHeadline.classList.add("highcharts-title")
 		   tblHeadline.innerHTML=this.options.headline
 		   this.element.find("svg")[0].appendChild(tblHeadline)
 		 }
@@ -1979,7 +2004,8 @@ $.widget("sv.device_uzsutable", $.sv.widget, {
 			tblHeader[h]=this._CreateSvgBox1("0.5")
 			tblHeader[h].setAttributeNS(null, 'x', offset+offset*h);
 			tblHeader[h].setAttributeNS(null, 'y', 0+HeadlineHeight);  
-			tblHeader[h].setAttribute("id", "tblHeader-"+h);        		
+			tblHeader[h].setAttribute("id", "tblHeader-"+h);
+			tblHeader[h].childNodes[1].classList.add("highcharts-title")	 
 			tblHeader[h].childNodes[1].innerHTML=String("00"+h).slice(-2)
 			this.element.find("svg")[0].appendChild(tblHeader[h])
 			h += 1
@@ -2003,6 +2029,7 @@ $.widget("sv.device_uzsutable", $.sv.widget, {
 			tblHeader[d+50].setAttributeNS(null, 'x', 0);
 			tblHeader[d+50].setAttributeNS(null, 'y', (12*myOptions.showsun)+12+d*12+HeadlineHeight);  
 			tblHeader[d+50].setAttribute("id", "tblHeader-"+(50+d));        		
+      tblHeader[d+50].childNodes[1].classList.add("highcharts-title")	 
 			tblHeader[d+50].childNodes[1].innerHTML=myDays[d]
 			this.element.find("svg")[0].appendChild(tblHeader[d+50])
 			
@@ -2038,7 +2065,7 @@ $.widget("sv.device_uzsutable", $.sv.widget, {
 		}
 
 		// Set Lines if horizontal
-		if (myOptions['borderstyle']=='horizontal')
+		if (myBorderStyle=='horizontal' || myBorderStyle=='hourly')
 		{
 		myLines = []
 		l=0
@@ -2046,10 +2073,26 @@ $.widget("sv.device_uzsutable", $.sv.widget, {
 		{
 		  myLines[l]=this._CreateSvgLine('0.5')
 		  myLines[l].setAttributeNS(null, 'x1', offset);
-	  	  myLines[l].setAttributeNS(null, 'x2', offset*25);
+  	  myLines[l].setAttributeNS(null, 'x2', offset*25);
 		  myLines[l].setAttributeNS(null, 'y1', (12*myOptions.showsun)+12+12+l*12+HeadlineHeight);
-	  	  myLines[l].setAttributeNS(null, 'y2', (12*myOptions.showsun)+12+12+l*12+HeadlineHeight);    
+  	  myLines[l].setAttributeNS(null, 'y2', (12*myOptions.showsun)+12+12+l*12+HeadlineHeight);    
 		  this.element.find("svg")[0].appendChild(myLines[l])				  
+		  l++
+		}
+		}
+				// Set Lines if 1h
+		if ( myBorderStyle=='hourly')
+		{
+		myVertLines = []
+		l=1
+		while (l <= 23)
+		{
+		  myVertLines[l]=this._CreateSvgLine('0.5')
+		  myVertLines[l].setAttributeNS(null, 'x1', offset*l+offset);
+  	  myVertLines[l].setAttributeNS(null, 'x2', offset*l+offset);
+		  myVertLines[l].setAttributeNS(null, 'y1', (12*myOptions.showsun)+12+HeadlineHeight);
+  	  myVertLines[l].setAttributeNS(null, 'y2', (12*myOptions.showsun)+12+72+HeadlineHeight);    
+		  this.element.find("svg")[0].appendChild(myVertLines[l])				  
 		  l++
 		}
 		}
@@ -2063,6 +2106,7 @@ $.widget("sv.device_uzsutable", $.sv.widget, {
 		{
 		  myInActiveText=this._CreateSvgText(txtActive)
 		  myInActiveText.setAttributeNS(null, 'y','40px')
+		  myInActiveText.classList.add("highcharts-title")	 
 		  myInActiveText.setAttributeNS(null, 'style','transform: rotate(20deg); font-weight:bold; fill:lightgrey; font-size:3em; stroke-width:0.5; stroke:black; font-family:Monospace; text-anchor:middle')		
 		  myInActiveText.setAttributeNS(null, 'x',this.options.mySvgWidth/2)	
 		  myInActiveText.setAttributeNS(null, 'id','txtInactive')
@@ -2107,7 +2151,7 @@ $.widget("sv.device_uzsutable", $.sv.widget, {
 			 round_up_down = -1
 			 myOptions['val-on'] == myActItem.value ? round_up_down = -1 : round_up_down = -1
 		 	 m       = (Math.round((parseInt(minutes) + (round*round_up_down))/nextValue) * nextValue) % 60;
-			 h       = (m === 0 && minutes>round) ? (hours === 23 ? 0 : ++hours) : hours;
+			 h       = (m === 0 && minutes>round) ? (hours === 23 ? 0 : hours) : hours;
 			 console.log("gerundete Zeit :" + String("00"+h).slice(-2) + ':'+String("00"+m).slice(-2))
 
 			 mySvg = 'svg-' + preFix
@@ -2233,9 +2277,10 @@ $.widget("sv.device_uzsutable", $.sv.widget, {
 			this.element.find("svg")[0].appendChild(mySvgSunRise)
 			myText=[]
 			myText[0]=this._CreateSvgText(sunrise)
+		   	myText[0].classList.add("highcharts-title")			
 			myText[0].setAttributeNS(null, 'height','12px')
 			myText[0].setAttributeNS(null, 'y',22+HeadlineHeight)
-			myText[0].setAttributeNS(null, 'style','fill:white; font-size:8px')		
+			myText[0].setAttributeNS(null, 'style','font-size:8px')		
 			myText[0].setAttributeNS(null, 'x',(offset+xSunrise*maxSpan/(24*60)+modWidth))	
 			this.element.find("svg")[0].appendChild(myText[0])		
 	 		mySunLines=[]
@@ -2260,9 +2305,10 @@ $.widget("sv.device_uzsutable", $.sv.widget, {
 	 		mySvgSunSet.setAttributeNS(null, 'x',(offset+xSunSet*maxSpan/(24*60)-modWidth))	
 			this.element.find("svg")[0].appendChild(mySvgSunSet)			
 			myText[1]=this._CreateSvgText(sunset)
+		   	myText[1].classList.add("highcharts-title")						
 			myText[1].setAttributeNS(null, 'height','12px')
 			myText[1].setAttributeNS(null, 'y',22+HeadlineHeight)
-			myText[1].setAttributeNS(null, 'style','fill:white; font-size:8px')		
+			myText[1].setAttributeNS(null, 'style','font-size:8px')		
 			myText[1].setAttributeNS(null, 'x',(offset+xSunSet*maxSpan/(24*60)-25))	
 			this.element.find("svg")[0].appendChild(myText[1])		
 
@@ -2302,6 +2348,7 @@ $.widget("sv.device_uzsutable", $.sv.widget, {
 	   	  myActTime.childNodes[0].setAttributeNS(null, 'width', '35');
 	   	  myActTime.childNodes[1].innerHTML=myactTime
 	   	  myActTime.childNodes[1].setAttributeNS(null, 'x', '17.5');
+	   	  myActTime.childNodes[1].setAttributeNS(null, 'style', 'fill:white;font-size: 0.5em;text-anchor: middle;');
 
 	   	  myActTime.childNodes[0].style.fill='blue'   	  
 	   	  myActTime.childNodes[0].setAttributeNS(null, 'style', 'fill:blue; fill-opacity:1.0;');
@@ -2317,24 +2364,28 @@ $.widget("sv.device_uzsutable", $.sv.widget, {
 		btnActive=this._CreateSvgBox1("0.5")
 		btnActive.setAttributeNS(null, 'x', 5);
 		btnActive.setAttributeNS(null, 'y', 5);
-		btnActive.setAttributeNS(null, "width", "30px");
-		btnActive.setAttributeNS(null, "height", "30px");
+		btnActive.setAttributeNS(null, "width", "32px");
+		btnActive.setAttributeNS(null, "height", "32px");
 				
 		btnActive.setAttribute("id", "btnActive");
 		btnActive.childNodes[0].setAttributeNS(null, "x", "1px");
+		btnActive.childNodes[0].setAttributeNS(null, "y", "1px");		
 		btnActive.childNodes[0].setAttributeNS(null, "rx", "5");
 		btnActive.childNodes[0].setAttributeNS(null, "ry", "5");        
 		btnActive.childNodes[0].setAttributeNS(null, "width", "30px");
 		btnActive.childNodes[0].setAttributeNS(null, "height", "30px");
 		btnActive.childNodes[1].setAttributeNS(null, "width", "30px");
 		btnActive.childNodes[1].setAttributeNS(null, "height", "30px");		
-		btnActive.childNodes[1].setAttributeNS(null, "style", 'fill:white; text-anchor:middle; font-size:1.5em;')
+		btnActive.childNodes[1].setAttributeNS(null, "style", 'fill:black; text-anchor:middle; font-size:12px;')
 		btnActive.childNodes[1].setAttributeNS(null, "x", "15");
-		btnActive.childNodes[1].setAttributeNS(null, "y", "25");				
+		btnActive.childNodes[1].setAttributeNS(null, "y", "19");				
 
 		btnActive.setAttributeNS(null, 'id', 'btnActive'); 	   	   	   
-		btnActive.childNodes[0].setAttributeNS(null, 'style', 'fill:lightgray; fill-opacity:0.7;');
-		myDict.active == false ? btnActive.childNodes[1].innerHTML=String("✘") : btnActive.childNodes[1].innerHTML=String("✔")
+		btnActive.childNodes[0].setAttributeNS(null, 'style', ' fill-opacity:1.0;');//fill:lightgray;
+
+
+		myDict.active == false ? btnActive.classList.add("icon0") :    btnActive.classList.add("icon1")
+		myDict.active == false ? btnActive.childNodes[1].innerHTML=String("✘") :btnActive.childNodes[1].innerHTML=String("✔");
 		this.element.find("svg")[0].appendChild(btnActive)
 		  
 		 if (myOptions.fill == false)
@@ -2423,10 +2474,10 @@ $.widget("sv.device_uzsutable", $.sv.widget, {
 		newRect = document.createElementNS("http://www.w3.org/2000/svg", 'rect'); //Create a rect in SVG's namespace
 		newRect.setAttribute("width", 400/25);
 		newRect.setAttribute("height", "12");
-		newRect.setAttribute("style", "stroke:black;stroke-width:" + Borderwidth + "px; fill-opacity:0.0");
+		newRect.setAttribute("style", "fill:white; stroke:black;stroke-width:" + Borderwidth + "px; fill-opacity:0.0");
 		newSvg.appendChild(newRect)
 		var newElement = document.createElementNS("http://www.w3.org/2000/svg", 'text'); //Create a text in SVG's namespace
-		newElement.setAttribute("style", 'fill:white; text-anchor:middle; font-size:0.5em;')
+		newElement.setAttribute("style", 'text-anchor:middle; font-size:0.5em;')
 		newElement.setAttribute("y", 9);
 		newElement.setAttribute("x", offset/2);	
 		var txt = document.createTextNode("");
