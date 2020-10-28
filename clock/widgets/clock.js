@@ -160,6 +160,25 @@ $.widget("sv.clock_countdown", $.sv.widget, {
 			var timetogo = that._currentduration - telapsed;   // remaining time in milliseconds
 			that.element.text(timedisplay(timetogo));
 		};
+		
+		/**
+		* Displays a timestamp as time in H:i:s format
+		*/
+		function timedisplay (num) {
+			var ret='';
+			if (num <0){  
+				num = -num;
+				ret +='-'
+			};
+			var timestamp = new Date(num - num%1000);
+			var s = timestamp.getSeconds();
+			var i = timestamp.getMinutes();
+			var h = (timestamp - s*1000 - i*60000)/3600000;
+			ret +=(h<10?'0'+h : h)+':';
+			ret +=(i<10?'0'+i : i)+':';
+			ret +=(s<10?'0'+s : s);
+			return ret;
+		};
 	},
 
 });
