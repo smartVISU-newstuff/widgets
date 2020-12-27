@@ -1,0 +1,137 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Martin Gleiss
+* @copyright   2012 - 2015
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+/**
+* Displays a round slider
+* @param {id=} unique id for this widget (optional)  
+* @param {item(num,list)} an item (list type can be used if slider type is "range")
+* @param {value=0} the minimum value if the slider is moved to total left (optional, default: 0)  
+* @param {value=255} the maximum value if the slider is moved to total right (optional, default: 255)  
+* @param {value=5} step between two values (optional, default: 5)  
+* @param {text=} pretext of the center text/value 
+* @param {text=} text after center text/ value
+* @param {text=} unit of the center value
+* @param {bool=false} display a scale with values along the slider (optional, default='false')
+* @param {value=20} scale-integer, the scale-divider for the scale
+* @param {text=} icon to be displayed in the center (optional)
+* @param {text=pie} circleshape slider style (like pie, quarter-top-left, quarter-top-right, quarter-bottom-left, quarter-bottom-right, half-top, half-bottom, half-left, half-right, custom-half, custom-quarter)
+* @param {text=} slidertype (default, min-range,range ) (optional, default = min-range)
+* @param {value=120} radius of the slider (optional, default: 90)  
+* @param {value=15} width of the slide line
+* @param {value=0.1} thickness of the slide line
+*
+* @author Bonze, Wolfram v. Hülsen
+**/
+
+{% macro roundslider(id, item, min, max, step, pre_value, to_value, unit, scale, scale_interval, pic, circleshape, slidertype, radius, width, thickness) %}
+
+	{% if circleshape not in ['', 'pie', 'quarter-top-left', 'quarter-top-right', 'quarter-bottom-left', 'quarter-bottom-right', 'half-top', 'half-bottom', 'half-left', 'half-right'] %} {% set circleshape = '' %} {% endif %}
+	/**- pic whithout path -*/
+	{% if '/' not in pic and not isfile(pic) %}
+		{% if isfile('dropins/' ~ icon0 ~ pic) %}
+			{% set pic = 'dropins/' ~ icon0 ~ pic %}
+		{% elseif isfile('dropins/' ~ icon0 ~ pic ~ '.svg') %}
+			{% set pic = 'dropins/' ~ icon0 ~ pic ~ '.svg' %}
+		{% elseif isfile('dropins/' ~ icon0 ~ 'jquery_' ~ pic ~ '.svg') %} /**- jQuery ui-icon classes -*/
+			{% set pic = 'dropins/' ~ icon0 ~ 'jquery_' ~ pic ~ '.svg' %}
+		{% elseif isfile(icon0 ~ pic) %}
+			{% set pic = icon0 ~ pic %}
+		{% elseif isfile(icon0 ~ pic ~ '.svg') %}
+			{% set pic = icon0 ~ pic ~ '.svg' %}
+		{% elseif isfile(icon0 ~ 'jquery_' ~ pic ~ '.svg') %} /**- jQuery ui-icon classes -*/
+			{% set pic = icon0 ~ 'jquery_' ~ pic ~ '.svg' %}
+		{% endif -%}
+	{% endif -%}
+
+	/** pseudo divs, to get styles 	**/
+	<div class="ui-bar-a" style="display:none;"> </div>
+	<div class="ui-bar-b" style="display:none;"> </div>
+	<div class="ui-page-theme-a ui-btn" style="display:none;"> </div>
+		
+	<div {% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="basic.roundslider" data-item="{{item}}" data-values=" {{unit}}, {{pre_value| default('')}}, {{ to_value| default('') }}, {{ scale| default('false')}}" 
+		data-radius="{{radius | default('80')}}" data-scale_min="{{min | default('0')}}" data-scale_max="{{max| default('255')}}" data-step="{{step | default('5')}}" data-scale_interval="{{scale_interval | default('20')}}"
+		data-width="{{width | default('15')}}" data-thickness="{{thickness | default('0.1')}}" data-circleshape="{{circleshape | default('pie')}}" data-slidertype="{{slidertype | default('min-range')}}" data-icon="{{pic}}"
+		style="margin:auto; margin-top:30px; margin-bottom:30px;"> 
+	</div>
+{% endmacro %}
+
+
+/**
+* Displays a round slider for RTR
+* @param {id} unique id for this widget (mandatory)
+* @param {item(num)} an item for the actual temperature
+* @param {item(num)} an item for the set temperature
+* @param {item(bool,num)=} an item for comfort / standby (3x bit or 1x byte, optional)
+* @param {item(bool,num)=} an item for night (3x bit or 1x byte, optional)
+* @param {item(bool,num)=} an item for frost (3x bit or 1x byte, optional)
+* @param {item(bool,num)=} an item for the current state of the actor (optional)
+* @param {value=0} the minimum value if the slider is moved to total left (optional, default: 18)  
+* @param {value=255} the maximum value if the slider is moved to total right (optional, default: 28)  
+* @param {value=.1} step between two values (optional, default: .1)  
+* @param {bool=false} display a scale with values along the slider (optional, default='true')
+* @param {value=1} scale-integer, the scale-divider for the scale
+*
+* @author Bonze, Wolfram v. Hülsen
+**/
+{% macro rtrslider(id, item_actual, item_set, item_comfort, item_night, item_frost, item_state, min, max, step, scale, scale_interval) %}
+
+{% import "basic.html" as basic %}
+
+	<div {% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="device.rtrslider" data-item="{{item_actual}},{{item_set}}"  
+		data-scale_min="{{min | default('18')}}" data_scale_max="{{max| default('25')}}" data-step="{{step | default('.1')}}"  
+		data-scale_interval="{{scale_interval | default('1')}}" style="margin:auto; position:relative;"> 
+		
+		/**
+		* pseudo divs, to get styles 
+		**/
+		<div class="ui-bar-a" style="display:none"> </div>
+		<div class="ui-bar-b" style="display:none"> </div>
+		<div class="ui-page-theme-a ui-btn" style="display:none"> </div>
+		
+		<div id="container" style="position:relative; margin:auto; margin-top:30px; margin-bottom:-190px">
+			<div class="outerslider" id ="{{ uid(page, id) }}" style="position:relative;margin:auto; "> </div>
+			<div class="innerslider" id ="{{ uid(page, id) }}" style="margin:auto; top:-134px;"> </div>
+			
+			/** copy from device.rtr **/
+			{% if item_set %}
+				<div class="set" style="position:relative; top: -190px;">
+					<div class="temp" style="margin-bottom:15px;">Soll: {{ basic.print('', item_set, '°C' ) }}</div>
+					<div>
+						{{ basic.offset('', item_offset|default(item_set), -(step|default(0.1)), 'minus', '', 'micro' ) }}
+						{{ basic.offset('', item_offset|default(item_set), step|default(0.1), 'plus', '', 'micro' ) }}
+					</div>
+				</div>
+			{% endif %}
+
+			{% if item_comfort is not empty or item_night is not empty or item_frost is not empty or item_state is not empty %}
+				<div class="control" style="position:relative; top: -190px;">
+					{% if item_comfort is not empty and (item_comfort == item_night or item_night is empty) and (item_comfort == item_frost or item_frost is empty) %}
+						{{ basic.stateswitch('', item_comfort, 'icon', (config_driver == 'linknx' ? ['comfort', 'standby'] : [1, 2]), ['user_available.svg', 'user_away.svg'], '', ['icon1', 'icon0']) }}
+						{{ basic.stateswitch('', item_comfort, 'icon', (config_driver == 'linknx' ? ['night', 'standby'] : [3, 2]), ['scene_night.svg', 'scene_night.svg'], '', ['icon1', 'icon0']) }}
+						{{ basic.stateswitch('', item_comfort, 'icon', (config_driver == 'linknx' ? ['frost', 'standby'] : [4, 2]), ['weather_frost.svg', 'weather_frost.svg'], '', ['icon1', 'icon0']) }}
+					{% else %}
+						{% if item_comfort is not empty %}
+							{{ basic.stateswitch('', item_comfort, 'icon', '', ['user_away.svg', 'user_available.svg']) }}
+						{% endif %}
+						{% if item_night is not empty %}
+							{{ basic.stateswitch('', item_night, 'icon', '', ['scene_night.svg', 'scene_day.svg']) }}
+						{% endif %}
+						{% if item_frost is not empty %}
+							{{ basic.stateswitch('', item_frost, 'icon', '', ['weather_frost.svg', 'weather_frost.svg']) }}
+						{% endif %}
+					{% endif %}
+					{% if item_state is not empty %}
+						{{ basic.stateswitch('', item_state, 'icon', '', 'sani_heating.svg') }}
+					{% endif %}
+				</div>
+			{% endif %}
+		</div>
+	</div>
+{% endmacro %}
+
