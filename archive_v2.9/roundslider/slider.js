@@ -259,7 +259,14 @@ $.widget("sv.slider_rtrslider", $.sv.widget, {
 		},
 
 		tooltipFormat:function (args){
-			return"<span style='position: relative;top:-2.2em;font-size:0.2em;color:"+font_color+"; '>Ist: </span></br><span style='position: relative;top:-2.7em;font-weight:bold;font-size:0.45em;color:"+font_color+";'>" + args.value + unit +"</span>";
+			var xy = "";
+			
+			if (args.value > args.options.min){
+				xy = args.value;
+			}else{
+				xy = "<"+String(args.options.min);
+			}
+			return"<span style='position: relative;top:-2.2em;font-size:0.2em;color:"+font_color+"; '>Ist: </span></br><span style='position: relative;top:-2.7em;font-weight:bold;font-size:0.45em;color:"+font_color+";'>" + xy + unit +"</span>";
 		},
 		rangeColor: function (args) {
 			return border_color;
