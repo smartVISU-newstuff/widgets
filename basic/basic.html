@@ -11,7 +11,7 @@
 * @param {text(input,handle,both,none)=input} how should the value be shown; possible options: 'input', 'handle', 'both', 'none' (optional, default 'input')
 * @param {value=} the minimum value to display if the slider is moved to total left if this should differ from sent/received value (optional, default like min)
 * @param {value=} the maximum value to display to total right if this should differ from sent/received value (optional, default like max)
-* @param {value=} con set a colour for the slider track like: linear-gradient(90deg, rgb(229, 234, 255), rgb(255, 177, 111)) (optional)
+* @param {text=} css style to set a color for the slider track, e.g. 'linear-gradient(90deg, rgb(229, 234, 255), rgb(255, 177, 111))' (optional)
 */
 {% macro slider(id, item, min, max, step, orientation, value_display, min_display, max_display, style) %}
 
