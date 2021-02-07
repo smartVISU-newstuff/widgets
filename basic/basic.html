@@ -1,0 +1,23 @@
+
+/**
+* Displays a slider-control
+*
+* @param {id=} unique id for this widget (optional)
+* @param {item} an item
+* @param {value=0} the minimum value if the slider is moved to total left (optional, default 0)
+* @param {value=255} the maximum value if the slider is moved to total right (optional, default 255)
+* @param {value=5} step between two values (optional, default 5)
+* @param {text(horizontal,vertical,bottomup,semicircle)=horizontal} possible options: 'horizontal', 'vertical', 'bottomup', 'semicircle' (optional, default 'horizontal')
+* @param {text(input,handle,both,none)=input} how should the value be shown; possible options: 'input', 'handle', 'both', 'none' (optional, default 'input')
+* @param {value=} the minimum value to display if the slider is moved to total left if this should differ from sent/received value (optional, default like min)
+* @param {value=} the maximum value to display to total right if this should differ from sent/received value (optional, default like max)
+* @param {value=} con set a colour for the slider track like: linear-gradient(90deg, rgb(229, 234, 255), rgb(255, 177, 111)) (optional)
+*/
+{% macro slider(id, item, min, max, step, orientation, value_display, min_display, max_display, style) %}
+
+	<input{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %} data-widget="basic.slider" data-item="{{ item }}"
+		type="range" value="0" min="{{ min_display|default(min)|default(0) }}" max="{{ max_display|default(max)|default(255) }}" step="{{ step|default(5) }}" data-min-send="{{ min|default(0) }}" data-max-send="{{ max|default(255) }}" data-style="{{ style|default('') }}"
+		orientation="{{ orientation }}" handleinfo="{{ value_display == 'handle' or value_display == 'both' }}" data-highlight="true" class="{{ value_display|default('input') == 'input' or value_display == 'both' ? '' : 'ui-slider-no-input' }}" />
+
+{% endmacro %}
+
