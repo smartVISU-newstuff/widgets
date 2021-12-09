@@ -1,0 +1,30 @@
+/**
+* -----------------------------------------------------------------------------
+* @package smartVISU
+* @author Martin Gleiß
+* @copyright 2012
+* @license GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+/**
+* Qlock Two Widget
+*
+* @param {id} unique id for this widget
+* @param {lang} language of the widget, default = 'de'
+* @param {mode} widget or screensaver, default = 'de'
+* @param {time} time to activate the sreensaver mode
+* @author Sebastian Helms
+* edited by Manuel Holländer
+*/
+{% macro qclocktwo(id, lang, mode, time) %}
+{% set uid = uid(page, id) %}
+	 
+<div {% if not id is empty %} id="{{ uid(page, id) }}" {% endif %} data-widget="qclocktwo.qclocktwo"
+    data-time=" {{time | default('360')}}"  data-mode="{{mode | default('widget')}}" data-lang="{{lang | default('de')}}">
+    <div class="mask">
+        <div id="qclocktwo" class="qclocktwo">
+        </div>
+    </div>
+</div>
+{% endmacro %}
