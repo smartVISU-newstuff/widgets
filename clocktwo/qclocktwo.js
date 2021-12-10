@@ -34,6 +34,7 @@ $.widget("sv.qclocktwo_qclocktwo", $.sv.widget, {
 				if (supersized == true) {
 					$(this).closest("div").removeClass('overlay');
 					$("#qclocktwo").css("display", "none");
+					$(".mask").css('display','none');
 					supersized = false;
 					$(document.body).removeClass("overlay");
 				}
