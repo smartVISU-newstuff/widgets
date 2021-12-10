@@ -25,6 +25,7 @@ $.widget("sv.qclocktwo_qclocktwo", $.sv.widget, {
 				$(".mask").css('display','block');
 				$(this).closest("div").addClass("overlay");
 				$("#qclocktwo").css("display", "flex");
+				$(".ui-header").css("z-index", "500");
 				console.log("SUPERSIZE ME");
 				supersized = true;
 			};

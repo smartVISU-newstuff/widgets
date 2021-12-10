@@ -59,8 +59,8 @@
 	height: 100%;
 	z-index: 900;
 	display:none;
-	background: rgba(0, 0, 0, 1);
-	position: fixed; 
+	background: rgba(0, 0, 0);
+    position: fixed; 
 	}
 
 .widget{
