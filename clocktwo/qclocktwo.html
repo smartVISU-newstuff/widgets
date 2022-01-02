@@ -19,12 +19,28 @@
 */
 {% macro qclocktwo(id, lang, mode, time) %}
 {% set uid = uid(page, id) %}
-	 
+
 <div {% if not id is empty %} id="{{ uid(page, id) }}" {% endif %} data-widget="qclocktwo.qclocktwo"
-    data-time=" {{time | default('360')}}"  data-mode="{{mode | default('widget')}}" data-lang="{{lang | default('de')}}">
+    data-time=" {{time | default('36000')}}" data-mode="{{mode | default('widget')}}"
+    data-lang="{{lang | default('de')}}">
     <div class="mask">
+
         <div id="qclocktwo" class="qclocktwo">
+            /** first column dots **/
+            <div id ="first" class="q2border">
+                <div id="q2UL">&bull;</div>
+                <div style="height:15em;"></div>
+                <div id="q2BL">&bull;</div>
+            </div>
+
+            /** last column dots **/
+            <div id ="second" class="q2border">
+                <div id="q2UR">&bull;</div>
+                <div style="height:15em;"></div>
+                <div id="q2BR">&bull;</div>
+            </div>
         </div>
+
     </div>
 </div>
 {% endmacro %}

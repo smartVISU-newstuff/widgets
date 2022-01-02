@@ -12,13 +12,13 @@ $.widget("sv.qclocktwo_qclocktwo", $.sv.widget, {
 	_create: function () {
 		this._super();
 		console.log("qlocktwo");
-
+		console.log("timeout is ", this.options.time);
 
 		//idleTimer() takes an optional argument that defines the idle timeout
 		//timeout is in milliseconds; defaults to 30000
 		if (this.options.mode == 'screensaver') {
 			console.log("Function screensaver");
-			idleTimer();
+			idleTimer(this.options.time);
 			console.log("starte timer");
 			function showQlock() {
 				console.log("showqlock");
@@ -26,7 +26,7 @@ $.widget("sv.qclocktwo_qclocktwo", $.sv.widget, {
 				$(this).closest("div").addClass("overlay");
 				$("#qclocktwo").css("display", "flex");
 				$(".ui-header").css("z-index", "500");
-				console.log("SUPERSIZE ME");
+				console.log("SUPERSIZE QLOCK");
 				supersized = true;
 			};
 
@@ -37,6 +37,7 @@ $.widget("sv.qclocktwo_qclocktwo", $.sv.widget, {
 					$(".mask").css('display','none');
 					supersized = false;
 					$(document.body).removeClass("overlay");
+					console.log("remove QLOCK");
 				}
 			});
 		} else {
@@ -64,7 +65,7 @@ $.widget("sv.qclocktwo_qclocktwo", $.sv.widget, {
 		onClockTimerFired();
 		q2.clockTimer = setInterval('onClockTimerFired()', 500);
 
-		function idleTimer() {
+		function idleTimer(time) {
 			var t;
 			window.onload = resetTimer;
 			window.onmousemove = resetTimer;
@@ -76,7 +77,7 @@ $.widget("sv.qclocktwo_qclocktwo", $.sv.widget, {
 
 			function resetTimer() {
 				clearTimeout(t);
-				t = setTimeout(showQlock, 1000);  // time is in milliseconds
+				t = setTimeout(showQlock, time);  // time is in milliseconds
 			}
 		};
 	

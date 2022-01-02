@@ -64,6 +64,7 @@ function initQlockTwo(lang, id) {
             column.append(newCell);
         }
         q2div.append(column);
+        column.insertBefore('#second');
     }
 }
 
