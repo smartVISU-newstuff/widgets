@@ -10,21 +10,24 @@
     /*left: 10px;
     right: 10px;  
     height: 100%;*/
-  
+	color: rgb(46,46,46);
+    font-family: 'Helvetica Neue Light', 'HelveticaNeue-Light', 'Helvetica Neue', Arial, Helvetica, sans-serif;
+    -webkit-user-select: none;
+    -moz-user-select: none;
     font-weight: 200;
     font-size: 3.5em;
-    line-height: 1.5em;
+    line-height: 1.2em;
     margin-top:1em;
 }
 
 /* */
 .q2quot {
-    letter-spacing: -1.5em;
+    letter-spacing: -1.2em;
 }
 
 /* */
 .q2col {
-    width: 1.5em;
+    width: 1.2em;
     height: 100%;
     float: left;
     text-align: center;
@@ -33,7 +36,6 @@
 /*Corner Dots */
 .q2border{
 	position:relative;
-	
 	height: 100%;
 	width: 0.5em;
 	float: left;
@@ -62,7 +64,9 @@
 /* Highlited WORD*/
 .lit { 
     font-weight: 300;
-    text-shadow: 0 0 10px rgb(190, 33, 33);
+	color: white;
+	text-shadow: 0 0 10px rgb(255,249,174);
+    /*text-shadow: 0 0 10px rgb(190, 33, 33);*/
 }
 
 /*Class for screensaver Fullscreenmode */
@@ -87,7 +91,8 @@
 	height: 100%;
 	z-index: 900;
 	display:none;
-	background: rgba(0, 0, 0);
+	/*background: rgba(0, 0, 0);*/
+	background-color: rgb(16,17,18);
     position: fixed; 
 	}
 
