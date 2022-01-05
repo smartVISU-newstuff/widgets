@@ -64,7 +64,7 @@
 }
 /* Highlited WORD*/
 .lit { 
-    font-weight: 300;
+    font-weight: 250;
 	color: white;
 	text-shadow: 0 0 10px rgb(255,249,174);
     /*text-shadow: 0 0 10px rgb(190, 33, 33);*/

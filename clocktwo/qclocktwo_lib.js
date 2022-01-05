@@ -52,6 +52,7 @@ function initQlockTwo(lang, id, color) {
 
     var q2div = $(q2_id);
     console.log("Q2 div ", q2div);
+    console.log("glowcolor", q2.animation.glowColor);
 
     for (var col = 0; col < 11; col++) {
         var column = $('<div/>', { 'id': 'q2_col_' + col, 'class': 'q2col' });
@@ -77,7 +78,6 @@ function initQlockTwo(lang, id, color) {
 function hexToRgb(hex) {
     // from https://stackoverflow.com/questions/13780709/jquery-convert-any-css-color-to-rgb
     var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-    console.log(result);
     return result ? {
         r: parseInt(result[1], 16),
         g: parseInt(result[2], 16),

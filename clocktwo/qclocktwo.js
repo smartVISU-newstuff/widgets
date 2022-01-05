@@ -7,39 +7,42 @@ $.widget("sv.qclocktwo_qclocktwo", $.sv.widget, {
 		time: 120,
 		mode: 'widget',
 		lang: 'de',
-		color: '#fff9ae', 
+		color: '#fff9ae',
 	},
 
 	_create: function () {
 		this._super();
 		var id = this.element.attr('id');
+		var rgbColor = hexToRgb(this.options.color); 
 		console.log("qlocktwo");
 		console.log("timeout is ", this.options.time);
 		// create user defined shadow
-		
+
 		//$("lit").css("color", 'green');
 		//idleTimer() takes an optional argument that defines the idle timeout
 		//timeout is in milliseconds; defaults to 30000
 		if (this.options.mode == 'screensaver') {
 			console.log("Function screensaver");
-			idleTimer(this.options.time*1000);
+			idleTimer(this.options.time * 1000);
 			console.log("starte timer");
 
 			function showQlock() {
 				console.log("showqlock");
-				$(".qclocktwo_mask").css('display','block');
+				$(".qclocktwo_mask").css('display', 'block');
 				$(this).closest("div").addClass("overlay");
 				$("#qclocktwo").css("display", "flex");
 				$(".ui-header").css("z-index", "500");
 				console.log("SUPERSIZE QLOCK");
 				supersized = true;
+				rgbstring = "0 0 10px rgb("+ rgbColor['r'] +","+rgbColor['g'] +","+rgbColor['b'] +")";
+				$(".lit").css('text-shadow', rgbstring);
 			};
 
 			$(document).on('click', function () {
 				if (supersized == true) {
 					$(this).closest("div").removeClass('overlay');
 					$("#qclocktwo").css("display", "none");
-					$(".qclocktwo_mask").css('display','none');
+					$(".qclocktwo_mask").css('display', 'none');
 					supersized = false;
 					$(document.body).removeClass("overlay");
 					console.log("remove QLOCK");
@@ -49,9 +52,9 @@ $.widget("sv.qclocktwo_qclocktwo", $.sv.widget, {
 			console.log("Function widget");
 			$("#qclocktwo").css("display", "flex");
 			$('.qclocktwo_mask').addClass('widget');
-			$(".qclocktwo_mask").css('display','block');
+			$(".qclocktwo_mask").css('display', 'block');
 		}
-		
+
 
 
 
@@ -82,7 +85,17 @@ $.widget("sv.qclocktwo_qclocktwo", $.sv.widget, {
 				t = setTimeout(showQlock, time);  // time is in milliseconds
 			}
 		};
-	
+
+		function hexToRgb(hex) {
+			// from https://stackoverflow.com/questions/13780709/jquery-convert-any-css-color-to-rgb
+			var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+			return result ? {
+				r: parseInt(result[1], 16),
+				g: parseInt(result[2], 16),
+				b: parseInt(result[3], 16)
+			} : null;
+
+		}
 
 	}
 
