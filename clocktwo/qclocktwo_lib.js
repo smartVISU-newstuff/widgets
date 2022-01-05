@@ -35,13 +35,20 @@ var q2 = {
     fadeTimer: 0
 };
 
-function initQlockTwo(lang, id) {
+function initQlockTwo(lang, id, color) {
     var q2lang = q2.languages[lang];
     var q2_clock = q2lang.clock;
     var q2_id = id;
     q2.current.offset = q2lang.offset;
     q2.current.hrData = q2lang.hr;
     q2.current.miData = q2lang.mi;
+
+    //setColor
+    var colorrgb = hexToRgb(color)
+    q2.animation.glowColor[3] = colorrgb.r
+    q2.animation.glowColor[4] = colorrgb.g
+    q2.animation.glowColor[5] = colorrgb.b
+    //
 
     var q2div = $(q2_id);
     console.log("Q2 div ", q2div);
@@ -67,6 +74,16 @@ function initQlockTwo(lang, id) {
         column.insertBefore('#second');
     }
 }
+function hexToRgb(hex) {
+    // from https://stackoverflow.com/questions/13780709/jquery-convert-any-css-color-to-rgb
+    var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    console.log(result);
+    return result ? {
+        r: parseInt(result[1], 16),
+        g: parseInt(result[2], 16),
+        b: parseInt(result[3], 16)
+    } : null;
+ }
 
 function parseCells(cell_text) {
     var parsed_cells = [0, 0, 0, 0];

@@ -7,18 +7,17 @@ $.widget("sv.qclocktwo_qclocktwo", $.sv.widget, {
 		time: 120,
 		mode: 'widget',
 		lang: 'de',
-		////color: 'white', 
+		color: '#fff9ae', 
 	},
 
 	_create: function () {
 		this._super();
+		var id = this.element.attr('id');
 		console.log("qlocktwo");
 		console.log("timeout is ", this.options.time);
 		// create user defined shadow
 		
 		//$("lit").css("color", 'green');
-		//$("lit").css("text-shadow", '0 0 10px '+this.options.color);
-
 		//idleTimer() takes an optional argument that defines the idle timeout
 		//timeout is in milliseconds; defaults to 30000
 		if (this.options.mode == 'screensaver') {
@@ -28,7 +27,7 @@ $.widget("sv.qclocktwo_qclocktwo", $.sv.widget, {
 
 			function showQlock() {
 				console.log("showqlock");
-				$(".mask").css('display','block');
+				$(".qclocktwo_mask").css('display','block');
 				$(this).closest("div").addClass("overlay");
 				$("#qclocktwo").css("display", "flex");
 				$(".ui-header").css("z-index", "500");
@@ -40,7 +39,7 @@ $.widget("sv.qclocktwo_qclocktwo", $.sv.widget, {
 				if (supersized == true) {
 					$(this).closest("div").removeClass('overlay');
 					$("#qclocktwo").css("display", "none");
-					$(".mask").css('display','none');
+					$(".qclocktwo_mask").css('display','none');
 					supersized = false;
 					$(document.body).removeClass("overlay");
 					console.log("remove QLOCK");
@@ -49,7 +48,8 @@ $.widget("sv.qclocktwo_qclocktwo", $.sv.widget, {
 		} else {
 			console.log("Function widget");
 			$("#qclocktwo").css("display", "flex");
-			$('.frame').addClass('widget');
+			$('.qclocktwo_mask').addClass('widget');
+			$(".qclocktwo_mask").css('display','block');
 		}
 		
 
@@ -60,7 +60,7 @@ $.widget("sv.qclocktwo_qclocktwo", $.sv.widget, {
 		abortFadeTimer();
 		q2.current.minute = -1;
 
-		initQlockTwo('de', '#qclocktwo');
+		initQlockTwo('de', '#qclocktwo', this.options.color);
 		q2.current.litCells = [0, 0, 0, 0];
 		changeCells(currentTimeCells());
 

@@ -11,13 +11,14 @@
     right: 10px;  
     height: 100%;*/
 	color: rgb(46,46,46);
-    font-family: 'Helvetica Neue Light', 'HelveticaNeue-Light', 'Helvetica Neue', Arial, Helvetica, sans-serif;
+    /*font-family: 'Helvetica Neue Light', 'HelveticaNeue-Light', 'Helvetica Neue', Arial, Helvetica, sans-serif;
     -webkit-user-select: none;
     -moz-user-select: none;
+	margin-top:1em;*/
     font-weight: 200;
-    font-size: 3.5em;
+    font-size: 3.8em;
     line-height: 1.2em;
-    margin-top:1em;
+ 
 }
 
 /* */
@@ -81,7 +82,7 @@
 	z-index:1000;
 	display:none;
 }
-.mask {
+.qclocktwo_mask {
 	position: absolute;
 	left: 0;
 	top: 0;

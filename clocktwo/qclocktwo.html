@@ -22,9 +22,9 @@
 {% set uid = uid(page, id) %}
 
 <div {% if not id is empty %} id="{{ uid(page, id) }}" {% endif %} data-widget="qclocktwo.qclocktwo"
-    data-time=" {{time | default('120')}}" data-mode="{{mode | default('widget')}}" data-color="{{color | default('white')}}"
+    data-time=" {{time | default('120')}}" data-mode="{{mode | default('widget')}}" data-color="{{color | default('#fff9ae')}}"
     data-lang="{{lang | default('de')}}">
-    <div class="mask">
+    <div class="qclocktwo_mask">
 
         <div id="qclocktwo" class="qclocktwo">
             /** first column dots **/
