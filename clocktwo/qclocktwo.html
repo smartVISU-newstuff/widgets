@@ -1,0 +1,47 @@
+/**
+* -----------------------------------------------------------------------------
+* @package smartVISU
+* @author Martin Gleiß
+* @copyright 2012
+* @license GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+/**
+* Qlock Two Widget
+*
+* @param {id} unique id for this widget
+* @param {lang} language of the widget, default = 'de'
+* @param {mode} widget or screensaver, default = 'de'
+* @param {time} time to activate the sreensaver mode , default is 120s 
+* @param {color} color for highlighting(green, blue, white, red...), optional, default=white 
+* @author Sebastian Helms
+* edited by Manuel Holländer
+*/
+{% macro qclocktwo(id, lang, mode, time, color) %}
+{% set uid = uid(page, id) %}
+
+<div {% if not id is empty %} id="{{ uid(page, id) }}" {% endif %} data-widget="qclocktwo.qclocktwo"
+    data-time=" {{time | default('120')}}" data-mode="{{mode | default('widget')}}" data-color="{{color}}"
+    data-lang="{{lang | default('de')}}">
+    <div class="qclocktwo_mask">
+
+        <div id="qclocktwo" class="qclocktwo">
+            /** first column dots **/
+            <div id ="first" class="q2border">
+                <div id="q2UL">&bull;</div>
+                <div style="height:14.8em;"></div>
+                <div id="q2BL">&bull;</div>
+            </div>
+
+            /** last column dots **/
+            <div id ="second" class="q2border">
+                <div id="q2UR">&bull;</div>
+                <div style="height:14.8em;"></div>
+                <div id="q2BR">&bull;</div>
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endmacro %}
