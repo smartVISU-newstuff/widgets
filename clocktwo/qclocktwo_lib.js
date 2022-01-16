@@ -42,7 +42,7 @@ function initQlockTwo(lang, id, color) {
     q2.current.offset = q2lang.offset;
     q2.current.hrData = q2lang.hr;
     q2.current.miData = q2lang.mi;
-    q2.current.language = q2lang;
+    q2.current.language = lang;
     //setColor
     var colorrgb = hexToRgb(color)
     q2.animation.glowColor[3] = colorrgb.r
@@ -158,6 +158,7 @@ function currentTimeCells() {
     var currentTime = new Date();
     var currentMinute = Math.floor(currentTime.getMinutes() / 5);
     var currentHour = currentTime.getHours();
+    var hr_cells ='';
     //ausnahme 0 uhr
     if (currentHour === 0) { currentHour = 12; }
 
@@ -165,20 +166,19 @@ function currentTimeCells() {
     
     //umbiegen auf amerikanische Schreibweise 0-12Uhr
     if (currentHour > 12) { currentHour = currentHour - 12; }
-
+    
     //fix for S in EINS
     if (q2.current.language == 'de'){
-        if (currentHour == 1) { 
-            var hr_cells = '3b:0:7:0'
+        //console.log("current hour ", currentHour);
+        if (currentHour === 1 && currentMinute < 1) { 
+            hr_cells = parseCells('3b:0:7:0');
         }else{
-            var hr_cells = parseCells(q2.current.hrData[currentHour - 1]);
+            hr_cells = parseCells(q2.current.hrData[currentHour - 1]);
         }
     }else{
-        var hr_cells = parseCells(q2.current.hrData[currentHour - 1]);
+        hr_cells = parseCells(q2.current.hrData[currentHour - 1]);
     }
-    //var hr_cells = parseCells(q2.current.hrData[currentHour - 1]);
     var mi_cells = parseCells(q2.current.miData[currentMinute]);
-    console.log("Stunden - minuten", hr_cells, mi_cells);
     return mergeCells(hr_cells, mi_cells);
 }
 
