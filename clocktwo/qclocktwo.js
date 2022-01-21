@@ -8,12 +8,14 @@ $.widget("sv.qclocktwo_qclocktwo", $.sv.widget, {
 		mode: 'widget',
 		lang: 'de',
 		color: '#fff9ae',
+		bgcolor: '#101112',
 	},
 
 	_create: function () {
 		this._super();
 		var id = this.element.attr('id');
-		var rgbColor = hexToRgb(this.options.color); 
+		var rgbColor = hexToRgb(this.options.color);
+		var bgColor = this.options.bgcolor; 
 		console.log("qlocktwo");
 		console.log("timeout is ", this.options.time);
 		// create user defined shadow
@@ -25,10 +27,11 @@ $.widget("sv.qclocktwo_qclocktwo", $.sv.widget, {
 			console.log("Function screensaver");
 			idleTimer(this.options.time * 1000);
 			console.log("starte timer");
-
+			$(".qclocktwo_mask").css('background-color', bgColor);
 			function showQlock() {
 				console.log("showqlock");
 				$(".qclocktwo_mask").css('display', 'block');
+				
 				$(this).closest("div").addClass("overlay");
 				$("#qclocktwo").css("display", "flex");
 				$(".ui-header").css("z-index", "500");

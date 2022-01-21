@@ -14,15 +14,16 @@
 * @param {lang} language of the widget, default = 'de'
 * @param {mode} widget or screensaver, default = 'de'
 * @param {time} time to activate the sreensaver mode , default is 120s 
-* @param {color} color for highlighting(green, blue, white, red...), optional, default=white 
+* @param {color} color for highlighting(green, blue, white, red...), optional, default=white
+* @param {color} color for mask background(green, blue, white, red...), optional, default=black
 * @author Sebastian Helms
 * edited by Manuel Holländer
 */
-{% macro qclocktwo(id, lang, mode, time, color) %}
+{% macro qclocktwo(id, lang, mode, time, color, bgcolor) %}
 {% set uid = uid(page, id) %}
 
 <div {% if not id is empty %} id="{{ uid(page, id) }}" {% endif %} data-widget="qclocktwo.qclocktwo"
-    data-time=" {{time | default('120')}}" data-mode="{{mode | default('widget')}}" data-color="{{color}}"
+    data-time=" {{time | default('120')}}" data-mode="{{mode | default('widget')}}" data-color="{{color}}" data-bgcolor="{{bgcolor}}"
     data-lang="{{lang | default('de')}}">
     <div class="qclocktwo_mask">
 
