@@ -35,7 +35,7 @@ var q2 = {
     fadeTimer: 0
 };
 
-function initQlockTwo(lang, id, color) {
+function initQlockTwo(lang, id, shadowcolor, highlightcolor) {
     var q2lang = q2.languages[lang];
     var q2_clock = q2lang.clock;
     var q2_id = id;
@@ -43,16 +43,21 @@ function initQlockTwo(lang, id, color) {
     q2.current.hrData = q2lang.hr;
     q2.current.miData = q2lang.mi;
     q2.current.language = lang;
-    //setColor
-    var colorrgb = hexToRgb(color)
+    //setColor shadow /glow
+    var colorrgb = hexToRgb(shadowcolor)
     q2.animation.glowColor[3] = colorrgb.r
     q2.animation.glowColor[4] = colorrgb.g
     q2.animation.glowColor[5] = colorrgb.b
-    //
+    //setColor Highlighting
+    var colorrgb = hexToRgb(highlightcolor)
+    q2.animation.textColor[3] = colorrgb.r
+    q2.animation.textColor[4] = colorrgb.g
+    q2.animation.textColor[5] = colorrgb.b
 
     var q2div = $(q2_id);
     console.log("Q2 div ", q2div);
     console.log("glowcolor", q2.animation.glowColor);
+    console.log("textcolor", q2.animation.textColor);
 
     for (var col = 0; col < 11; col++) {
         var column = $('<div/>', { 'id': 'q2_col_' + col, 'class': 'q2col' });

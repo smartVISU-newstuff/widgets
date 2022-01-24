@@ -1,14 +1,16 @@
 
 /* Master DIV for Clock */
 .qclocktwo {
-	color: white; 
+	
 	display:         none;
 	flex-wrap:       wrap;
 	justify-content: center;
 	align-items: center;
 	align-content: center;
 	color: rgb(46,46,46);
-    /*font-family: 'Helvetica Neue Light', 'HelveticaNeue-Light', 'Helvetica Neue', Arial, Helvetica, sans-serif;
+	/*
+	color: white; 
+    font-family: 'Helvetica Neue Light', 'HelveticaNeue-Light', 'Helvetica Neue', Arial, Helvetica, sans-serif;
 	*/
 	font-family: 'Josefin Sans', 'Arial', 'Trebuchet MS', 'sans-serif';
     font-weight: 200;
