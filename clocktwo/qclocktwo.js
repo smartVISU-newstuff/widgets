@@ -21,8 +21,8 @@ $.widget("sv.qclocktwo_qclocktwo", $.sv.widget, {
 		var rgbColor = hexToRgb(this.options.shadowcolor);
 		console.log("qlocktwo");
 		console.log("timeout is ",this.options.time );
-		// create user defined shadow
-		$(".lit").css('color', this.options.fontcolor);
+		// create user defined font color
+		//$(".lit").css('color', this.options.fontcolor);
 		//idleTimer() takes an optional argument that defines the idle timeout
 		//timeout is in milliseconds; defaults to 30000
 		if (this.options.mode == 'screensaver') {
@@ -42,8 +42,9 @@ $.widget("sv.qclocktwo_qclocktwo", $.sv.widget, {
 				console.log("SUPERSIZE QLOCK");
 				supersized = true;
 				
-				rgbstring = "0 0 10px rgb("+ rgbColor['r'] +","+rgbColor['g'] +","+rgbColor['b'] +")";
-				$(".lit").css('text-shadow', rgbstring);
+				//rgbstring = "0 0 10px rgb("+ rgbColor['r'] +","+rgbColor['g'] +","+rgbColor['b'] +")";
+				//$(".lit").css('text-shadow', rgbstring);
+				//$(".lit").css('color', rgbstring);
 			};
 
 			$(document).on('click', function () {
