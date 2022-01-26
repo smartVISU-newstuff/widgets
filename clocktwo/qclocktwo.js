@@ -42,9 +42,9 @@ $.widget("sv.qclocktwo_qclocktwo", $.sv.widget, {
 				console.log("SUPERSIZE QLOCK");
 				supersized = true;
 				
-				//rgbstring = "0 0 10px rgb("+ rgbColor['r'] +","+rgbColor['g'] +","+rgbColor['b'] +")";
-				//$(".lit").css('text-shadow', rgbstring);
-				//$(".lit").css('color', rgbstring);
+				rgbstring = "0 0 10px rgb("+ rgbColor['r'] +","+rgbColor['g'] +","+rgbColor['b'] +")";
+				$(".lit").css('text-shadow', rgbstring);
+				//$(".lit").css('color', this.options.fontcolor);
 			};
 
 			$(document).on('click', function () {
@@ -68,7 +68,7 @@ $.widget("sv.qclocktwo_qclocktwo", $.sv.widget, {
 		abortFadeTimer();
 		q2.current.minute = -1;
 
-		initQlockTwo('de', '#qclocktwo', this.options.shadowcolor,this.options.animationfontcolor);
+		initQlockTwo('de', '#qclocktwo', this.options.shadowcolor,this.options.animationfontcolor, this.options.fontcolor);
 		q2.current.litCells = [0, 0, 0, 0];
 		changeCells(currentTimeCells());
 		onClockTimerFired();

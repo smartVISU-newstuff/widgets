@@ -29,13 +29,14 @@ var q2 = {
         animationStep: 0,
         litCells: [0, 0, 0, 0],
         lowerCells: $(),
-        raiseCells: $()
+        raiseCells: $(), 
+        fontcolor: '',
     },
     clockTimer: 0,
     fadeTimer: 0
 };
 
-function initQlockTwo(lang, id, shadowcolor, highlightcolor) {
+function initQlockTwo(lang, id, shadowcolor, highlightcolor, fontcolor) {
     var q2lang = q2.languages[lang];
     var q2_clock = q2lang.clock;
     var q2_id = id;
@@ -43,6 +44,7 @@ function initQlockTwo(lang, id, shadowcolor, highlightcolor) {
     q2.current.hrData = q2lang.hr;
     q2.current.miData = q2lang.mi;
     q2.current.language = lang;
+    q2.current.fontcolor = fontcolor;
     //setColor shadow /glow
     var colorrgb = hexToRgb(shadowcolor)
     q2.animation.glowColor[3] = colorrgb.r
@@ -193,6 +195,7 @@ function onFadeTimerCompleted() {
     q2.current.lowerCells.css({ 'color': '', 'text-shadow': '' }).removeClass('lit');
     q2.current.raiseCells = $();
     q2.current.lowerCells = $();
+    $(".lit").css('color', q2.current.fontcolor);
 }
 
 function rgbConv(r1, g1, b1, r2, g2, b2, x, y) {
