@@ -1,0 +1,82 @@
+/**
+ * -----------------------------------------------------------------------------
+ * @package     smartVISU
+ * @author      Martin Gleiß
+ * @copyright   2012
+ * @license     GPL <http://www.gnu.de>
+ * -----------------------------------------------------------------------------
+ */
+
+/**
+ * Squeezebox Multimedia Player
+ *
+ * @param {id}          unique id for this widget
+ * @param {item(bool)}  the gad/item for power
+ * @param {item(bool)}  the gad/item for play
+ * @param {item(bool)}  the gad/item for pause
+ * @param {item(bool)=} the gad/item for stop (optional)
+ * @param {item(bool)}  the gad/item for playlist forward
+ * @param {item(bool)}  the gad/item for playlist backward
+ * @param {item(num)=}  the gad/item for the volume (optional)
+ * @param {item(bool)=} the gad/item to mute the music (optional)
+ * @param {item(str)=}  the gad/item for the song title (optional)
+ * @param {item(str)=}  the gad/item for the song artist (optional)
+ * @param {item(bool)=} the gad/item for repeat (optional)
+ * @param {item(bool)=} the gad/item to load the default playlist (optional)
+ * @param {item(num)=}  the gad/item for the duration (optional)
+ * @param {item(num)=}  the gad/item for the time/position (optional)
+ *
+ * @author      Robert Budde
+ * derived from "multimedia" by Axel Otterstätter - thanks!
+ */
+{% macro control(id, gad_power, gad_play, gad_pause, gad_stop, gad_playlistforward, gad_playlistbackward, gad_vol, gad_mute, gad_title, gad_artist, gad_repeat, gad_defaultplaylist, gad_duration, gad_time) %}
+    {% import "basic.html" as basic %}
+    {% import "multimedia.html" as multimedia %}
+    {% set uid = uid(page, id) %}
+
+    <div id="{{ uid }}" class="music">
+        
+        {% if gad_vol %}
+        <div class="vol">
+            <img class="slider-bottomup-scale" src="pages/base/pics/scale_buttomup.png">
+            {{ basic.slider(id~'vol', gad_vol, 0, 100, 5, 'bottomup') }}
+        </div>
+        {% endif %}
+
+        <div class="control">
+        {% if gad_power %} {{ basic.stateswitch('', gad_power, '', '','control_standby.svg') }} {% endif %}
+        {% if gad_mute %} {{ basic.stateswitch('', gad_mute, '',[0,1],'audio_volume_mute.svg') }} {% endif %}
+        {% if gad_repeat %} {{ basic.stateswitch('', gad_repeat, '', '', 'audio_repeat.svg') }} {% endif %}
+        {% if gad_defaultplaylist %} {{ basic.stateswitch('', gad_defaultplaylist, '', 1, 'audio_playlist.svg', 'Default Playlist') }} {% endif %}
+        </div>
+
+        <div class="title">
+          {% if gad_artist %}
+          {{ basic.print('', gad_artist) }}
+          <br />
+          {% endif %}
+          {% if gad_title %}
+          {{ basic.print('', gad_title) }}
+          {% endif %}
+        </div>
+
+        <div class="set">
+            {% if gad_duration %}
+            {% if gad_time %}
+            <div class="pos">
+                <div class="scale">&nbsp;</div>
+                {{ multimedia.timeslider(id~'time', gad_time, gad_play, gad_duration, 1) }}
+			</div>
+            {% endif %}
+            {% endif %}
+
+            <div data-role="controlgroup" data-type="horizontal">
+                {{ basic.stateswitch('', gad_playlistbackward,'', 1 , 'control_arrow_left.svg','backward') }}
+                {{ basic.stateswitch('', gad_play, '', [1,1], 'audio_play.svg') }}
+                {{ basic.stateswitch('', gad_pause, '', '', 'audio_pause.svg') }}
+                {% if gad_stop %} {{ basic.stateswitch('', gad_stop, '', [1,1],'audio_stop.svg') }} {% endif %}
+                {{ basic.stateswitch('', gad_playlistforward, '', 1, 'control_arrow_right.svg', 'forward') }}
+           </div>
+       </div>
+    </div>
+{% endmacro %}

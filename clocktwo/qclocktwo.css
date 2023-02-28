@@ -1,0 +1,117 @@
+
+/* Master DIV for Clock */
+.qclocktwo {
+	
+	display:         none;
+	flex-wrap:       wrap;
+	justify-content: center;
+	align-items: center;
+	align-content: center;
+	color: rgb(46,46,46);
+	/*
+	color: white; 
+    font-family: 'Helvetica Neue Light', 'HelveticaNeue-Light', 'Helvetica Neue', Arial, Helvetica, sans-serif;
+	*/
+	font-family: 'Josefin Sans', 'Arial', 'Trebuchet MS', 'sans-serif';
+    font-weight: 200;
+    font-size: 3.8em;
+    line-height: 1.15em;
+}
+
+
+/* */
+.q2quot {
+    letter-spacing: -1.15em;
+}
+
+/* */
+.q2col {
+    width: 1.15em;
+    height: 100%;
+    float: left;
+    text-align: center;
+
+}
+/*Corner Dots */
+.q2border{
+	position:relative;
+	height: 100%;
+	width: 0.5em;
+	float: left;
+    text-align: center;
+}
+.q2border #q2UL { 
+	height: 1.5em;
+	top:0;
+	position:absolute;
+}
+.q2border #q2BL { 
+	height: 1.5em;
+	position:absolute;
+	bottom:0;
+}
+.q2border #q2UR { 
+	height: 1.5em;
+	top:0;
+	position:absolute;
+}
+.q2border #q2BR { 
+	height: 1.5em;
+	position:absolute;
+	bottom:0;
+}
+/* Highlited WORD*/
+.lit { 
+    font-weight: 250;
+	color: white;
+	text-shadow: 0 0 10px rgb(255,249,174);
+    /*text-shadow: 0 0 10px rgb(190, 33, 33);*/
+}
+
+/*Class for screensaver Fullscreenmode */
+.overlay{
+	position:absolute;
+	
+	padding:20px;
+	top:0px;
+	left:0px;
+	width:100%;
+	height:100%;
+	z-index:1000;
+	display:none;
+}
+.qclocktwo_mask {
+	position: absolute;
+	left: 0;
+	top: 0;
+	right:0;
+	bottom: 0;
+	width: 100%; 
+	height: 100%;
+	z-index: 900;
+	display:none;
+	/*background: rgba(0, 0, 0);*/
+	background-color: rgb(16,17,18);
+    position: fixed; 
+	}
+
+.widget{
+    height: '';
+}
+/* over all Frame */
+.frame{
+	display: flex !important;
+	flex-wrap: wrap;
+	justify-content: center;
+	align-items: center;
+	align-content: center;
+    z-index: 999;
+}
+/*Größenanpassung für kleine Bildschirme  */
+/* iPad layout */
+@media only screen and (min-device-width : 768px) and (max-device-width : 1024px) {
+    .qclocktwo {
+        font-family:'Josefin Sans', Arial, "Trebuchet MS", sans-serif;
+        font-size: 3.2em;
+    }
+}

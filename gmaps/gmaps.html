@@ -1,0 +1,29 @@
+// dropins/widgets/gmaps.html - API Key für Google Directions angeben!
+/**
+* Displays a google maps map with current, home and work position, as well as routing
+*
+* @param unique id for this widget
+* @param a gad/item for latitude
+* @param a gad/item for longitude
+* @param a gad/item for home latitude
+* @param a gad/item for home longitude
+* @param a gad/item for bool flag, if route to home shall be calculated
+* @param a gad/item for bool flag, if route to work shall be calculated
+* @param a gad/item for work latitude
+* @param a gad/item for work longitude
+* @param traffic information on (=1) or off (=0)
+*/
+{% macro map(id, gad_lat, gad_lon, gad_home_lat, gad_home_lon, gad_calculate_way_home, gad_calculate_way_work, gad_work_lat, gad_work_lon, traffic) %}
+<div id="{{ uid(page, id) }}" style="width: 100%; height: 400px;" data-traffic="{{ traffic }}" data-widget="gmaps_map" data-item="{{ gad_lat }}, {{ gad_lon}}, {{ gad_home_lat }}, {{ gad_home_lon }}, {{ gad_calculate_way_home }}, {{ gad_calculate_way_work }}, {{ gad_work_lat }}, {{ gad_work_lon }}"></div>
+{% endmacro %}
+
+/**
+* Displays a simple google maps map
+*
+* @param unique id for this widget
+* @param a gad/item for latitude
+* @param a gad/item for longitude
+*/
+{% macro simple_map(id, gad_lat, gad_lon) %}
+<div id="{{ uid(page, id) }}" style="width: 100%; height: 400px;" data-widget="gmaps_simplemap" data-item="{{ gad_lat }}, {{ gad_lon}}"></div>
+{% endmacro %}

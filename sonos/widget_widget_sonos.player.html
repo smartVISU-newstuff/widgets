@@ -1,0 +1,25 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Alexander Schwithal
+* @copyright   2020
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+{% extends "custom/widget_custom.html" %}
+
+{% block example %}
+
+	<h5>Example</h5>
+	<div class="twig">
+		<code class="prettyprint">{% filter trim|escape|nl2br %}{% raw %}
+			{{ widget_sonos.player('name1', 'Sonos.Kitchen') }}  
+		{% endraw %}{% endfilter %}</code>
+	</div>
+	<div class="html">
+		{{ widget_sonos.player('name1', 'Sonos.Kitchen') }}  
+	</div>
+
+{% endblock %}
+
