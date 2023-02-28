@@ -7,7 +7,7 @@
 * -----------------------------------------------------------------------------
 */ 
 
-// ----- icon_roofwindow ------------------------------------------------------
+// ----- widget_roofwindow ------------------------------------------------------
 $.widget("sv.roofwindow_roofwindow", $.sv.widget, {
 
 	initSelector: 'svg[data-widget="roofwindow.roofwindow"]',
