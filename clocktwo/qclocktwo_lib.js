@@ -2,7 +2,7 @@
 
 var q2 = {
     languages: {
-        de: { offset: 35, clock: 'ESKISTAFÜNFZEHNZWANZIGDREIVIERTELVORFUNKNACHHALBAELFÜNFEINSXÄMZWEIDREIAUJVIERSECHSNLACHTSIEBENZWÖLFZEHNEUNKUHR', hr: ['3b:0:7:0', '3b:0:780:0', '3b:0:7800:0', '3b:0:3c0000:0', '3b:7800000:0:0', '3b:0:7c00000:0', '3b:0:0:7e0', '3b:0:0:1e', '3b:0:0:780000', '3b:0:0:f0000', '3b:e00000:0:0', '3b:0:0:f800'], mi: ['0:0:0:7000000', '780:f000:0:0', '7800:f000:0:0', 'c000000:f01f:0:0', '3f8000:f000:0:0', '780:f00e0:0:0', '0:f0000:0:0', '780:ff000:0:0', '3f8000:e0:0:0', 'c000000:ff:0:0', '7800:e0:0:0', '780:e0:0:0'] },
+        de: { offset: 35, clock: 'ESKISTAFÜNFZEHNZWANZIGDREIVIERTELVORFUNKNACHHALBAELFÜNFEINSXÄMZWEIDREIAUJVIERSECHSNLACHTSIEBENZWÖLFZEHNEUNKUHR', hr: ['3b:0:f:0', '3b:0:780:0', '3b:0:7800:0', '3b:0:3c0000:0', '3b:7800000:0:0', '3b:0:7c00000:0', '3b:0:0:7e0', '3b:0:0:1e', '3b:0:0:780000', '3b:0:0:f0000', '3b:e00000:0:0', '3b:0:0:f800'], mi: ['0:0:0:7000000', '780:f000:0:0', '7800:f000:0:0', 'c000000:f01f:0:0', '3f8000:f000:0:0', '780:f00e0:0:0', '0:f0000:0:0', '780:ff000:0:0', '3f8000:e0:0:0', 'c000000:ff:0:0', '7800:e0:0:0', '780:e0:0:0'] },
         en: { offset: 25, clock: 'ITLISASTIMEACQUARTERDCTWENTYFIVEXHALFBTENFTOPASTERUNINEONESIXTHREEFOURFIVETWOEIGHTELEVENSEVENTWELVETENSEoCLOCK', hr: ['1b:0:7:0', '1b:0:380000:0', '1b:0:7c0:0', '1b:0:7800:0', '1b:0:78000:0', '1b:0:38:0', '1b:0:0:3e0', '1b:0:7c00000:0', '1b:7800000:0:0', '1b:0:0:70000', '1b:0:8000000:1f', '1b:0:0:fc00'], mi: ['0:0:0:7e00000', '0:f000f:0:0', '0:f1c00:0:0', 'fe800:f0000:0:0', 'fc00000:f0000:0:0', 'fc00000:f000f:0:0', '0:f01e0:0:0', 'fc00000:c00f:0:0', 'fc00000:c000:0:0', 'fe800:c000:0:0', '0:dc00:0:0', '0:c00f:0:0'] },
         nl: { offset: 40, clock: 'HETKISAVIJFTIENBTZVOOROVERMEKWARTHALFSPWOVERVOORTHGÉÉNSTWEEPVCDRIEVIERVIJFZESZEVENONEGENACHTTIENELFTWAALFBFUUR', hr: ['37:3800000:0:0', '37:0:f:0', '37:0:780:0', '37:0:7800:0', '37:0:78000:0', '37:0:380000:0', '37:0:7c00000:0', '37:0:0:1e0', '37:0:0:1f', '37:0:0:1e00', '37:0:0:e000', '37:0:0:3f0000'], mi: ['0:0:0:7000000', '3c00780:0:0:0', '3c07800:0:0:0', '0:f01f:0:0', '3c7800:1e0:0:0', '3c0780:1e0:0:0', '0:1e0:0:0', '3c00780:1e0:0:0', '3c07800:1e0:0:0', '0:f001f:0:0', '3c7800:0:0:0', '3c0780:0:0:0'] },
         it: { offset: 25, clock: 'SONORLEBOREÉRĽUNASDUEZTREOTTONOVEDIECIUNDICIDODICISETTEQUATTROCSEICINQUESMENOECUNOQUARTOVENTICINQUEDIECIEMEZZA', hr: ['1e800:0:0:0', '1c006f:0:0:0', '1c0006f:0:0:0', '6f:0:7f:0', '6f:0:1f800:0', '6f:0:700:0', '6f:7c00000:0:0', 'e00006f:1:0:0', '6f:1e:0:0', '6f:3e0:0:0', '6f:fc00:0:0', '6f:3f0000:0:0'], mi: ['0:0:0:0', '0:0:400000:fc00', '0:0:400000:1f0000', '0:0:b400000:1f', '0:0:400000:3e0', '0:0:400000:ffe0', '0:0:400000:7c00000', '0:0:3c0000:ffe0', '0:0:3c0000:3e0', '0:0:b3c0000:1f', '0:0:3c0000:1f0000', '0:0:3c0000:fc00'] },
@@ -29,30 +29,37 @@ var q2 = {
         animationStep: 0,
         litCells: [0, 0, 0, 0],
         lowerCells: $(),
-        raiseCells: $()
+        raiseCells: $(), 
+        fontcolor: '',
     },
     clockTimer: 0,
     fadeTimer: 0
 };
 
-function initQlockTwo(lang, id, color) {
+function initQlockTwo(lang, id, shadowcolor, highlightcolor, fontcolor) {
     var q2lang = q2.languages[lang];
     var q2_clock = q2lang.clock;
     var q2_id = id;
     q2.current.offset = q2lang.offset;
     q2.current.hrData = q2lang.hr;
     q2.current.miData = q2lang.mi;
-
-    //setColor
-    var colorrgb = hexToRgb(color)
+    q2.current.language = lang;
+    q2.current.fontcolor = fontcolor;
+    //setColor shadow /glow
+    var colorrgb = hexToRgb(shadowcolor)
     q2.animation.glowColor[3] = colorrgb.r
     q2.animation.glowColor[4] = colorrgb.g
     q2.animation.glowColor[5] = colorrgb.b
-    //
+    //setColor Highlighting
+    var colorrgb = hexToRgb(highlightcolor)
+    q2.animation.textColor[3] = colorrgb.r
+    q2.animation.textColor[4] = colorrgb.g
+    q2.animation.textColor[5] = colorrgb.b
 
     var q2div = $(q2_id);
     console.log("Q2 div ", q2div);
     console.log("glowcolor", q2.animation.glowColor);
+    console.log("textcolor", q2.animation.textColor);
 
     for (var col = 0; col < 11; col++) {
         var column = $('<div/>', { 'id': 'q2_col_' + col, 'class': 'q2col' });
@@ -86,6 +93,8 @@ function hexToRgb(hex) {
  }
 
 function parseCells(cell_text) {
+    //parse val from dict to int
+    //return int array
     var parsed_cells = [0, 0, 0, 0];
     var split_cells = cell_text.split(':');
     for (var i = 0; i < 4; i++) { parsed_cells[i] = parseInt(split_cells[i], 16); }
@@ -99,6 +108,7 @@ function mergeCells(l_cells, r_cells) {
 }
 
 function selectCells(cells) {
+    //rechnet die array werte auf Div namen um
     var matchList = [];
     var offsets = [1, 29, 56, 84];
     for (var i = 0; i < 4; i++) {
@@ -132,6 +142,7 @@ function changeCorners(currentMinute) {
 }
 
 function changeCells(newLitCells) {
+    // highleightet die passenden Zellen
     var q2c = q2.current;
     var lower = [0, 0, 0, 0];
     var raise = [0, 0, 0, 0];
@@ -150,15 +161,30 @@ function changeCells(newLitCells) {
 }
 
 function currentTimeCells() {
+    // gibt aktuelle uhrzeit als Zelle zurüück    
     var currentTime = new Date();
     var currentMinute = Math.floor(currentTime.getMinutes() / 5);
     var currentHour = currentTime.getHours();
-
+    var hr_cells ='';
+    //ausnahme 0 uhr
     if (currentHour === 0) { currentHour = 12; }
-    if (((currentMinute * 5) + q2.current.offset) >= 60) { currentHour += 1; }
-    if (currentHour > 12) { currentHour = currentHour - 12; }
 
-    var hr_cells = parseCells(q2.current.hrData[currentHour - 1]);
+    if (((currentMinute * 5) + q2.current.offset) >= 60) { currentHour += 1; }
+    
+    //umbiegen auf amerikanische Schreibweise 0-12Uhr
+    if (currentHour > 12) { currentHour = currentHour - 12; }
+    
+    //fix for S in EINS
+    if (q2.current.language == 'de'){
+        //console.log("current hour ", currentHour);
+        if (currentHour === 1 && currentMinute < 1) { 
+            hr_cells = parseCells('3b:0:7:0');
+        }else{
+            hr_cells = parseCells(q2.current.hrData[currentHour - 1]);
+        }
+    }else{
+        hr_cells = parseCells(q2.current.hrData[currentHour - 1]);
+    }
     var mi_cells = parseCells(q2.current.miData[currentMinute]);
     return mergeCells(hr_cells, mi_cells);
 }
@@ -169,6 +195,7 @@ function onFadeTimerCompleted() {
     q2.current.lowerCells.css({ 'color': '', 'text-shadow': '' }).removeClass('lit');
     q2.current.raiseCells = $();
     q2.current.lowerCells = $();
+    $(".lit").css('color', q2.current.fontcolor);
 }
 
 function rgbConv(r1, g1, b1, r2, g2, b2, x, y) {

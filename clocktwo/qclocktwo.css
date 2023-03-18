@@ -1,15 +1,18 @@
 
 /* Master DIV for Clock */
 .qclocktwo {
-	color: white; 
+	
 	display:         none;
 	flex-wrap:       wrap;
 	justify-content: center;
 	align-items: center;
 	align-content: center;
 	color: rgb(46,46,46);
-    /*font-family: 'Helvetica Neue Light', 'HelveticaNeue-Light', 'Helvetica Neue', Arial, Helvetica, sans-serif;
+	/*
+	color: white; 
+    font-family: 'Helvetica Neue Light', 'HelveticaNeue-Light', 'Helvetica Neue', Arial, Helvetica, sans-serif;
 	*/
+	font-family: 'Josefin Sans', 'Arial', 'Trebuchet MS', 'sans-serif';
     font-weight: 200;
     font-size: 3.8em;
     line-height: 1.15em;
@@ -97,23 +100,18 @@
 }
 /* over all Frame */
 .frame{
-	display:         flex !important;
-	flex-wrap:       wrap;
+	display: flex !important;
+	flex-wrap: wrap;
 	justify-content: center;
 	align-items: center;
 	align-content: center;
     z-index: 999;
 }
 /*Größenanpassung für kleine Bildschirme  */
-@media only screen and (max-width: 500px) {
-	.qclocktwo {
-	  font-size: 1.25em;
-	  line-height: 0.5em;
-	}
-	.q2col {
-		width: 0.5em;
-  }
-  .q2quot {
-    letter-spacing: -0.5em;
-}
+/* iPad layout */
+@media only screen and (min-device-width : 768px) and (max-device-width : 1024px) {
+    .qclocktwo {
+        font-family:'Josefin Sans', Arial, "Trebuchet MS", sans-serif;
+        font-size: 3.2em;
+    }
 }

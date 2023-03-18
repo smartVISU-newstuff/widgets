@@ -7,35 +7,44 @@ $.widget("sv.qclocktwo_qclocktwo", $.sv.widget, {
 		time: 120,
 		mode: 'widget',
 		lang: 'de',
-		color: '#fff9ae',
+		fontcolor: '#ffffff',
+		animationfontcolor: '#ffffff',
+		inactivefontcolor: '#2e2e2e',
+		shadowcolor: '#fff9ae',
+		bgcolor: '#101112',
 	},
 
 	_create: function () {
 		this._super();
 		var id = this.element.attr('id');
-		var rgbColor = hexToRgb(this.options.color); 
-		console.log("qlocktwo");
-		console.log("timeout is ", this.options.time);
-		// create user defined shadow
 
-		//$("lit").css("color", 'green');
+		var rgbColor = hexToRgb(this.options.shadowcolor);
+		console.log("qlocktwo");
+		console.log("timeout is ",this.options.time );
+		// create user defined font color
+		//$(".lit").css('color', this.options.fontcolor);
 		//idleTimer() takes an optional argument that defines the idle timeout
 		//timeout is in milliseconds; defaults to 30000
 		if (this.options.mode == 'screensaver') {
 			console.log("Function screensaver");
 			idleTimer(this.options.time * 1000);
 			console.log("starte timer");
+			$(".qclocktwo_mask").css('background-color', this.options.bgcolor);
+			$(".qclocktwo").css("color", this.options.inactivefontcolor);
 
 			function showQlock() {
 				console.log("showqlock");
 				$(".qclocktwo_mask").css('display', 'block');
+				
 				$(this).closest("div").addClass("overlay");
 				$("#qclocktwo").css("display", "flex");
 				$(".ui-header").css("z-index", "500");
 				console.log("SUPERSIZE QLOCK");
 				supersized = true;
+				
 				rgbstring = "0 0 10px rgb("+ rgbColor['r'] +","+rgbColor['g'] +","+rgbColor['b'] +")";
 				$(".lit").css('text-shadow', rgbstring);
+				//$(".lit").css('color', this.options.fontcolor);
 			};
 
 			$(document).on('click', function () {
@@ -55,18 +64,13 @@ $.widget("sv.qclocktwo_qclocktwo", $.sv.widget, {
 			$(".qclocktwo_mask").css('display', 'block');
 		}
 
-
-
-
-
 		clearInterval(q2.clockTimer);
 		abortFadeTimer();
 		q2.current.minute = -1;
 
-		initQlockTwo('de', '#qclocktwo', this.options.color);
+		initQlockTwo('de', '#qclocktwo', this.options.shadowcolor,this.options.animationfontcolor, this.options.fontcolor);
 		q2.current.litCells = [0, 0, 0, 0];
 		changeCells(currentTimeCells());
-
 		onClockTimerFired();
 		q2.clockTimer = setInterval('onClockTimerFired()', 500);
 
