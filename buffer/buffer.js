@@ -5,7 +5,6 @@ $.widget("sv.buffer", $.sv.widget, {
 
     _create: function () {
         this._super();
-        this.element[0].closest('.block').style.minWidth = "370px";
     },
 
     _update: function (response) {
