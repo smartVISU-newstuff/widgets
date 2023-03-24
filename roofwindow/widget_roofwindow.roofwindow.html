@@ -1,0 +1,38 @@
+    {% extends "custom/widget_custom.html" %}
+    {% block example %}
+
+    <h5>Example</h5>
+	<div class="twig">
+		<code class="prettyprint">{% filter trim|escape|nl2br %}{% raw %}
+			{{ roofwindow.roofwindow('first_window', 'bath.blind.pos', 'bath.window.state') }}
+			{{ roofwindow.roofwindow('second_window', 'bath.blind.pos', 'bath.window.state', '', '', 'red') }}
+			{{ roofwindow.roofwindow('third_window', 'bath.blind.pos', 'bath.window.state', '', '', '!icon3') }}
+		{% endraw %}{% endfilter %}</code>
+	</div>
+	
+	Use slider to control the shutter and switches to simulate window status
+	
+	<div class="html">
+		
+		{{ basic.slider('','bath.light.value') }}
+		First window:
+		<div data-role="controlgroup" data-type="horizontal"> 
+			{{ basic.stateswitch('', 'bath.light.switch', '', 0, '', '0') }}
+			{{ basic.stateswitch('', 'bath.light.switch', '', 1, '', '1') }}
+			{{ basic.stateswitch('', 'bath.light.switch', '', 2, '', '2') }}
+		</div> &nbsp;&nbsp;
+		Second and third window:
+		<div data-role="controlgroup" data-type="horizontal">
+			{{ basic.stateswitch('', 'bath.light.multistate', '', 0, '', '0') }}
+			{{ basic.stateswitch('', 'bath.light.multistate', '', 1, '', '1') }}
+			{{ basic.stateswitch('', 'bath.light.multistate', '', 2, '', '2') }}
+		</div>
+		<br>
+		Default: class icon0 / icon1 colors: &nbsp;{{ roofwindow.roofwindow('', 'bath.light.value', 'bath.light.switch') }} <br>
+		Usage of custom color for 'open': &nbsp;&nbsp;&nbsp; {{ roofwindow.roofwindow('', 'bath.light.value', 'bath.light.multistate', '', '', 'red') }} <br>
+		Usage of constant custom color: &nbsp;&nbsp;&nbsp; {{ roofwindow.roofwindow('', 'bath.light.value', 'bath.light.multistate', '', '', '!icon3') }}
+	</div>
+
+    {% endblock %}
+
+
