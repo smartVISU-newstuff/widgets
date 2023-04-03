@@ -1,6 +1,6 @@
 # Widget for a buffer
 
-![grafik](https://user-images.githubusercontent.com/17801971/226099060-14998a90-e302-42c2-9059-5dc7e346690f.png)
+![buffer](https://user-images.githubusercontent.com/36001771/229436995-14335e19-6aab-479e-9906-add11c41caf7.png)
 
 Copy the widget files into smartVISU/dropins/widgets. They will be automatically imported for usage in your visu pages. Each buffer widget must have a unique id if you use more than one on a page.
 
