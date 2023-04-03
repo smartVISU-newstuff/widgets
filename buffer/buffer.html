@@ -21,20 +21,22 @@
  * @param {text='%,0f °C'} format text for the temperature display
  * @param {item(num)} a gad/item for temperature of stove hot pipe
  * @param {item(num)} a gad/item for temperature of stove cold pipe
- * @param {item(num)} a gad/item for the pump of the stove
+ * @param {item(bool)} a gad/item for the pump of the stove
+ * @param {item(num)} a gad/item for the pump percentage of the stove
  * @param {text=''} a text for the stove label
  * @param {item(num)} a gad/item for temperature of solar hot pipe
  * @param {item(num)} a gad/item for temperature of solar cold pipe
  * @param {item(num)} a gad/item for temperature of solar collector
- * @param {item(num)} a gad/item for the pump of the solar
+ * @param {item(bool)} a gad/item for the pump of the solar
+ * @param {item(num)} a gad/item for the pump percentage of the solar
  * @param {text=''} a text for the solar label
  */
-{% macro solar_stove(id, gad_percent, gad_temp1, gad_temp2, gad_temp3, gad_temp4, gad_temp5, temp_format, gad_stove_temp_h, gad_stove_temp_c, gad_stove_pump, stove_text, gad_solar_temp_h, gad_solar_temp_c, gad_solar_temp_collector, gad_solar_pump, solar_text) %}
+{% macro solar_stove(id, item_percent, item_temp1, item_temp2, item_temp3, item_temp4, item_temp5, temp_format, item_stove_temp_h, item_stove_temp_c, item_stove_pump, item_stove_pump_percent, stove_text, item_solar_temp_h, item_solar_temp_c, item_solar_temp_collector, item_solar_pump, item_solar_pump_percent, solar_text) %}
 {% import config_version_full >= "3.2.c" ? "@widgets/basic.html" : "basic.html" as basic %}
 <div id="{{ uid(page, id) }}"
     style="width: 100%; text-align: center"
     data-widget="buffer.solar_stove"
-    data-item="{{ gad_percent|default(50) }}">
+    data-item="{{ item_percent|default(50) }}">
 
     <svg height="310" width="370">
        <defs>
@@ -58,25 +60,25 @@
           style="fill:#858585;fill-opacity:1;stroke:#858585;stroke-width:1.45;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
           d="m 129.72185,288.82905 5.47614,-5.10713 3.07245,4.96306 z"
           id="fL" />
-       {% if gad_stove_temp_h or gad_stove_temp_c%}
+       {% if item_stove_temp_h or item_stove_temp_c or item_stove_pump or item_stove_pump_percent %}
         <path
           style="fill:none;stroke:#ff0000;stroke-width:3;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
           d="m 231.0,95.0 h 15.0 v 55.0 h 85.0"
           id="heating_h" />
-       {% if gad_solar_temp_h or gad_solar_temp_c or gad_solar_temp_collector%}
+       {% if item_solar_temp_h or item_solar_temp_c or item_solar_temp_collector or item_solar_pump or item_solar_pump_percent %}
        <path
           style="fill:none;stroke:#0000ff;stroke-width:3;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
           d="m 231.0,210.0 h 15.0 v 0.0 h 85.0"
           id="heating_c" />
        {% endif %}
-       {% if not (gad_solar_temp_h or gad_solar_temp_c or gad_solar_temp_collector)%}
+       {% if not (item_solar_temp_h or item_solar_temp_c or item_solar_temp_collector or item_solar_pump or item_solar_pump_percent) %}
        <path
           style="fill:none;stroke:#0000ff;stroke-width:3;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
           d="m 231,278.0 h 15 V 210 h 85"
           id="heating_c" />
        {% endif %}
        {% endif %}
-       {% if gad_solar_temp_h or gad_solar_temp_c or gad_solar_temp_collector %}
+       {% if item_solar_temp_h or item_solar_temp_c or item_solar_temp_collector or item_solar_pump or item_solar_pump_percent %}
        <path
           style="fill:none;stroke:#5e6680;stroke-width:8;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
           d="M 120.0,26.0 25.0,80.0"
@@ -91,56 +93,102 @@
           id="solar_c" />
        {% endif %}
 
-       <foreignobject class="node" x="140" y="45" width="100" height="100">
-  	      {% if gad_percent %}{{ basic.print('', gad_percent, '%,0f %', '', '', 'icon0') }}{% endif %}
-       </foreignobject>
-
-        <foreignobject class="node" x="140" y="85" width="100" height="100">
-            {% if gad_temp1 %}{{ basic.print('', gad_temp1, temp_format|default('%,0f °C'), '', '', 'white') }}{% endif %}
-        </foreignobject>
-        <foreignobject class="node" x="140" y="128" width="100" height="100">
-            {% if gad_temp2 %}{{ basic.print('', gad_temp2, temp_format|default('%,0f °C'), '', '', 'white') }}{% endif %}
-        </foreignobject>
-        <foreignobject class="node" x="140" y="172" width="100" height="100">
-            {% if gad_temp3 %}{{ basic.print('', gad_temp3, temp_format|default('%,0f °C'), '', '', 'white') }}{% endif %}
-        </foreignobject>
-        <foreignobject class="node" x="140" y="216" width="100" height="100">
-            {% if gad_temp4 %}{{ basic.print('', gad_temp4, temp_format|default('%,0f °C'), '', '', 'white') }}{% endif %}
-        </foreignobject>
-        <foreignobject class="node" x="140" y="260" width="100" height="100">
-            {% if gad_temp5 %}{{ basic.print('', gad_temp5, temp_format|default('%,0f °C'), '', '', 'white') }}{% endif %}
-        </foreignobject>
-
-        {% if gad_solar_temp_h or gad_solar_temp_c or gad_solar_temp_collector%}
-        <foreignobject class="node" x="45" y="250" width="100" height="100">
-            {% if gad_solar_temp_c %}{{ basic.print('', gad_solar_temp_c, temp_format|default('%,0f °C'), '', '', 'icon0') }}{% endif %}
-        </foreignobject>
-        <foreignobject class="node" x="45" y="189" width="100" height="100">
-            {% if gad_solar_temp_h %}{{ basic.print('', gad_solar_temp_h, temp_format|default('%,0f °C'), '', '', 'icon0') }}{% endif %}
-        </foreignobject>
-        <foreignobject class="node" x="5" y="25" width="100" height="100">
-            {% if gad_solar_temp_collector %}{{ basic.print('', gad_solar_temp_collector, temp_format|default('%,0f °C'), '', '', 'icon0') }}{% endif %}
-        </foreignobject>
-        <foreignobject class="node" x="8" y="223" width="100" height="100">
-            <span style="color:icon0; float:right">{{ solar_text|default(' ') }}</span>
-        </foreignobject>
-        <foreignobject class="node" x="45" y="130" width="100" height="100">
-            {% if gad_solar_pump %}{{ basic.symbol('',gad_solar_pump, '', 'sani_pump.svg', [0,1], '', ['icon0', 'icon1']) }}{% endif %}
+        {% if item_percent %}
+        <foreignobject class="node" x="140" y="45" width="100" height="100">
+          {{ basic.print('', item_percent, '%,0f %', '', '', 'icon0') }}
         </foreignobject>
         {% endif %}
 
-        {% if gad_stove_temp_h or gad_stove_temp_c%}
+        {% if item_temp1 %}
+        <foreignobject class="node" x="140" y="85" width="100" height="100">
+            {{ basic.print('', item_temp1, temp_format|default('%,0f °C'), '', '', 'white') }}
+        </foreignobject>
+        {% endif %}
+        {% if item_temp2 %}
+        <foreignobject class="node" x="140" y="128" width="100" height="100">
+            {{ basic.print('', item_temp2, temp_format|default('%,0f °C'), '', '', 'white') }}
+        </foreignobject>
+        {% endif %}
+        {% if item_temp3 %}
+        <foreignobject class="node" x="140" y="172" width="100" height="100">
+            {{ basic.print('', item_temp3, temp_format|default('%,0f °C'), '', '', 'white') }}
+        </foreignobject>
+        {% endif %}
+        {% if item_temp4 %}
+        <foreignobject class="node" x="140" y="216" width="100" height="100">
+            {{ basic.print('', item_temp4, temp_format|default('%,0f °C'), '', '', 'white') }}
+        </foreignobject>
+        {% endif %}
+        {% if item_temp5 %}
+        <foreignobject class="node" x="140" y="260" width="100" height="100">
+            {{ basic.print('', item_temp5, temp_format|default('%,0f °C'), '', '', 'white') }}
+        </foreignobject>
+        {% endif %}
+
+        {% if item_solar_temp_c %}
+        <foreignobject class="node" x="45" y="250" width="100" height="100">
+            {{ basic.print('', item_solar_temp_c, temp_format|default('%,0f °C'), '', '', 'icon0') }}
+        </foreignobject>
+        {% endif %}
+        {% if item_solar_temp_h %}
+        <foreignobject class="node" x="45" y="189" width="100" height="100">
+            {{ basic.print('', item_solar_temp_h, temp_format|default('%,0f °C'), '', '', 'icon0') }}
+        </foreignobject>
+        {% endif %}
+        {% if item_solar_temp_collector %}
+        <foreignobject class="node" x="5" y="25" width="100" height="100">
+            {{ basic.print('', item_solar_temp_collector, temp_format|default('%,0f °C'), '', '', 'icon0') }}
+        </foreignobject>
+        {% endif %}
+        {% if solar_text %}
+        <foreignobject class="node" x="8" y="223" width="100" height="100">
+            <span style="color:icon0; float:right">{{ solar_text }}</span>
+        </foreignobject>
+        {% endif %}
+        {% if item_solar_pump %}
+        <foreignobject class="node" x="45" y="130" width="100" height="100">
+            {{ basic.symbol('',item_solar_pump, '', 'sani_pump.svg', [0,1], '', ['icon0', 'icon1']) }}
+        </foreignobject>
+        {% endif %}
+        {% if not item_solar_pump and item_solar_pump_percent %}
+        <foreignobject class="node" x="45" y="130" width="100" height="100">
+            {{ basic.symbol('', '', '', 'sani_pump.svg', 0, '', 'icon0') }}
+        </foreignobject>
+        {% endif %}
+        {% if item_solar_pump_percent %}
+        <foreignobject class="node" x="45" y="120" width="100" height="100">
+            {{ basic.print('', item_solar_pump_percent, '%,0f %', '', '', 'icon0') }}
+        </foreignobject>
+        {% endif %}
+
+        {% if item_stove_temp_c %}
         <foreignobject class="node" x="245" y="190" width="100" height="100">
-            {% if gad_stove_temp_c %}{{ basic.print('', gad_stove_temp_c, temp_format|default('%,0f °C'), '', '', 'icon0') }}{% endif %}
+            {{ basic.print('', item_stove_temp_c, temp_format|default('%,0f °C'), '', '', 'icon0') }}
         </foreignobject>
+        {% endif %}
+        {% if item_stove_temp_h %}
         <foreignobject class="node" x="245" y="130" width="100" height="100">
-            {% if gad_stove_temp_h %}{{ basic.print('', gad_stove_temp_h, temp_format|default('%,0f °C'), '', '', 'icon0') }}{% endif %}
+            {{ basic.print('', item_stove_temp_h, temp_format|default('%,0f °C'), '', '', 'icon0') }}
         </foreignobject>
+        {% endif %}
+        {% if stove_text %}
         <foreignobject class="node" x="245" y="163" width="100" height="100">
-            <span style="color:icon0">{{ stove_text|default(' ') }}</span>
+            <span style="color:icon0">{{ stove_text }}</span>
         </foreignobject>
+        {% endif %}
+        {% if item_stove_pump %}
         <foreignobject class="node" x="245" y="230" width="100" height="100">
-            {% if gad_stove_pump %}{{ basic.symbol('',gad_stove_pump, '', 'sani_pump.svg', [0,1], '', ['icon0', 'icon1']) }}{% endif %}
+            {{ basic.symbol('', item_stove_pump, '', 'sani_pump.svg', [0,1], '', ['icon0', 'icon1']) }}
+        </foreignobject>
+        {% endif %}
+        {% if not item_stove_pump and item_stove_pump_percent %}
+        <foreignobject class="node" x="245" y="230" width="100" height="100">
+            {{ basic.symbol('', '', '', 'sani_pump.svg', 0, '', 'icon0') }}
+        </foreignobject>
+        {% endif %}
+        {% if item_stove_pump_percent %}
+        <foreignobject class="node" x="245" y="268" width="100" height="100">
+            {{ basic.print('', item_stove_pump_percent, '%,0f %', '', '', 'icon0') }}
         </foreignobject>
         {% endif %}
     </svg>
