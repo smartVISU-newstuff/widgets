@@ -1,0 +1,108 @@
+/**
+* -----------------------------------------------------------------------------
+* @package     smartVISU
+* @author      Wolfram v. HÃ¼lsen, ramann
+* @copyright   2021 - 2023
+* @license     GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+
+	<ul data-role="listview" data-divider-theme="c">
+
+		<li data-role="list-divider">System</li>
+		
+		<li class="ui-li-has-thumb" data-icon="false">
+			<a href="index.php?page=config">
+				{{ lib.svgimg ('', 'message_service.svg', 'icon0', '') }}
+				<h3>Configuration</h3>
+			</a>
+		</li>
+		
+		<li class="ui-li-has-thumb" data-icon="false">
+			<a href="index.php?page=templatechecker">
+				{{ lib.svgimg ('', 'control_clear.svg', 'icon0', '') }}
+				<h3>Template checker</h3>
+			</a>
+		</li>
+
+		<li class="ui-li-has-thumb" data-icon="false">
+			<a href="index.php?page=widget_assistant">
+				{{ lib.svgimg ('', 'jquery_gear.svg', 'icon0', '') }}
+				<h3>Widget Assistant</h3>
+			</a>
+		</li>
+
+		
+		{% if config_driver == 'smarthome.py' or 'smarthomeng' in config_driver %}
+		<li class="ui-li-has-thumb" data-icon="false">
+			<a href="index.php?page=smarthomeNG">
+				{{ lib.svgimg ('', 'logo_smarthomeNG.svg', 'icon0', '') }}
+				<h3>SmartHomeNG</h3>
+			</a>
+		</li>
+		{% endif %}
+		
+		<li data-icon="false">
+			<a href="index.php?page=backup">
+				<img class="icon" src="{{ icon0 }}edit_save.svg" alt="Backup" />
+				<h3>Backup config</h3>
+			</a>
+		</li>
+
+		<li data-role="list-divider">Help</li>
+		
+		<li class="ui-li-has-thumb" data-icon="false">
+			<a href="index.php?pages=docu&amp;page=index" target="_blank">
+				{{ lib.svgimg ('', 'edit_copy.svg', 'icon0', '') }}
+				<h3>Documentation</h3>
+			</a>
+		</li>
+		
+		{% if isdir('pages/kurzanleitung') %}
+			<li class="ui-li-has-thumb" data-icon="false">
+				<a href="index.php?pages=kurzanleitung&amp;page=index" target="_blank">
+					{{ lib.svgimg ('', 'message_help.svg', 'icon0', '') }}
+					<h3>Kurzanleitung (German)</h3>
+				</a>
+			</li>
+		{% endif %}
+
+		<li class="ui-li-has-thumb" data-icon="false">
+			<a href="http://knx-user-forum.de/smartvisu/" target="_blank">
+				{{ lib.svgimg ('', 'time_manual_mode.svg', 'icon0', '') }}
+				<h3>Support on knx-user-forum</h3>
+			</a>
+		</li>
+
+		<li class="ui-li-has-thumb" data-icon="false">
+			<a href="https://github.com/Martin-Gleiss/smartvisu" target="_blank">
+				{{ lib.svgimg ('', 'logo_GitHub.svg', 'icon0', '') }}
+				<h3>Source &amp; Issues on GitHub</h3>
+			</a>
+		</li>
+
+		<li data-role="list-divider">Info</li>
+
+		<li class="ui-li-has-thumb" data-icon="false">
+			<a href="index.php?page=team">
+				{{ lib.svgimg ('', 'weather_sun.svg', 'icon0', '') }}
+				<h3>Team</h3>
+			</a>
+		</li>
+		
+		<li class="ui-li-has-thumb" data-icon="false">
+			<a href="index.php?page=credits">
+				{{ lib.svgimg ('', 'time_note.svg', 'icon0', '') }}
+				<h3>Credits</h3>
+			</a>
+		</li>
+		
+		<li class="ui-li-has-thumb" data-icon="false">
+			<a href="index.php?page=copyright">
+				{{ lib.svgimg ('', 'message_attention.svg', 'icon0', '') }}	
+				<h3>Copyright</h3>
+			</a>
+		</li>
+
+	</ul>
