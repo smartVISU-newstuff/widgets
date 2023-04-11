@@ -60,7 +60,7 @@ function zip($sourcelist, $destination, $excludelist = []): bool
 
                 $skip = false;
                 foreach ($excludelist as $exclude) {
-                    if (strpos($file, realpath($exclude)) === 0){
+                    if (strpos($file, realpath($exclude)) === 0) {
                         $skip = true;
                         break;
                     }
@@ -110,6 +110,13 @@ function rcp($src, $dst)
 // accept only post requests
 if ($_SERVER['REQUEST_METHOD'] == "POST") {
     if (isset($_POST['exportBackup'])) {
+        if (!extension_loaded("zip")) {
+            header("HTTP/1.0 650 smartVISU Backup Error");
+            header('Content-Type: application/json');
+            echo json_encode(array('title' => 'Backup', 'text' => trans('backup', 'zip_module_error') . '<br><br>sudo apt install php' . PHP_MAJOR_VERSION . '.' . PHP_MINOR_VERSION . '-zip<br>sudo systemctl restart apache2'));
+            exit;
+        }
+
         $tempdir = "../temp/backup/";
         $backupfile = $tempdir . "export.zip";
         $backuplist = ["../pages/", "../dropins/", "../config.ini"];
@@ -141,6 +148,13 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 
 
     } else if (isset($_POST['restoreBackup'])) {
+        if (!extension_loaded("zip")) {
+            header("HTTP/1.0 650 smartVISU Backup Error");
+            header('Content-Type: application/json');
+            echo json_encode(array('title' => 'Backup', 'text' => trans('backup', 'zip_module_error') . '<br><br>sudo apt install php' . PHP_MAJOR_VERSION . '.' . PHP_MINOR_VERSION . '-zip<br>sudo systemctl restart apache2'));
+            exit;
+        }
+
         if ($_FILES["restoreBackupFile"]["error"] == 0) {
             $tempdir = "../temp/backup/";
             $unzipdir = $tempdir . "import/";
@@ -225,7 +239,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         // if something went wrong on file upload return an error notify
         header("HTTP/1.0 650 smartVISU Backup Error");
         header('Content-Type: application/json');
-        echo json_encode(array('title' => 'Backup', 'text' =>  trans('backup', 'import_faulty_file')));
+        echo json_encode(array('title' => 'Backup', 'text' => trans('backup', 'import_faulty_file')));
         exit;
     }
     // if the command is not backup or restore return an error notify
