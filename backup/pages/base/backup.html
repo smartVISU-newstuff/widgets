@@ -97,7 +97,7 @@
             a.remove();
             URL.revokeObjectURL(url);
 
-            notify.message("info", "Backup", "Backup successfully created");
+            notify.message("info", "Backup", sv_lang.backup.export_successful);
         } catch (error) {
             notify.message("error", "Error", error.toString());
         }

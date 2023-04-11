@@ -1,10 +1,13 @@
 <?php
 
+require_once "includes.php";
+require_once "functions.php";
+
 // unzip allowed files form scr archive to dst
-function unzip($src, $dst, $allowedfiletypes)
+function unzip($src, $dst, $allowedfiletypes): array
 {
     $fileskiplist = [];
-    mkdir($dst, recursive: true);
+    mkdir($dst, 0777, true);
     $zip = new ZipArchive;
     if ($zip->open($src) === true) {
 
@@ -13,7 +16,7 @@ function unzip($src, $dst, $allowedfiletypes)
             $filePath = $zip->statIndex($i)["name"];
 
             if ($filePath[strlen($filePath) - 1] == "/") {
-                mkdir($dst . "/" . $filePath, recursive: true);
+                mkdir($dst . "/" . $filePath, 0777, true);
             } else {
                 $fileExt = pathinfo($fileName, PATHINFO_EXTENSION);
                 if (in_array($fileExt, $allowedfiletypes)) {
@@ -28,9 +31,9 @@ function unzip($src, $dst, $allowedfiletypes)
 }
 
 // zip scr directories or files to dest archive, exclude directories or files form exclude list
-function zip($sourcelist, $destination, $excludelist = [])
+function zip($sourcelist, $destination, $excludelist = []): bool
 {
-    mkdir(pathinfo($destination, PATHINFO_DIRNAME), recursive: true);
+    mkdir(pathinfo($destination, PATHINFO_DIRNAME), 0777, true);
 
     if (file_exists($destination)) {
         unlink($destination);
@@ -46,7 +49,8 @@ function zip($sourcelist, $destination, $excludelist = [])
 
             $files = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($source), RecursiveIteratorIterator::SELF_FIRST);
 
-            $zip->addEmptyDir(explode("/", $source)[-1]);
+            $sourcesplit = explode("/", $source);
+            $zip->addEmptyDir(end($sourcesplit));
             $source = substr($source, 0, strrpos($source, "/"));
 
             foreach ($files as $file) {
@@ -56,7 +60,7 @@ function zip($sourcelist, $destination, $excludelist = [])
 
                 $skip = false;
                 foreach ($excludelist as $exclude) {
-                    if (str_starts_with($file, realpath($exclude))) {
+                    if (strpos($file, realpath($exclude)) === 0){
                         $skip = true;
                         break;
                     }
@@ -74,7 +78,7 @@ function zip($sourcelist, $destination, $excludelist = [])
         } else if (is_file($source) === true) {
             $skip = false;
             foreach ($excludelist as $exclude) {
-                if (str_starts_with($source, realpath($exclude))) {
+                if (strpos($source, realpath($exclude)) === 0) {
                     $skip = true;
                     break;
                 }
@@ -86,28 +90,11 @@ function zip($sourcelist, $destination, $excludelist = [])
     return $zip->close();
 }
 
-// recursive rm function
-function rrm($dir)
-{
-    if (is_dir($dir)) {
-        $objects = scandir($dir);
-        foreach ($objects as $object) {
-            if ($object != "." && $object != "..") {
-                if (is_dir($dir . DIRECTORY_SEPARATOR . $object) && !is_link($dir . "/" . $object))
-                    rrm($dir . DIRECTORY_SEPARATOR . $object);
-                else
-                    unlink($dir . DIRECTORY_SEPARATOR . $object);
-            }
-        }
-        rmdir($dir);
-    }
-}
-
-// recoursive cp function
+// recursive cp function
 function rcp($src, $dst)
 {
     $dir = opendir($src);
-    mkdir($dst, recursive: true);
+    mkdir($dst, 0777, true);
     while (false !== ($file = readdir($dir))) {
         if (($file != '.') && ($file != '..')) {
             if (is_dir($src . '/' . $file)) {
@@ -132,7 +119,6 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         // create zip archive
         zip($backuplist, $backupfile, $backupexcludelist);
 
-        include_once "includes.php";
         $filename = $GLOBALS['config']['title'] . "_" . config_visu . "_v" . config_version_full . "_config_backup_" .
             date("Y-m-d_H-i-s") . ".zip";
 
@@ -151,7 +137,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         readfile($backupfile);
 
         // delete temp directory
-        rrm($tempdir);
+        delTree($tempdir);
 
 
     } else if (isset($_POST['restoreBackup'])) {
@@ -165,19 +151,19 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
             if (!in_array($_FILES['restoreBackupFile']['type'], $mimes)) {
                 header("HTTP/1.0 650 smartVISU Backup Error");
                 header('Content-Type: application/json');
-                echo json_encode(array('title' => 'Backup', 'text' => 'Wrong file type, only zip allowed.'));
+                echo json_encode(array('title' => 'Backup', 'text' => trans('backup', 'import_filetype_error')));
                 exit;
             }
             //check size of uploaded file, if larger than 10MB return an error notify
             if ($_FILES["restoreBackupFile"]["size"] > 10 * 1000000) {
                 header("HTTP/1.0 650 smartVISU Backup Error");
                 header('Content-Type: application/json');
-                echo json_encode(array('title' => 'Backup', 'text' => 'File too large. Are you sure its the correct one?'));
+                echo json_encode(array('title' => 'Backup', 'text' => trans('backup', 'import_filesize_error')));
                 exit;
             }
 
             // create temp directory
-            mkdir($tempdir, recursive: true);
+            mkdir($tempdir, 0777, true);
             if (move_uploaded_file($_FILES["restoreBackupFile"]["tmp_name"], $zipfile)) {
 
                 $allowedfiletypes = array("mp3", "wav", "mp4", "jpg", "png", "gif", "doc", "docx", "pdf", "txt", "xsl",
@@ -204,9 +190,9 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                 copy($unzipdir . "config.ini", "../config.ini");
 
                 // clear cache and remove temp directory
-                rrm("../temp/pagecache/");
-                rrm("../temp/twigcache/");
-                rrm($tempdir);
+                delTree("../temp/pagecache/");
+                delTree("../temp/twigcache/");
+                delTree($tempdir);
 
                 // run the smartVISU shell script to set permissions.
                 //This does not work properly directly from php, so it has to be a shell command.
@@ -218,34 +204,34 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                 $chownCmd = "sudo chown -R " . $user . " " . realpath("../") . "/";
                 header('Content-Type: application/json');
                 if (count($fileskiplist) == 0) {
-                    echo json_encode(array('title' => 'Backup', 'text' => 'Config successfully imported.<br>Please run this terminal command to set the correct ownership of the imported files:<br><br>' . $chownCmd));
+                    echo json_encode(array('title' => 'Backup', 'text' => " " . trans('backup', 'import_successful') . '<br>' . trans('backup', 'import_ownership_command') . '<br><br>' . $chownCmd));
                 } else {
                     $fileskipstring = "";
                     foreach ($fileskiplist as $fileskip) {
                         $fileskipstring .= $fileskip . "<br>";
                     }
-                    echo json_encode(array('title' => 'Backup', 'text' => 'Config successfully imported.<br>Please run this terminal command to set the correct ownership of the imported files:<br><br>' . $chownCmd . '<br><br><br>The following files were <b>not imported</b> due to security risks, please add them manually.<br><br>' . $fileskipstring));
+                    echo json_encode(array('title' => 'Backup', 'text' => trans('backup', 'import_successful') . '<br>' . trans('backup', 'import_ownership_command') . '<br><br>' . $chownCmd . '<br><br><br>' . trans('backup', 'import_forbidden_files') . '<br><br>' . $fileskipstring));
                 }
                 exit;
             } else {
                 // if something went wrong on file save, remove the temp directory and return an error notify
-                rrm($tempdir);
+                delTree($tempdir);
                 header("HTTP/1.0 650 smartVISU Backup Error");
                 header('Content-Type: application/json');
-                echo json_encode(array('title' => 'Backup', 'text' => 'File could not be saved on the server.'));
+                echo json_encode(array('title' => 'Backup', 'text' => trans('backup', 'import_save_error')));
                 exit;
             }
         }
         // if something went wrong on file upload return an error notify
         header("HTTP/1.0 650 smartVISU Backup Error");
         header('Content-Type: application/json');
-        echo json_encode(array('title' => 'Backup', 'text' => 'Faulty backup file, please retry.'));
+        echo json_encode(array('title' => 'Backup', 'text' =>  trans('backup', 'import_faulty_file')));
         exit;
     }
-    // if the comamnd is not backup or restore return an error notify
+    // if the command is not backup or restore return an error notify
     header("HTTP/1.0 650 smartVISU Backup Error");
     header('Content-Type: application/json');
-    echo json_encode(array('title' => 'Backup', 'text' => 'Unknown command'));
+    echo json_encode(array('title' => 'Backup', 'text' => trans('backup', 'unknown_command')));
     exit;
 }
 ?>
