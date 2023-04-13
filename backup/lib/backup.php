@@ -60,7 +60,9 @@ function zip($sourcelist, $destination, $excludelist = []): bool
 
                 $skip = false;
                 foreach ($excludelist as $exclude) {
-                    if (strpos($file, realpath($exclude)) === 0) {
+                    if (realpath($exclude) === '' or realpath($exclude) === false)
+                        continue;
+                    if (strpos($file, strval(realpath($exclude))) === 0) {
                         $skip = true;
                         break;
                     }
@@ -78,7 +80,9 @@ function zip($sourcelist, $destination, $excludelist = []): bool
         } else if (is_file($source) === true) {
             $skip = false;
             foreach ($excludelist as $exclude) {
-                if (strpos($source, realpath($exclude)) === 0) {
+                if (realpath($exclude) === '' or realpath($exclude) === false)
+                    continue;
+                if (strpos($source, strval(realpath($exclude))) === 0) {
                     $skip = true;
                     break;
                 }
@@ -121,7 +125,8 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         $backupfile = $tempdir . "export.zip";
         $backuplist = ["../pages/", "../dropins/", "../config.ini"];
         $backupexcludelist = ["../pages/base/", "../pages/_template/", "../pages/example1.smarthome/",
-            "../pages/example2.knxd/", "../pages/example3.graphic/", "../pages/docu/", "../pages/kurzanleitung/"];
+            "../pages/example2.knxd/", "../pages/example3.graphic/", "../pages/example4.quad/", "../pages/docu/",
+            "../pages/kurzanleitung/"];
 
         // create zip archive
         zip($backuplist, $backupfile, $backupexcludelist);
