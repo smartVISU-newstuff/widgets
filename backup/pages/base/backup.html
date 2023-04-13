@@ -84,20 +84,26 @@
                 body: formData,
             });
             const result = await response.blob();
-            const url = URL.createObjectURL(result);
+            if (response.ok) {
+                const url = URL.createObjectURL(result);
 
-            const headerparts = response.headers.get('content-disposition').split(';');
-            const filename = headerparts[1].split('=')[1];
+                const headerparts = response.headers.get('content-disposition').split(';');
+                const filename = headerparts[1].split('=')[1];
 
-            const a = document.createElement("a");
-            a.href = url;
-            a.download = filename;
-            a.click();
+                const a = document.createElement("a");
+                a.href = url;
+                a.download = filename;
+                a.click();
 
-            a.remove();
-            URL.revokeObjectURL(url);
+                a.remove();
+                URL.revokeObjectURL(url);
 
-            notify.message("info", "Backup", "Backup successfully created");
+                notify.message("info", "Backup", sv_lang.backup.export_successful);
+            } else {
+                const resultJson = await result.text();
+                const resultParsed = JSON.parse(resultJson);
+                notify.message("error", resultParsed.title, resultParsed.text);
+            }
         } catch (error) {
             notify.message("error", "Error", error.toString());
         }
