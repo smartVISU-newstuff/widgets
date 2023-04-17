@@ -98,17 +98,19 @@ function zip($sourcelist, $destination, $excludelist = []): bool
 function rcp($src, $dst)
 {
     $dir = opendir($src);
-    mkdir($dst, 0777, true);
-    while (false !== ($file = readdir($dir))) {
-        if (($file != '.') && ($file != '..')) {
-            if (is_dir($src . '/' . $file)) {
-                rcp($src . '/' . $file, $dst . '/' . $file);
-            } else {
-                copy($src . '/' . $file, $dst . '/' . $file);
+    if (! $dir === false){
+        mkdir($dst, 0777, true);
+        while (false !== ($file = readdir($dir))) {
+            if (($file != '.') && ($file != '..')) {
+                if (is_dir($src . '/' . $file)) {
+                    rcp($src . '/' . $file, $dst . '/' . $file);
+                } else {
+                    copy($src . '/' . $file, $dst . '/' . $file);
+                }
             }
         }
+        closedir($dir);
     }
-    closedir($dir);
 }
 
 // accept only post requests
