@@ -2,12 +2,26 @@ $.widget("sv.inverter", $.sv.widget, {
     initSelector: 'div[data-widget="inverter.inverter_overview"]',
 
     gradient_diff: 40,
+	defaults: [50, 0, 0, 0, 0],
 
     _create: function () {
         this._super();
     },
 
     _update: function (response) {
+        // make sure that items are correlated correctly even if optional items are omitted
+        var items = this.options.item.explode();
+        var values = new Array(this.items.length);
+        var j=0;
+        for (var i = 0; i < items.length; i++) {
+            if (items[i] != '') {
+                values[i] = response[j];
+                j++;
+            } else 
+				values[i] = this.defaults[i];
+        };	
+		response = values;
+		
         var gradient = this.element[0].getElementsByClassName("battery_gradient")[0];
 
         if (parseInt(response[0]) >= 45.0) {

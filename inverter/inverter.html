@@ -12,15 +12,15 @@
 * Displays a inverter and optionally pv, battery, house and grid
 *
 * @param {id=''} unique id for this widget
-* @param {item(num)=0.0} a gad/item for pv power
-* @param {item(num)=0.0} a gad/item for grid power
-* @param {item(num)=0.0} a gad/item for house power
-* @param {item(num)=0.0} a gad/item for battery power
-* @param {item(num)=50} a gad/item for battery soc
+* @param {item(num)=} a gad/item for pv power (optional, default = 0)
+* @param {item(num)=} a gad/item for grid power (optional, default = 0)
+* @param {item(num)=} a gad/item for house power (optional, default = 0)
+* @param {item(num)=} a gad/item for battery power (optional, default = 0)
+* @param {item(num)=} a gad/item for battery soc (optional, default = 50)
 * @param {text='%,0f W'} format text for the power
-* @param {item(num)=0.0} a gad/item for self-sufficiency
-* @param {text='Autarkie'} text for the self-sufficiency
-* @param {item(num)=0.0} a gad/item for own-consumption
+* @param {item(num)=} a gad/item for self-sufficiency (optional, default = 0)
+* @param {text='Autarkie'} text for the self-sufficiency 
+* @param {item(num)=} a gad/item for own-consumption (optional, default = 0)
 * @param {text='Eigenverbrauch'} text for the own-consumption
 */
 
@@ -29,7 +29,7 @@
 <div id="{{ uid(page, id) }}"
      style="width: 100%; text-align: center"
      data-widget="inverter.inverter_overview"
-     data-item="{{ gad_soc|default(50.0) }}, {{ gad_pv_power|default(0.0) }}, {{ gad_grid_power|default(0.0) }}, {{ gad_house_power|default(0.0) }}, {{ gad_battery_power|default(0.0) }}">
+     data-item="{{ gad_soc }}, {{ gad_pv_power }}, {{ gad_grid_power }}, {{ gad_house_power }}, {{ gad_battery_power }}">
 
     <svg
             width="250.0px"
