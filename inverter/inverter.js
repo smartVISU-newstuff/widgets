@@ -48,12 +48,12 @@ $.widget("sv.inverter", $.sv.widget, {
             this.element[0].getElementsByClassName("arrow_pv")[0].style.setProperty("stroke-opacity", "0.0");
         }
 
-        if (parseFloat(response[2]) > 0.0) {
+        if (parseFloat(response[2]) < 0.0) {
             this.element[0].getElementsByClassName("arrow_grid_up")[0].style.setProperty("fill-opacity", "0.0");
             this.element[0].getElementsByClassName("arrow_grid_up")[0].style.setProperty("stroke-opacity", "0.0");
             this.element[0].getElementsByClassName("arrow_grid_down")[0].style.setProperty("fill-opacity", "1.0");
             this.element[0].getElementsByClassName("arrow_grid_down")[0].style.setProperty("stroke-opacity", "1.0");
-        } else if (parseFloat(response[2]) < 0.0) {
+        } else if (parseFloat(response[2]) > 0.0) {
             this.element[0].getElementsByClassName("arrow_grid_up")[0].style.setProperty("fill-opacity", "1.0");
             this.element[0].getElementsByClassName("arrow_grid_up")[0].style.setProperty("stroke-opacity", "1.0");
             this.element[0].getElementsByClassName("arrow_grid_down")[0].style.setProperty("fill-opacity", "0.0");
