@@ -1,6 +1,6 @@
 # Hacks unsing the scripting option of basic.print
 The 'script' option of basic.print gives us a method to directly address elements on the page and change their properties using JavaScript and jQuery mobile. You just need to give the
-target elements a unique ID, e.g. 'myID' which is automatically concatenated with the pagename by smartVISU in almost all widgets: '#myPage-myID'. 
+target elements a unique ID, e.g. 'myID' which is automatically concatenated with the page name by smartVISU in almost all widgets: '#myPage-myID'. 
 
 ## Enable / disable flipswitch
 Thread in the forum: https://knx-user-forum.de/forum/supportforen/smartvisu/1928558-basic-flip-taster-sperren
@@ -26,4 +26,28 @@ Solution:
 ```
 {{basic.symbol('myID', 'myItem', '','light_control', '80', '>', ['icon1', 'icon2'])}}
 {{basic.print('', 'myItem', 'script','$("#myPage-myID").data("sv-basic_symbol").options.mode = VAR1>=80?">VAR1+5":(VAR1<75 ? ">": $("#myPage-myID").data("sv-basic_symbol").options.mode);')}}
+```
+
+
+## Change an image on the page
+Thread in the forum: https://knx-user-forum.de/forum/supportforen/smartvisu/1748643-kwl-widget?p=1751275#post1751275
+
+Task: change e.g. a background image according to an item value (like basic.symbol does that for symbols). 
+ 
+Solution:
+```
+<img id="myID" src="" alt="Test Image">
+{{basic.print('', 'myItem', 'script', '$("#myID").attr("src", (VAR==1 ? "icons/ws/light_light.svg" : "icons/ws/light_downlight.svg"))')}}
+```
+Note: 'myID' in a html tag must be unique across all pages since concatenation with the page name is only automatic for widget IDs.
+
+Result:  
+![basic_print](https://github.com/smartVISU-newstuff/widgets/assets/60430485/1405c628-1848-4a57-b6c3-348b79059956)
+
+Alternative: define the script in a twig variable:
+```
+{% set mydir = "icons/ws/" %}
+{% set myscript = '$("#mytest").attr("src", (VAR==1 ? "'~mydir~'light_light.svg" : "'~mydir~'light_downlight.svg"))' %}
+<img id="myID" src="" alt="Test Image">
+{{basic.print('', 'myItem', 'script', myscript )}}
 ```
