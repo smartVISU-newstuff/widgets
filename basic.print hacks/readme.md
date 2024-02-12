@@ -29,7 +29,7 @@ Solution:
 ```
 
 
-## Change an image on the page
+## Change an image on the page depending on an items value
 Thread in the forum: https://knx-user-forum.de/forum/supportforen/smartvisu/1748643-kwl-widget?p=1751275#post1751275
 
 Task: change e.g. a background image according to an item value (like basic.symbol does that for symbols). 
@@ -50,4 +50,9 @@ Alternative: define the script in a twig variable:
 {% set myscript = '$("#mytest").attr("src", (VAR==1 ? "'~mydir~'light_light.svg" : "'~mydir~'light_downlight.svg"))' %}
 <img id="myID" src="" alt="Test Image">
 {{basic.print('', 'myItem', 'script', myscript )}}
+```
+If the item is providing an image URL:
+```
+<img id="myID" src="" />
+{{basic.print('','myItem','script','$("#myID").attr("src", VAR)') }}
 ```
