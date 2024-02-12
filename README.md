@@ -10,6 +10,8 @@ Rules:
 
 Here is a link list of other repositories containing interesting stuff:
 
+https://github.com/Tom-Bom-badil from Oct. 2020 (SV 3.4) Helios, Samson, alternative visu
+
 https://github.com/herrmannj/smartvisu-widgets from April 2015 (SV 2.7, maybe SV 2.8)
 
 https://github.com/ddtlabs/smartvisu-widgets from Nov. 2017 (SV 2.8)
