@@ -1,4 +1,4 @@
-# Hacks unsing the scripting option of basic.print
+# Hacks using the scripting option of basic.print
 The 'script' option of basic.print gives us a method to directly address elements on the page and change their properties using JavaScript and jQuery mobile. You just need to give the
 target elements a unique ID, e.g. 'myID' which is automatically concatenated with the page name by smartVISU in almost all widgets: '#myPage-myID'. 
 
@@ -39,6 +39,8 @@ Solution:
 <img id="myID" src="" alt="Test Image">
 {{basic.print('', 'myItem', 'script', '$("#myID").attr("src", (VAR==1 ? "icons/ws/light_light.svg" : "icons/ws/light_downlight.svg"))')}}
 ```
+
+
 Note: 'myID' in a html tag must be unique across all pages since concatenation with the page name is only automatic for widget IDs.
 
 Result:  
@@ -56,3 +58,19 @@ If the item is providing an image URL:
 <img id="myID" src="" />
 {{basic.print('','myItem','script','$("#myID").attr("src", VAR)') }}
 ```
+
+
+## Change the color of an icon by an item containing the RGB(A) color value
+(until samrtVISU v3.4. Option is integrated in basic.icon as from v3.4.a)
+
+Thread in the forum: https://knx-user-forum.de/forum/supportforen/smartvisu/1930478-hilfe-symbolfarbe-durch-farbcode-in-item-steuern
+
+Task: see title.
+
+Solution:
+```
+<span id="myId"> {{basic.icon('myIcon','#fff','','icon')}} <span>
+{{basic.print('','myItem', 'script','$("#myId .icon").css("stroke",VAR1).css("fill", VAR1).css("color",VAR1)')}}
+```
+
+Note: basic.icon does not have a widget ID. you need to wrap it in a span with ID and add the class name '.icon' preceded by a blank (!) in the scripts selector to make the selector point to the right element.
