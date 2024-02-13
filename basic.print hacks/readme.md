@@ -74,3 +74,26 @@ Solution:
 ```
 
 Note: basic.icon does not have a widget ID. you need to wrap it in a span with ID and add the class name '.icon' preceded by a blank (!) in the scripts selector to make the selector point to the right element.
+
+
+## Execute JavaScript Code from custom .js files
+
+Task: call a function in e.g. visu.js with parameters from the page and an item.
+Example: let a symbol grow with the item value if a threshold is superceded.      
+
+Solution:
+```
+{{basic.symbol('m1','myItem', '','light_control', '80', '>', ['icon1', 'icon2'])}}
+{{basic.print('', 'myItem','script','myScript("#myPage-m1",VAR1);')}}
+```
+./pages/myPages/visu.js:
+```
+function myScript(id, VAR){
+	if (VAR >= 80)
+		$(id + ' .icon').css('transform', 'scale(' + VAR/80 +')');
+	else
+		$(id + ' .icon').css('transform', 'scale(1)');
+}	
+```
+Result:
+![functionCall](https://github.com/smartVISU-newstuff/widgets/assets/17801971/9eeb9acd-da59-440b-8a33-01a52206122c)
