@@ -79,6 +79,7 @@ Note: basic.icon does not have a widget ID. you need to wrap it in a span with I
 ## Execute JavaScript Code from custom .js files
 
 Task: call a function in e.g. visu.js with parameters from the page and an item.
+
 Example: let a symbol grow with the item value if a threshold is superceded.      
 
 Solution:
