@@ -61,7 +61,7 @@ If the item is providing an image URL:
 
 
 ## Change the color of an icon by an item containing the RGB(A) color value
-(until samrtVISU v3.4. Option is integrated in basic.icon as from v3.4.a)
+(Usage recommended until smartVISU v3.4. Option is integrated in basic.icon as from v3.4.a)
 
 Thread in the forum: https://knx-user-forum.de/forum/supportforen/smartvisu/1930478-hilfe-symbolfarbe-durch-farbcode-in-item-steuern
 
@@ -79,6 +79,7 @@ Note: basic.icon does not have a widget ID. you need to wrap it in a span with I
 ## Execute JavaScript Code from custom .js files
 
 Task: call a function in e.g. visu.js with parameters from the page and an item.
+
 Example: let a symbol grow with the item value if a threshold is superceded.      
 
 Solution:
