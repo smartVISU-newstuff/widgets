@@ -27,7 +27,7 @@
 	</div>
 	<br />
 	<div class="ui-field-contain">
-		<label for="apItem">Item</label>
+		<label for="apItem">Item(s)</label>
 		<input name="apItem" id="apItem"/>
 	</div>
 	<div class="ui-field-contain">
@@ -44,10 +44,19 @@
 		<input name="apTmax" id="apTmax"/>
 	</div>
 	<div class="ui-field-contain">
-		<label for="apCount">Count</label>
+		<label for="apCount">Count(s)</label>
 		<input name="apCount" id="apCount"/>
 	</div>
-	<br><br>
+	<div class="ui-field-contain">
+		<label for="apExposure">Series type(s)</label>
+		<input name="apExposure" id="apExposure"/>
+	</div>
+	<div class="ui-field-contain">
+		<label for="apColor">Color(s)</label>
+		<input name="apColor" id="apColor"/>
+	</div>
+
+	<br>
 	<button id="apSubmit">Start Plot</button>
 	
 {% endblock %}
@@ -160,11 +169,21 @@
 				var apTmax = $('#apTmax' + source).val().toString() || 'now';
 				var apCounts = $('#apCount' + source).val().toString().split(/,\s*/);
 				var apCount = "";
+				var apExposures = $('#apExposure' + source).val().toString().split(/,\s*/);
+				var apExposure = "";
+				var apColors = $('#apColor' + source).val().toString().split(/,\s*/);
+				var apColor = "";
+
 				$.each(apItems, function(idx, apItem){
+					var delimiter = idx > 0 ? ',': '';
 					if (apSeries != "")
 						apSeries += ',';
 					if (apCounts[idx] == undefined)
 						apCounts.push(apCounts[idx-1] || 100);
+					if (apExposures[idx] == undefined)
+						apExposures.push(apExposures[idx-1]);
+					if (!apColors[0] == undefined && apColors[idx] == undefined)
+						apExposures.push(apColors[idx-1] || 'line');
 					if (apMode.indexOf("minmax") == 0){
 						apSeries += [apItem, "min", apTmin, apTmax, apCounts[idx]].join('.') +',';
 						apSeries += [apItem, "max", apTmin, apTmax, apCounts[idx]].join('.');
@@ -172,7 +191,9 @@
 							apSeries += ',' + [apItem, "avg", apTmin, apTmax, apCounts[idx]].join('.');
 					} else
 							apSeries += [apItem, apMode, apTmin, apTmax, apCounts[idx]].join('.');
-					apCount += ',' + apCounts[idx];
+					apCount += delimiter + apCounts[idx];
+					apExposure += delimiter + apExposures[idx];
+					apColor += delimiter + apColors[idx];
 					if (idx >0){
 						apMode += ',' + apMode;
 					}
@@ -188,6 +209,10 @@
 				that.options.tmax = apTmax;
 				plot.attr('data-count', apCount);
 				that.options.count = apCount;
+				plot.attr('data-exposure', apExposure);
+				that.options.exposure = apExposure;
+				plot.attr('data-color', apColor);
+				that.options.color = apColor;
 				
 				that._create()
 								
