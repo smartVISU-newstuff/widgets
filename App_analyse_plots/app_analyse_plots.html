@@ -55,7 +55,9 @@
 
 {% block content %}
 	
-	/** menu for display in primary block on smartphones
+	/** 
+	***********************************************************
+	menu for display in primary block on smartphones
     (doesn't really make sense for plot analysis)
 	<div class="visible-phone">
 		<div class="ui-field-contain">
@@ -75,17 +77,24 @@
 	<h3>Plot Analysis</h3>
 	Stand:&nbsp;<span id="tkStand"></span>
 	<br /><br />
-	/*
+	***********************************************************
+	*/
+	
+	
 	<style type="text/css">
 
-		.apdisplay  {
+		.apdisplay .highcharts-root:not(.supersized) {
+			max-height: 800px;
 		}
+		.apdisplay .plot.plot-highstock {
+			height: 500px;
+		}
+		
 	</style>
 	
-   {% import "@widgets/plot.html" as plot %}
    {% set mode = "raw" %} /** just init to activate boost mode */
    {% set zoom = "advanced" %}
-   {% set export = 2 %} /** activate export meni */
+   {% set export = 2 %} /** activate export menu */
 
 	<div id="analyse-plots" data-widget="app.analyse_plots" class="apdisplay">
 	
