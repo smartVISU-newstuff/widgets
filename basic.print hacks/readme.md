@@ -59,6 +59,14 @@ If the item is providing an image URL:
 {{basic.print('','myItem','script','$("#myID").attr("src", VAR)') }}
 ```
 
+To change an image source in a widget you need to provide a widget ID for the widget (e.g. "myID") and then find the right selector to address the img attribute "src". Use the developer tools of the browser to find the selector. 
+For basic.stateswitch the active element is always a sibling of the span containing the widget ID. The sibling is an anchor tag with an img tag below.
+```
+{{ basic.print('', 'myItem','script','$("#myPage-myID").siblings("a").find("img.icon").attr("src", "something "+VAR1+"somethimgelse");')​ }}
+                                       \____________________________________________/              \_____________________________/
+                                                         selector                                  new attr depending on item value           
+```
+
 
 ## Change the color of an icon by an item containing the RGB(A) color value
 (Usage recommended until smartVISU v3.4. Option is integrated in basic.icon as from v3.4.a)
