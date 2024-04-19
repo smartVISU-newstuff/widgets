@@ -62,8 +62,8 @@ If the item is providing an image URL:
 To change an image source in a widget you need to provide a widget ID for the widget (e.g. "myID") and then find the right selector to address the img attribute "src". Use the developer tools of the browser to find the selector. 
 For basic.stateswitch the active element is always a sibling of the span containing the widget ID. The sibling is an anchor tag with an img tag below.
 ```
-{{ basic.print('', 'myItem','script','$("#myPage-myID").siblings("a").find("img.icon").attr("src", "something "+VAR1+"somethimgelse");')​ }}
-                                       \____________________________________________/              \_____________________________/
+{{ basic.print('', 'myItem','script','$("#myPage-myID").next("a").find("img.icon").attr("src", "something "+VAR1+"somethimgelse");')​ }}
+                                       \________________________________________/              \_____________________________/
                                                          selector                                  new attr depending on item value           
 ```
 
