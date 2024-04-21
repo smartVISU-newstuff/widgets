@@ -41,7 +41,7 @@ Solution:
 ```
 
 
-Note: 'myID' in a html tag must be unique across all pages since concatenation with the page name is only automatic for widget IDs.
+Notes: 'myID' in a html tag must be unique across all pages since concatenation with the page name is only automatic for widget IDs.
 
 Result:  
 ![basic_print](https://github.com/smartVISU-newstuff/widgets/assets/60430485/1405c628-1848-4a57-b6c3-348b79059956)
@@ -59,14 +59,27 @@ If the item is providing an image URL:
 {{basic.print('','myItem','script','$("#myID").attr("src", VAR)') }}
 ```
 
-To change an image source in a widget you need to provide a widget ID for the widget (e.g. "myID") and then find the right selector to address the img attribute "src". Use the developer tools of the browser to find the selector. 
+To change an image source in a widget you need to check the file extenstions of the images first. Since SVG images get embedded as of smartVISU v3.3 there will be no img tag unless you specify the icon in the widget with full path and extension and the "noembed" option, e.g. "icons/ws/light_ball.svg/ne".  This method is recommended if you want to swap images with different formats or if you have foreign SVGs bringing their own style definitions. The downside of this method is that styling by the visu is limited for unembedded icons (see an alternative method for SVGs below). 
+
+Provide a widget ID for the widget (e.g. "myID") and then find the right selector to address the img attribute "src". Use the developer tools of the browser to find the selector.  
 For basic.stateswitch the active element is always a sibling of the span containing the widget ID. The sibling is an anchor tag with an img tag below.
 ```
 {{ basic.print('', 'myItem','script','$("#myPage-myID").next("a").find("img.icon").attr("src", "something "+VAR1+"somethimgelse");')​ }}
-                                       \________________________________________/              \_____________________________/
-                                                         selector                                  new attr depending on item value           
+                                       \________________________________________/              \______________________________/
+                                                         selector                                new attr depending on item value           
+```
+For many other widgets like e.g. basic.trigger, the selector is
+```
+$("#myPage-myID").find("img.icon")
 ```
 
+As alternative method for embedded SVGs preserving the styleability of icons you can use the fx.load() function to replace an icon. Assume that myItem contains the icon name without path and extension and we want to modify a stateswitch: 
+```
+basic.print('', 'myItem','script','fx.load("icons/ws/"+VAR1+".svg","icon0","",$("#myPage-myID").next("a").find("svg.icon"), "replaceWith");')
+                                            \___________________/             \__________________________________________/   \_________/
+                                                   new icon                                      selector                      method
+
+```
 
 ## Change the color of an icon by an item containing the RGB(A) color value
 (Usage recommended until smartVISU v3.4. Option is integrated in basic.icon as from v3.4.a)
