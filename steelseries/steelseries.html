@@ -1,0 +1,18 @@
+/**
+  * Displays a steelseries radial for energy balance
+  *
+  * @param unique id for this widget
+  * @param the gad for the surplus
+  * @param the gad for the regard
+  * @param min value
+  * @param max value
+  * @param widgetSize size of the widget in pixels. if left empty, 200 is set.
+  * @param pointerColor according to steelseries.ColorDef, e.g. RED or GREEN
+  * @param title
+  * @param unit
+  */
+{% macro radial_energy(id, gad_surplus, gad_regard, minValue, maxValue, widgetSize, pointerColor, title, unit) %}
+  {% if not widgetSize %}{% set widgetSize = 200 %}{% endif %}
+  <canvas id="{{ uid(page, id) }}" data-widget="steelseries.radial_energy" data-item="{{ gad_surplus }}, {{ gad_regard}}" width="{{ widgetSize }}" height="{{ widgetSize }}" data-widgetsize="{{ widgetSize }}" data-title="{{ title }}" data-unit="{{ unit }}" data-min-value="{{ minValue }}" data-max-value="{{ maxValue }}" {% if pointerColor %}data-pointercolor="{{ pointerColor }}"{% endif %}>
+  </canvas>
+{% endmacro %}
