@@ -1,18 +1,95 @@
 /**
+* -----------------------------------------------------------------------------
+* @package		 smartVISU
+* @author		 René Jahnke, Wolfram v. Hülsen
+* @copyright	 2012 - 2024
+* @license		 GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+/**
+  * Displays a steelseries linear
+  *
+  * @param {id=} unique id for this widget
+  * @param {item(num)} the item to be displayed
+  * @param {text(linear,bargraph,thermo)=linear} type of the display (optional, default = linear)
+  * @param {text(horizontal,vertical)=vertical} orientation of the display (optional, default = vertical)
+  * @param {value=140} horizontal width of the widget in pixels. (optional, default = 140 px in vertical mode / 320 px in horizontal mode) 
+  * @param {value=0} min value
+  * @param {value=100} max value
+  * @param {value=} threshold value (optional, no default)
+  * @param {text=RED} value Color according to steelseries.ColorDef, e.g. RED or GREEN (optional, default = RED)
+  * @param {text=} title
+  * @param {text=} unit
+  * @param {text(BLACK_METAL,METAL,SHINY_METAL,BRASS,STEEL,CHROME,GOLD,ANTHRACITE,TILTED_GRAY,TILTED_BLACK,GLOSSY_METAL)=BLACK_METAL} frame design (optional, default = BLACK_METAL)
+  * @param {text(DARK_GRAY,SATIN_GRAY,LIGHT_GRAY,WHITE,BLACK,BEIGE,BROWN,RED,GREEN,BLUE,ANTHRACITE,MUD,PUNCHED_SHEET,CARBON,STAINLESS,BRUSHED_METAL,BRUSHED_STAINLESS,TURNED)=TURNED} background design (optional, default = TURNED)
+  * @param {text=} JavaScript object for more options, e.g. {lcdVisible: true}
+  */
+{% macro linear(id, item, deviceType, orientation, widgetSize, minValue, maxValue, threshold, valueColor, title, unit, frame, background, options) %}
+	{% if orientation|default('vertical') == 'horizontal' %}
+		{% set widgetWidth = widgetSize|default(320) * 1 %}
+		{% set widgetHeight = (widgetWidth * 140 / 320 ) %}
+	{% else %}
+		{% set widgetWidth = widgetSize|default(140) * 1 %}
+		{% set widgetHeight = (widgetWidth * 320 / 140 )%}	
+	{% endif %}
+
+  <canvas id="{{ uid(page, id) }}" data-widget="steelseries.linear" data-item="{{ item }}" data-devicetype ="{{ deviceType }}"
+	width="{{ widgetWidth }}" height="{{ widgetHeight }}" data-title="{{ title }}" data-unit="{{ unit }}" 
+	data-min-value="{{ minValue|default(0) }}" data-max-value="{{ maxValue|default(100) }}" data-threshold="{{ threshold }}" data-valuecolor="{{ valueColor|default('RED') }}"
+	data-framestyle="{{ frame|default('BLACK_METAL') }}" data-background="{{ background|default('TURNED') }}" data-deviceoptions="{{ options|json_encode()|escape('html_attr') }}">
+  </canvas>
+{% endmacro %}
+
+
+/**
+  * Displays a steelseries radial
+  *
+  * @param {id=} unique id for this widget
+  * @param {item(num)} the item to be displayed
+  * @param {text(linear,bargraph,vertical)=radial} type of the display (optional, default = linear)
+  * @param {text(Type1,Type2,Type3,Type4,north,west,east)=Type4} dispay types (optional, default = Type4 for radial and bargraph, default = west for vertical)
+  * @param {value=200} width of the widget in pixels. (optional, default = 200 px) 
+  * @param {value=0} min value
+  * @param {value=100} max value
+  * @param {value=} threshold value (optional, no default)
+  * @param {text=RED} pointer color / bargraph value color according to steelseries.ColorDef, e.g. RED or GREEN (optional, default = RED)
+  * @param {text=} title
+  * @param {text=} unit
+  * @param {text(BLACK_METAL,METAL,SHINY_METAL,BRASS,STEEL,CHROME,GOLD,ANTHRACITE,TILTED_GRAY,TILTED_BLACK,GLOSSY_METAL)=BLACK_METAL} frame design (optional, default = BLACK_METAL)
+  * @param {text(DARK_GRAY,SATIN_GRAY,LIGHT_GRAY,WHITE,BLACK,BEIGE,BROWN,RED,GREEN,BLUE,ANTHRACITE,MUD,PUNCHED_SHEET,CARBON,STAINLESS,BRUSHED_METAL,BRUSHED_STAINLESS,TURNED)=TURNED} background design (optional, default = TURNED)
+  * @param {text=} JavaScript object for more options, e.g. {lcdVisible: true}
+  */
+{% macro radial(id, item, deviceType, gaugeType, widgetSize, minValue, maxValue, threshold, valueColor, title, unit, frame, background, options) %}
+  {% set widgetSize = widgetSize|default(200) %}
+  {% set deviceType = deviceType|default('radial') %}
+  {% set gaugeType = deviceType|lower in ['radial', 'bargraph'] ? gaugeType|default('TYPE4') : gaugeType|default('WEST') %}
+
+  <canvas id="{{ uid(page, id) }}" data-widget="steelseries.radial" data-item="{{ item }}" data-devicetype ="{{ deviceType }}"
+	width="{{ widgetSize }}" height="{{ widgetSize }}" data-title="{{ title }}" data-unit="{{ unit }}" data-gaugetype="{{ gaugeType }}"
+	data-min-value="{{ minValue|default(0) }}" data-max-value="{{ maxValue|default(100) }}" data-threshold="{{ threshold }}" data-valuecolor="{{ valueColor|default('RED') }}"
+	data-framestyle="{{ frame|default('BLACK_METAL') }}" data-background="{{ background|default('TURNED') }}" data-deviceoptions="{{ options|json_encode()|escape('html_attr') }}">
+  </canvas>
+{% endmacro %}
+
+
+/**
   * Displays a steelseries radial for energy balance
   *
-  * @param unique id for this widget
-  * @param the gad for the surplus
-  * @param the gad for the regard
-  * @param min value
-  * @param max value
-  * @param widgetSize size of the widget in pixels. if left empty, 200 is set.
-  * @param pointerColor according to steelseries.ColorDef, e.g. RED or GREEN
-  * @param title
-  * @param unit
+  * @param {id=} unique id for this widget
+  * @param {item(num)} the item for the surplus (will be displayed if value geater then 0)
+  * @param {item(num)=} the item for the regard (will be displayed if surplus value below or equal 0)
+  * @param {value=} min value
+  * @param {value=} max value
+  * @param {value=200} widgetSize size of the widget in pixels. if left empty, 200 is set.
+  * @param {text=} pointerColor according to steelseries.ColorDef, e.g. RED or GREEN
+  * @param {text=} title
+  * @param {text=} unit
   */
 {% macro radial_energy(id, gad_surplus, gad_regard, minValue, maxValue, widgetSize, pointerColor, title, unit) %}
-  {% if not widgetSize %}{% set widgetSize = 200 %}{% endif %}
-  <canvas id="{{ uid(page, id) }}" data-widget="steelseries.radial_energy" data-item="{{ gad_surplus }}, {{ gad_regard}}" width="{{ widgetSize }}" height="{{ widgetSize }}" data-widgetsize="{{ widgetSize }}" data-title="{{ title }}" data-unit="{{ unit }}" data-min-value="{{ minValue }}" data-max-value="{{ maxValue }}" {% if pointerColor %}data-pointercolor="{{ pointerColor }}"{% endif %}>
+  {% set widgetSize = widgetSize|default(200) %}
+  <canvas id="{{ uid(page, id) }}" data-widget="steelseries.radial_energy" data-item="{{ gad_surplus }}, {{ gad_regard}}" 
+	width="{{ widgetSize }}" height="{{ widgetSize }}" data-widgetsize="{{ widgetSize }}" data-title="{{ title }}" data-unit="{{ unit }}" 
+	data-min-value="{{ minValue }}" data-max-value="{{ maxValue }}" {% if pointerColor %}data-pointercolor="{{ pointerColor }}"{% endif %}>
   </canvas>
 {% endmacro %}

@@ -1,0 +1,97 @@
+/**
+* -----------------------------------------------------------------------------
+* @package		 smartVISU
+* @author		 Wolfram v. Hülsen
+* @copyright	 2012 - 2024
+* @license		 GPL [http://www.gnu.de]
+* -----------------------------------------------------------------------------
+*/
+
+
+{% extends "custom/widget_custom.html" %}
+
+{% block example %}
+	This is the main documentation page for all smartVISU steelseries widgets. These widgets use the steelseries canvas published on https://github.com/HanSolo/SteelSeries-Canvas ('the source'). 
+	Since the source does not come with any docuemtation we explain some parameters here. There are example pages coming with the source which allow testing of different settings.
+	To view them, just download the ZIP archive from github, unpack it into a folder on your computer and double-click one of the example-htmls there. <br><br>
+	Use the widget assistant in smartVISU to get more help for the parameter configuration. It will show you the available values for each parameter.
+	
+	
+	<h5>Example</h5>
+	<div class="twig">
+		<code class="prettyprint">{% filter trim|escape|nl2br %}{% verbatim %}
+					{{ steelseries.linear('linear1', 'bath.light.value', 'linear', 'vertical', '', 0, 255, '100', 'green','','','','brushed_Metal') }}
+					{{ steelseries.linear('linear2', 'bath.light.value', 'thermo', 'vertical', '', 0, 255, '100', 'red','','','','turned') }}
+					{{ steelseries.linear('linear3', 'bath.light.value', 'bargraph', 'vertical', '', 0, 255, '100', 'yellow','','','','dark_gray') }}
+
+					{{steelseries.radial('radial1', 'bath.light.value', 'radial', 'type2', '', 0, 255, '100', 'green','','','','brushed_Metal') }}
+					{{steelseries.radial('radial2', 'bath.light.value', 'bargraph', 'type4', '', 0, 255, '100', 'yellow','','','','turned') }}
+					{{steelseries.radial('radial3', 'bath.light.value', 'vertical', 'east', '', 0, 255, '100', 'red','','','','anthracite') }}
+					{% endverbatim %}{% endfilter %}</code>
+	</div>
+	<div class="html">
+		Use the slider to control the displayed value
+		{{ basic.slider('s1', 'bath.light.value', 0, 255, 1) }}
+
+		<br />
+
+		<div class="block">
+			<div class="set-1" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+				<div data-role="collapsible" data-collapsed="false">
+					<h3>Linear Types</h3>
+					{{steelseries.linear('linear01', 'bath.light.value', 'linear', 'vertical', '', 0, 255, '100', 'green','','','','brushed_Metal') }}
+					{{steelseries.linear('linear02', 'bath.light.value', 'thermo', 'vertical', '', 0, 255, '100', 'red','','','','turned') }}
+					{{steelseries.linear('linear03', 'bath.light.value', 'bargraph', 'vertical', '', 0, 255, '100', 'yellow','','','','dark_gray') }}
+			
+				</div>
+			</div>
+		</div>
+
+		<div class="block">
+			<div class="set-1" data-role="collapsible-set" data-theme="c" data-content-theme="a" data-mini="true">
+				<div data-role="collapsible" data-collapsed="false">
+					<h3>Radial Types</h3>
+					{{steelseries.radial('radial01', 'bath.light.value', 'radial', 'type2', '', 0, 255, '100', 'green','','','','brushed_Metal') }}
+					{{steelseries.radial('radial02', 'bath.light.value', 'bargraph', 'type4', '', 0, 255, '100', 'yellow','','','','turned') }}<br>
+					{{steelseries.radial('radial03', 'bath.light.value', 'vertical', 'east', '', 0, 255, '100', 'red','','','','anthracite') }}
+
+				</div>
+			</div>
+		</div>
+		
+		There are further properties not part of the parameter list that can be controlled via the "options" object.<br>
+		a) Boolean options: useValueGradient, useSectionColors, lcdVisible and ledVisible. These are entered in JavaScript object notation.<br> 
+		Example: {lcdVisible: true}<br><br>
+		b) Some other options need to be constructed as objects in JavaScript. Here, the value of the property must be written in quotes. This will be converted into an object 
+		using the eval function in javascript. (Be aware that eval is a potential security risk if your system is connectable via internet.)<br>
+		These options are:<br>
+		<ul>
+		  <li> <b>LCD Color</b><br>
+			Valid values: BEIGE, BLUE, ORANGE, RED, YELLOW, WHITE, GRAY, BLACK, GREEN, BLUE2, BLUE_BLACK, BLUE_DARKBLUE, BLUE_GRAY, STANDARD, STANDARD_GREEN, BLUE_BLUE, RED_DARKRED, DARKBLUE, LILA, BLACKRED, DARKGREEN, AMBER, LIGHTBLUE<br>
+			Example: {lcdColor: "steelseries.LcdColor.RED"}
+		  </li>
+		  <li><b>LED color</b><br>
+		    Valid values: RED_LED, GREEN_LED, BLUE_LED, ORANGE_LED, YELLOW_LED, CYAN_LED, MAGENTA_LED<br>
+		    Example: {ledColor: "steelseries.LedColor.RED_LED"}
+		  </li>
+		  <li><b>Pointer type in radial displays</b><br>
+			Valid values: "TYPE1" through "TYPE16"<br>
+			Example: {pointerType: "steelseries.PointerType.TYPE4" }
+		  </li>
+		  <li><b>Areas</b><br>
+		    You can define one or more colored areas on radial displays. Colors are linked to the display values.<br>
+		    Example for two areas from 0 to 50 and 50 to 100 : {area: "[steelseries.Section(0, 50, 'rgba(0, 220, 0, 0.3)'), steelseries.Section(50, 100, 'rgba(220, 0, 0, 0.3)')]"}
+		  </li>
+		  <li><b>Sections</b><br>
+		    Bargraph displays can change their colors according to defined sections of the dispay values.<br>
+			Example for three colors for values 0-25, 25-50 and 50-75: {useSectionColors: true, section: "[steelseries.Section(0, 25, 'rgba(0, 0, 220, 0.3)'), steelseries.Section(25, 50, 'rgba(0, 220, 0, 0.3)'), steelseries.Section(50, 75, 'rgba(220, 220, 0, 0.3)')]"}
+		  </li>
+		  <li><b>Color Gradients</b><br>
+		    Bargraph displays can also change their colors in gradients.<br>
+		    Example with 5 gradients: {useValueGradient: true, valueGradient: "new steelseries.gradientWrapper(0, 100, [ 0, 0.33, 0.66, 0.85, 1],[ new steelseries.rgbaColor(0, 0, 200, 1),new steelseries.rgbaColor(0, 200, 0, 1),new steelseries.rgbaColor(200, 200, 0, 1),new steelseries.rgbaColor(200, 0, 0, 1), new steelseries.rgbaColor(200, 0, 0, 1) ])" }
+		  </li>
+		</ul>
+
+	</div>
+
+{% endblock %}
