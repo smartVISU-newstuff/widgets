@@ -36,7 +36,7 @@ $.widget("sv.steelseries_radial_energy", $.sv.widget, {
           if(this.options.pointercolor)
             params.pointerColor = steelseries.ColorDef[this.options.pointercolor];
 
-          this._steelseries = new steelseries.Radial(this.element[0].id, params);
+          this._steelseries = new steelseries.Radial(this.element[0], params);
 
         },
 
@@ -105,9 +105,9 @@ $.widget("sv.steelseries_linear", $.sv.widget, {
 		  
           if(deviceType == 'bargraph')
 
-			  this._steelseries = new steelseries.LinearBargraph(this.element[0].id, params);
+			  this._steelseries = new steelseries.LinearBargraph(this.element[0], params);
 		  else
-			  this._steelseries = new steelseries.Linear(this.element[0].id, params);
+			  this._steelseries = new steelseries.Linear(this.element[0], params);
 			  
 
         },
@@ -171,11 +171,11 @@ $.widget("sv.steelseries_radial", $.sv.widget, {
 		  }
 
           if(deviceType == 'bargraph')
-			  this._steelseries = new steelseries.RadialBargraph(this.element[0].id, params);
+			  this._steelseries = new steelseries.RadialBargraph(this.element[0], params);
 		  else if (deviceType == 'vertical')
-			  this._steelseries = new steelseries.RadialVertical(this.element[0].id, params);
+			  this._steelseries = new steelseries.RadialVertical(this.element[0], params);
 		  else
-			  this._steelseries = new steelseries.Radial(this.element[0].id, params);
+			  this._steelseries = new steelseries.Radial(this.element[0], params);
 			  
 
         },

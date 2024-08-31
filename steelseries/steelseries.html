@@ -34,7 +34,7 @@
 		{% set widgetHeight = (widgetWidth * 320 / 140 )%}	
 	{% endif %}
 
-  <canvas id="{{ uid(page, id) }}" data-widget="steelseries.linear" data-item="{{ item }}" data-devicetype ="{{ deviceType }}"
+  <canvas {% if id is not empty %}id="{{ uid(page, id) }}"{% endif %} data-widget="steelseries.linear" data-item="{{ item }}" data-devicetype ="{{ deviceType }}"
 	width="{{ widgetWidth }}" height="{{ widgetHeight }}" data-title="{{ title }}" data-unit="{{ unit }}" 
 	data-min-value="{{ minValue|default(0) }}" data-max-value="{{ maxValue|default(100) }}" data-threshold="{{ threshold }}" data-valuecolor="{{ valueColor|default('RED') }}"
 	data-framestyle="{{ frame|default('BLACK_METAL') }}" data-background="{{ background|default('TURNED') }}" data-deviceoptions="{{ options|json_encode()|escape('html_attr') }}">
@@ -65,7 +65,7 @@
   {% set deviceType = deviceType|default('radial') %}
   {% set gaugeType = deviceType|lower in ['radial', 'bargraph'] ? gaugeType|default('TYPE4') : gaugeType|default('WEST') %}
 
-  <canvas id="{{ uid(page, id) }}" data-widget="steelseries.radial" data-item="{{ item }}" data-devicetype ="{{ deviceType }}"
+  <canvas {% if id is not empty %}id="{{ uid(page, id) }}"{% endif %} data-widget="steelseries.radial" data-item="{{ item }}" data-devicetype ="{{ deviceType }}"
 	width="{{ widgetSize }}" height="{{ widgetSize }}" data-title="{{ title }}" data-unit="{{ unit }}" data-gaugetype="{{ gaugeType }}"
 	data-min-value="{{ minValue|default(0) }}" data-max-value="{{ maxValue|default(100) }}" data-threshold="{{ threshold }}" data-valuecolor="{{ valueColor|default('RED') }}"
 	data-framestyle="{{ frame|default('BLACK_METAL') }}" data-background="{{ background|default('TURNED') }}" data-deviceoptions="{{ options|json_encode()|escape('html_attr') }}">
@@ -88,7 +88,7 @@
   */
 {% macro radial_energy(id, gad_surplus, gad_regard, minValue, maxValue, widgetSize, pointerColor, title, unit) %}
   {% set widgetSize = widgetSize|default(200) %}
-  <canvas id="{{ uid(page, id) }}" data-widget="steelseries.radial_energy" data-item="{{ gad_surplus }}, {{ gad_regard}}" 
+  <canvas {% if id is not empty %}id="{{ uid(page, id) }}"{% endif %} data-widget="steelseries.radial_energy" data-item="{{ gad_surplus }}, {{ gad_regard}}" 
 	width="{{ widgetSize }}" height="{{ widgetSize }}" data-widgetsize="{{ widgetSize }}" data-title="{{ title }}" data-unit="{{ unit }}" 
 	data-min-value="{{ minValue }}" data-max-value="{{ maxValue }}" {% if pointerColor %}data-pointercolor="{{ pointerColor }}"{% endif %}>
   </canvas>
