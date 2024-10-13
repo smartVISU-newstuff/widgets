@@ -6,7 +6,7 @@ Copy the files into the folder ./dropins/widgets below your smartVISU root folde
 See the docu page "steelseries.linear" in the "Custom" section of the inline docu for widget parametrization.
 
 
-## Radial Enery Widget:
+## Radial Energy Widget:
 
 ![grafik](https://github.com/user-attachments/assets/84f92183-4c80-4a63-aa9c-a3ae218c1d45)
 
