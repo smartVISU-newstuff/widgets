@@ -24,7 +24,7 @@
 * @param {item} saved to move the shutters to the shade position (optional)
 */
 {% macro one (id, txt, item_move, item_stop, item_pos, item_saved ) %}
-	{% import   "basic.html" as basic %}
+    {% import config_version_full >= "3.2.c" ? "@widgets/basic.html" : "basic.html" as basic %}
 
 	/** Design */
 	<div class="blind">
@@ -71,7 +71,7 @@
 * @param {item} saved to move the shutters to the shade position (optional)
 */
 {% macro two (id, txt, item_move, item_stop, item_pos, item_saved) %}
-	{% import   "basic.html" as basic %}
+    {% import config_version_full >= "3.2.c" ? "@widgets/basic.html" : "basic.html" as basic %}
 
 	/** Design */
 	<div class="blind">
@@ -110,7 +110,7 @@
 * @param {item} saved to move the shutters to the shade position (optional)
 */
 {% macro three (id, txt, item_pos, item_saved) %}
-	{% import   "basic.html" as basic %}
+    {% import config_version_full >= "3.2.c" ? "@widgets/basic.html" : "basic.html" as basic %}
 
 	/** Design */
 	<div class="blind">
@@ -145,8 +145,8 @@
 * @info changed by Michael Stemmer and Wolfram v. Hülsen
 */
 {% macro line(id, txt, item_move, item_stop, item_position, item_saved, type) %}
-{% import "basic.html" as basic %}
-{% import "icon.html" as icon %}
+{% import config_version_full >= "3.2.c" ? "@widgets/basic.html" : "basic.html" as basic %}
+{% import config_version_full >= "3.2.c" ? "@widgets/icon.html" : "icon.html" as icon %}
 {% set uid = uid(page, id) %}
 
 	<div class="smallshut"{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %}>
@@ -212,9 +212,9 @@
 * @info table format by "masterjost"  
 */
 {% macro table (id, txt, item_move, item_stop, item_pos, item_shift, item_angle, item_saved, value_top, value_bottom, step, mode, background, value_pos_1, value_pos_2) %}
-    {% import "basic.html" as basic %}
-    {% import "device.html" as device %}
-    {% import "icon.html" as icon %}
+    {% import config_version_full >= "3.2.c" ? "@widgets/basic.html" : "basic.html" as basic %}
+    {% import config_version_full >= "3.2.c" ? "@widgets/device.html" : "device.html" as device %}
+    {% import config_version_full >= "3.2.c" ? "@widgets/icon.html" : "icon.html" as icon %}
     <div class="blind"{% if not id is empty %} id="{{ uid(page, id) }}"{% endif %}>
        <table>
             <tr>

@@ -30,8 +30,8 @@
  * derived from "multimedia" by Axel Otterstätter - thanks!
  */
 {% macro control(id, gad_power, gad_play, gad_pause, gad_stop, gad_playlistforward, gad_playlistbackward, gad_vol, gad_mute, gad_title, gad_artist, gad_repeat, gad_defaultplaylist, gad_duration, gad_time) %}
-    {% import "basic.html" as basic %}
-    {% import "multimedia.html" as multimedia %}
+    {% import config_version_full >= "3.2.c" ? "@widgets/basic.html" : "basic.html" as basic %}
+    {% import config_version_full >= "3.2.c" ? "@widgets/multimedia.html" : "multimedia.html" as multimedia %}
     {% set uid = uid(page, id) %}
 
     <div id="{{ uid }}" class="music">
