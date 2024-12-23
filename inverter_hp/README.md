@@ -1,4 +1,4 @@
-# Widget for an inverter
+# Widget for an inverter w/ heat pump
 
 
 Copy the widget files into smartVISU/dropins/widgets. They will be automatically imported for usage in your visu pages. Each inverter widget must have a unique id if you use more than one on a page.
