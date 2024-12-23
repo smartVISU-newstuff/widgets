@@ -14,4 +14,6 @@ Use this widget call to achieve the result shown in the images
 'System.Pv.Inverter.Messwerte.Leistung_Heizung', 'System.Pv.Inverter.Berechnungen.Autarkie', '', 'System.Pv.Inverter.Berechnungen.Eigenverbrauch', '')}}"
 ```
 
+# Result
+![grafik](https://github.com/user-attachments/assets/fd68803c-d7a8-48f8-922a-6c5b32f7c4f0)
 
