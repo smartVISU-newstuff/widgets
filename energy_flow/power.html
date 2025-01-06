@@ -21,319 +21,381 @@
 * @param {item(num)=} a item for vehicle state of charge
 */
 
-{% macro powerflow(id, item_pvPower, item_gridPower, item_batteryPower, item_housePower, item_vehiclePower, item_batterySoC, item_vehicleSoc) %}
+{% macro powerflow(id, item_pvPower, item_gridPower, item_batteryPower, item_housePower, item_vehiclePower, item_batterySoC, item_vehicleSoC) %}
 {% import "@widgets/basic.html" as basic %}
 {% import "@widgets/lib.html" as lib %}
+{% import "@widgets/icon.html" as icon %}
 <div id="{{ uid(page, id) }}"
      style="width: 100%; text-align: center"
      data-widget="power.powerflow"
+     data-item="{{ item_pvPower }}, {{ item_gridPower }}, {{ item_batteryPower }}, {{ item_housePower }}, {{ item_vehiclePower }}, {{ item_batterySoC }}, {{ item_vehicleSoC }}">
+
+    <svg viewbox="-10 -10 260 290" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+        <path id="pathPvToGrid" d="M105.25,55 v40 a10,10 0 0 1 -10,10 h-41.25"/>
+        <linearGradient id="pathPvToGridColor" x1="100%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0" stop-color="orange" />
+            <stop offset="1" stop-color="#00aa00" />
+        </linearGradient>
+        <path id="pathPvToHome" d="M118.75,55 v50 a10,10 0 0 1 -10,10 h-11.25 a10,10 0 0 0 -10, 10 v70"/>
+        <linearGradient id="pathPvToHomeColor" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0" stop-color="orange" />
+            <stop offset="1" stop-color="black" />
+        </linearGradient>
+        <path id="pathPvToVehicle" d="M131.25,55 v50 a10,10 0 0 0 10,10 h11.25 a10,10 0 0 1 10, 10 v70"/>
+        <linearGradient id="pathPvToVehicleColor" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0" stop-color="orange" />
+            <stop offset="1" stop-color="#cccccc" />
+        </linearGradient>
+        <path id="pathPvToBattery" d="M143.75,55 v41.25 a10,10 0 0 0 10,10 h41.25"/>
+        <linearGradient id="pathPvToBatteryColor" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0" stop-color="orange" />
+            <stop offset="1" stop-color="#00ffff" />
+        </linearGradient>    
+        <path id="pathGridToBattery" d="M55,115 L195,115.001"/>
+        <linearGradient id="pathGridToBatteryColor" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0" stop-color="red" />
+            <stop offset="1" stop-color="#00ffff" />
+        </linearGradient>
+        <path id="pathBatteryToGrid" d="M195,125 L55,125.002"/>
+        <linearGradient id="pathBatteryToGridColor" x1="100%" y1="0%" x2="0%" y2="0%">
+            <stop offset="0" stop-color="#ffff00" />
+            <stop offset="1" stop-color="#00aa00" />
+        </linearGradient>    
+        <path id="pathGridToHome" d="M55,145 h5.833 a10,10 0 0 1 10,10 v40"/>
+        <linearGradient id="pathGridToHomeColor" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0" stop-color="red" />
+            <stop offset="1" stop-color="black" />
+        </linearGradient>
+        <path id="pathGridToVehicle" d="M55,135 h80.833 a10,10 0 0 1 10,10 v50"/>
+        <linearGradient id="pathGridToVehicleColor" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0" stop-color="red" />
+            <stop offset="1" stop-color="#cccccc" />
+        </linearGradient>
+        <path id="pathBatteryToHome" d="M195,135 h-80.833 a10,10 0 0 0 -10,10 v50"/>
+        <linearGradient id="pathBatteryToHomeColor" x1="100%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0" stop-color="#ffff00" />
+            <stop offset="1" stop-color="black" />
+        </linearGradient>
+        <path id="pathBatteryToVehicle" d="M195,145 h-5.833 a10,10 0 0 0 -10,10 v40"/>
+        <linearGradient id="pathBatteryToVehicleColor" x1="100%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0" stop-color="#ffff00" />
+            <stop offset="1" stop-color="#cccccc" />
+        </linearGradient>
+        <marker id="arrowGrid" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="5" markerHeight="5" orient="auto">
+            <path d="M 0 0 L 10 5 L 0 10" stroke="#00aa00" fill="transparent" stroke-width="2" />
+        </marker>
+        <marker id="arrowHome" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="5" markerHeight="5" orient="auto">
+            <path d="M 0 0 L 10 5 L 0 10" stroke="black" fill="transparent" stroke-width="2" />
+        </marker>
+        <marker id="arrowVehicle" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="5" markerHeight="5" orient="auto">
+            <path d="M 0 0 L 10 5 L 0 10" stroke="#cccccc" fill="transparent" stroke-width="2" />
+        </marker>
+        <marker id="arrowBattery" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="5" markerHeight="5" orient="auto">
+            <path d="M 0 0 L 10 5 L 0 10" stroke="#00ffff" fill="transparent" stroke-width="2" />
+        </marker>
+    </defs>
+    <foreignobject class="node" x="100" y="-10" width="50" height="50"> 
+        {{ lib.svgimg('', 'scene_solar_panel', 'icon0') }}
+    </foreignobject>
+    <foreignobject class="node" x="90" y="30" width="70" height="20"> 
+        {{ basic.print('', item_pvPower, '%,0f W', '', '', 'icon0') }}
+    </foreignobject>
+    <foreignobject class="node" x="0" y="90" width="50" height="50"> 
+        {{  lib.svgimg('', 'scene_power_grid', 'icon0') }}
+    </foreignobject>
+    <foreignobject class="node" x="-10" y="130" width="70" height="20"> 
+        {{ basic.print('', item_gridPower, '%,0f W', '', '', 'icon0') }}
+    </foreignobject>
+    <foreignobject class="node" x="200" y="90" width="50" height="50"> 
+        {{ icon.battery('', '', item_batterySoC, '0', '100', 'icon0') }}
+    </foreignobject>
+    <foreignobject class="node" x="190" y="130" width="70" height="20"> 
+        {{ basic.print('', item_batteryPower, '%,0f W', '', '', 'icon0') }}
+    </foreignobject>
+    <foreignobject class="node" x="190" y="150" width="70" height="20"> 
+       {{ basic.print('', item_batterySoC, '%,0f %', '', '', 'icon0') }}
+     </foreignobject>
+    <foreignobject class="node" x="62.5" y="200" width="50" height="50"> 
+        {{ lib.svgimg('', 'scene_home', 'icon0') }}
+    </foreignobject>
+    <foreignobject class="node" x="52.5" y="240" width="70" height="20"> 
+        {{ basic.print('', item_housePower, '%,0f W', '', '', 'icon0') }}
+     </foreignobject>
+    <foreignobject class="node" x="137.5" y="200" width="50" height="50">
+        {{ lib.svgimg('', 'veh_car_01_charging', 'icon0') }}
+    </foreignobject>
+    <foreignobject class="node" x="127.5" y="240" width="70" height="20"> 
+        {{ basic.print('', item_vehiclePower, '%,0f W', '', '', 'icon0') }}
+     </foreignobject>
+    <foreignobject class="node" x="127.5" y="260" width="70" height="50">
+        {{ basic.print('', item_vehicleSoC, '%,0f %', '', '', 'icon0') }} 
+    </foreignobject>
+    <g id="pvToGrid">  
+        <use href="#pathPvToGrid" fill="none" stroke="url('#pathPvToGridColor')" stroke-width="2" marker-end='url(#arrowGrid)'/>
+        <circle cx="0" cy="0" r="2.5">
+            <animateMotion begin="0s" dur="3s" repeatCount="indefinite" >
+                <mpath href="#pathPvToGrid"/>
+            </animateMotion>
+            <animate attributeName="fill" from="orange" to="#00aa00" dur="3s" repeatCount="indefinite" />
+        </circle>
+        <circle cx="0" cy="0" r="2">
+            <animateMotion begin="0.25s" dur="3s" repeatCount="indefinite" >
+                <mpath href="#pathPvToGrid"/>
+            </animateMotion>
+            <animate attributeName="fill" from="orange" to="#00aa00" begin="0.25s" dur="3s" repeatCount="indefinite" />
+        </circle>
+        <circle cx="0" cy="0" r="1.5">
+            <animateMotion begin="0.5s" dur="3s" repeatCount="indefinite" >
+                <mpath href="#pathPvToGrid"/>
+            </animateMotion>
+            <animate attributeName="fill" from="orange" to="#00aa00" begin="0.5s" dur="3s" repeatCount="indefinite" />
+        </circle>
+    </g>
+    <g id="pvToHome">
+        <use href="#pathPvToHome" fill="none" stroke="url('#pathPvToHomeColor')" stroke-width="2" marker-end='url(#arrowHome)'/>
+        <circle cx="0" cy="0" r="2.5">
+            <animateMotion begin="0s" dur="5s" repeatCount="indefinite" >
+                <mpath href="#pathPvToHome"/>
+            </animateMotion>
+            <animate attributeName="fill" from="orange" to="black" dur="5s" repeatCount="indefinite" />
+        </circle>
+        <circle cx="0" cy="0" r="2">
+            <animateMotion begin="0.25s" dur="5s" repeatCount="indefinite" >
+                <mpath href="#pathPvToHome"/>
+            </animateMotion>
+            <animate attributeName="fill" from="orange" to="black" begin="0.25s" dur="5s" repeatCount="indefinite" />
+        </circle>
+        <circle cx="0" cy="0" r="1.5">
+            <animateMotion begin="0.5s" dur="5s" repeatCount="indefinite" >
+                <mpath href="#pathPvToHome"/>
+            </animateMotion>
+            <animate attributeName="fill" from="orange" to="black" begin="0.5s" dur="5s" repeatCount="indefinite" />
+        </circle>
+    </g>
+    <g id="pvToVehicle">
+        <use href="#pathPvToVehicle" fill="none" stroke="url('#pathPvToVehicleColor')" stroke-width="2" marker-end='url(#arrowVehicle)'/>
+        <circle cx="0" cy="0" r="2.5">
+            <animateMotion begin="0s" dur="5s" repeatCount="indefinite" >
+                <mpath href="#pathPvToVehicle"/>
+            </animateMotion>
+            <animate attributeName="fill" from="orange" to="#cccccc" dur="5s" repeatCount="indefinite" />
+        </circle>
+        <circle cx="0" cy="0" r="2">
+            <animateMotion begin="0.25s" dur="5s" repeatCount="indefinite" >
+                <mpath href="#pathPvToVehicle"/>
+            </animateMotion>
+            <animate attributeName="fill" from="orange" to="#cccccc" begin="0.25s" dur="5s" repeatCount="indefinite" />
+        </circle>
+        <circle cx="0" cy="0" r="1.5">
+            <animateMotion begin="0.5s" dur="5s" repeatCount="indefinite" >
+                <mpath href="#pathPvToVehicle"/>
+            </animateMotion>
+            <animate attributeName="fill" from="orange" to="#cccccc" begin="0.5s" dur="5s" repeatCount="indefinite" />
+        </circle>
+    </g>
+    <g id="pvToBattery">
+        <use href="#pathPvToBattery" fill="none" stroke="url('#pathPvToBatteryColor')" stroke-width="2" marker-end='url(#arrowBattery)'/>
+        <circle cx="0" cy="0" r="2 5">
+            <animateMotion begin="0s" dur="3s" repeatCount="indefinite" >
+                <mpath href="#pathPvToBattery"/>
+            </animateMotion>
+            <animate attributeName="fill" from="orange" to="#00ffff" dur="3s" repeatCount="indefinite" />
+        </circle>
+        <circle cx="0" cy="0" r="2">
+            <animateMotion begin="0.25s" dur="3s" repeatCount="indefinite" >
+                <mpath href="#pathPvToBattery"/>
+            </animateMotion>
+            <animate attributeName="fill" from="orange" to="#00ffff" begin="0.25s" dur="3s" repeatCount="indefinite" />
+        </circle>
+        <circle cx="0" cy="0" r="1.5">
+            <animateMotion begin="0.5s" dur="3s" repeatCount="indefinite" >
+                <mpath href="#pathPvToBattery"/>
+            </animateMotion>
+            <animate attributeName="fill" from="orange" to="#00ffff" begin="0.5s" dur="3s" repeatCount="indefinite" />
+        </circle>
+    </g>
+    <g id="gridToBattery">
+        <use href="#pathGridToBattery" fill="none" stroke="url(#pathGridToBatteryColor)" stroke-width="2" marker-end='url(#arrowBattery)'/>
+        <circle cx="0" cy="0" r="2.5">
+            <animateMotion begin="0s" dur="4s" repeatCount="indefinite" >
+                <mpath href="#pathGridToBattery"/>
+            </animateMotion>
+            <animate attributeName="fill" from="red" to="#00ffff" dur="4s" repeatCount="indefinite" />
+        </circle>
+        <circle cx="0" cy="0" r="2">
+            <animateMotion begin="0.25s" dur="4s" repeatCount="indefinite" >
+                <mpath href="#pathGridToBattery"/>
+            </animateMotion>
+            <animate attributeName="fill" from="red" to="#00ffff" begin="0.25s" dur="4s" repeatCount="indefinite" />
+        </circle>
+        <circle cx="0" cy="0" r="1.5">
+            <animateMotion begin="0.5s" dur="4s" repeatCount="indefinite" >
+                <mpath href="#pathGridToBattery"/>
+            </animateMotion>
+            <animate attributeName="fill" from="red" to="#00ffff" begin="0.5s" dur="4s" repeatCount="indefinite" />
+        </circle>
+    </g>
+    <g id="batteryToGrid">
+        <use href="#pathBatteryToGrid" fill="none" stroke="url(#pathBatteryToGridColor)" stroke-width="2" marker-end='url(#arrowGrid)'/>
+        <circle cx="0" cy="0" r="2.5">
+            <animateMotion begin="0s" dur="4s" repeatCount="indefinite" >
+                <mpath href="#pathBatteryToGrid"/>
+            </animateMotion>
+            <animate attributeName="fill" from="#ffff00" to="#00aa00" dur="4s" repeatCount="indefinite" />
+        </circle>
+        <circle cx="0" cy="0" r="2">
+            <animateMotion begin="0.25s" dur="4s" repeatCount="indefinite" >
+                <mpath href="#pathBatteryToGrid"/>
+            </animateMotion>
+            <animate attributeName="fill" from="#ffff00" to="#00aa00" begin="0.25s" dur="4s" repeatCount="indefinite" />
+        </circle>
+        <circle cx="0" cy="0" r="1.5">
+            <animateMotion begin="0.5s" dur="4s" repeatCount="indefinite" >
+                <mpath href="#pathBatteryToGrid"/>
+            </animateMotion>
+            <animate attributeName="fill" from="#ffff00" to="#00aa00" begin="0.5s" dur="4s" repeatCount="indefinite" />
+        </circle>
+    </g>
+    <g id="gridToHome">
+        <use href="#pathGridToHome" fill="none" stroke="url(#pathGridToHomeColor)" stroke-width="2" marker-end='url(#arrowHome)'/>
+        <circle cx="0" cy="0" r="2.5">
+            <animateMotion begin="0s" dur="2s" repeatCount="indefinite" >
+                <mpath href="#pathGridToHome"/>
+            </animateMotion>
+            <animate attributeName="fill" from="red" to="black" dur="2s" repeatCount="indefinite" />
+        </circle>
+        <circle cx="0" cy="0" r="2">
+            <animateMotion begin="0.25s" dur="2s" repeatCount="indefinite" >
+                <mpath href="#pathGridToHome"/>
+            </animateMotion>
+            <animate attributeName="fill" from="red" to="black" begin="0.25s" dur="2s" repeatCount="indefinite" />
+        </circle>
+        <circle cx="0" cy="0" r="1.5">
+            <animateMotion begin="0.5s" dur="2s" repeatCount="indefinite" >
+                <mpath href="#pathGridToHome"/>
+            </animateMotion>
+            <animate attributeName="fill" from="red" to="black" begin="0.5s" dur="2s" repeatCount="indefinite" />
+        </circle>
+    </g>
+    <g id="gridToVehicle">
+        <use href="#pathGridToVehicle" fill="none" stroke="url(#pathGridToVehicleColor)" stroke-width="2" marker-end='url(#arrowVehicle)'/>
+        <circle cx="0" cy="0" r="2.5">
+            <animateMotion begin="0s" dur="4s" repeatCount="indefinite" >
+                <mpath href="#pathGridToVehicle"/>
+            </animateMotion>
+            <animate attributeName="fill" from="red" to="#cccccc" dur="4s" repeatCount="indefinite" />
+        </circle>
+        <circle cx="0" cy="0" r="2">
+            <animateMotion begin="0.25s" dur="4s" repeatCount="indefinite" >
+                <mpath href="#pathGridToVehicle"/>
+            </animateMotion>
+            <animate attributeName="fill" from="red" to="#cccccc" begin="0.25s" dur="4s" repeatCount="indefinite" />
+        </circle>
+        <circle cx="0" cy="0" r="1.5">
+            <animateMotion begin="0.5s" dur="4s" repeatCount="indefinite" >
+                <mpath href="#pathGridToVehicle"/>
+            </animateMotion>
+            <animate attributeName="fill" from="red" to="#cccccc" begin="0.5s" dur="4s" repeatCount="indefinite" />
+        </circle>
+    </g>
+    <g id="batteryToHome">
+        <use href="#pathBatteryToHome" fill="none" stroke="url(#pathBatteryToHomeColor)" stroke-width="2" marker-end='url(#arrowHome)'/>
+        <circle cx="0" cy="0" r="2.5">
+            <animateMotion begin="0s" dur="4s" repeatCount="indefinite" >
+                <mpath href="#pathBatteryToHome"/>
+            </animateMotion>
+            <animate attributeName="fill" from="#ffff00" to="black" dur="4s" repeatCount="indefinite" />
+        </circle>
+        <circle cx="0" cy="0" r="2">
+            <animateMotion begin="0.25s" dur="4s" repeatCount="indefinite" >
+                <mpath href="#pathBatteryToHome"/>
+            </animateMotion>
+            <animate attributeName="fill" from="#ffff00" to="black" begin="0.25s" dur="4s" repeatCount="indefinite" />
+        </circle>
+        <circle cx="0" cy="0" r="1.5">
+            <animateMotion begin="0.5s" dur="4s" repeatCount="indefinite" >
+                <mpath href="#pathBatteryToHome"/>
+            </animateMotion>
+            <animate attributeName="fill" from="#ffff00" to="black" begin="0.5s" dur="4s" repeatCount="indefinite" />
+        </circle>
+    </g>
+    <g id="batteryToVehicle">
+        <use href="#pathBatteryToVehicle" fill="none" stroke="url(#pathBatteryToVehicleColor)" stroke-width="2" marker-end='url(#arrowVehicle)'/>
+        <circle cx="0" cy="0" r="2.5">
+            <animateMotion begin="0s" dur="2s" repeatCount="indefinite" >
+                <mpath href="#pathBatteryToVehicle"/>
+            </animateMotion>
+            <animate attributeName="fill" from="#ffff00" to="#cccccc" dur="2s" repeatCount="indefinite" />
+        </circle>
+        <circle cx="0" cy="0" r="2">
+            <animateMotion begin="0.25s" dur="2s" repeatCount="indefinite" >
+                <mpath href="#pathBatteryToVehicle"/>
+            </animateMotion>
+            <animate attributeName="fill" from="#ffff00" to="#cccccc" begin="0.25s" dur="2s" repeatCount="indefinite" />
+        </circle>
+        <circle cx="0" cy="0" r="1.5">
+            <animateMotion begin="0.5s" dur="2s" repeatCount="indefinite" >
+                <mpath href="#pathBatteryToVehicle"/>
+            </animateMotion>
+            <animate attributeName="fill" from="#ffff00" to="#cccccc" begin="0.5s" dur="2s" repeatCount="indefinite" />
+        </circle>
+    </g>
+    </svg>
+</div>
+{% endmacro %}
+
+/**
+* Displays power distribution from pv, grid and battery
+*
+* @param {id=''} unique id for this widget
+* @param {item(num)=} a item for pv power
+* @param {item(num)=} a item for grid power
+* @param {item(num)=} a item for battery power
+* @param {item(num)=} a item for house power 
+* @param {item(num)=} a item for vehicle power
+* @param {item(num)=} a item for battery state of charge
+* @param {item(num)=} a item for vehicle state of charge
+*/
+
+{% macro powerdistribution(id, item_pvPower, item_gridPower, item_batteryPower, item_housePower, item_vehiclePower, item_batterySoC, item_vehicleSoc) %}
+{% import "@widgets/basic.html" as basic %}
+{% import "@widgets/lib.html" as lib %}
+{% import "@widgets/icon.html" as icon %}
+<div id="{{ uid(page, id) }}"
+     style="width: 100%; text-align: center"
+     data-widget="power.powerdistribution"
      data-item="{{ item_pvPower }}, {{ item_gridPower }}, {{ item_batteryPower }}, {{ item_housePower }}, {{ item_vehiclePower }}, {{ item_batterySoC }}, {{ item_vehicleSoc }}">
 
-   <svg viewbox="-10 0 260 250" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
-<defs>
-    <path id="pathPvToGrid" d="M105.25,55 v40 a10,10 0 0 1 -10,10 h-41.25"/>
-    <linearGradient id="pathPvToGridColor" x1="100%" y1="0%" x2="0%" y2="100%">
-        <stop offset="0" stop-color="orange" />
-        <stop offset="1" stop-color="#00aa00" />
-    </linearGradient>
-    <path id="pathPvToHome" d="M118.75,55 v50 a10,10 0 0 1 -10,10 h-11.25 a10,10 0 0 0 -10, 10 v70"/>
-    <linearGradient id="pathPvToHomeColor" x1="0%" y1="0%" x2="0%" y2="100%">
-        <stop offset="0" stop-color="orange" />
-        <stop offset="1" stop-color="black" />
-    </linearGradient>
-    <path id="pathPvToVehicle" d="M131.25,55 v50 a10,10 0 0 0 10,10 h11.25 a10,10 0 0 1 10, 10 v70"/>
-    <linearGradient id="pathPvToVehicleColor" x1="0%" y1="0%" x2="0%" y2="100%">
-        <stop offset="0" stop-color="orange" />
-        <stop offset="1" stop-color="#cccccc" />
-    </linearGradient>
-    <path id="pathPvToBattery" d="M143.75,55 v41.25 a10,10 0 0 0 10,10 h41.25"/>
-    <linearGradient id="pathPvToBatteryColor" x1="0%" y1="0%" x2="100%" y2="100%">
-        <stop offset="0" stop-color="orange" />
-        <stop offset="1" stop-color="#00ffff" />
-    </linearGradient>    
-    <path id="pathGridToBattery" d="M55,115 L195,115.001"/>
-    <linearGradient id="pathGridToBatteryColor" x1="0%" y1="0%" x2="100%" y2="0%">
-        <stop offset="0" stop-color="red" />
-        <stop offset="1" stop-color="#00ffff" />
-    </linearGradient>
-    <path id="pathBatteryToGrid" d="M195,125 L55,125.002"/>
-    <linearGradient id="pathBatteryToGridColor" x1="100%" y1="0%" x2="0%" y2="0%">
-        <stop offset="0" stop-color="#ffff00" />
-        <stop offset="1" stop-color="#00aa00" />
-    </linearGradient>    
-    <path id="pathGridToHome" d="M55,145 h5.833 a10,10 0 0 1 10,10 v40"/>
-    <linearGradient id="pathGridToHomeColor" x1="0%" y1="0%" x2="100%" y2="100%">
-        <stop offset="0" stop-color="red" />
-        <stop offset="1" stop-color="black" />
-    </linearGradient>
-    <path id="pathGridToVehicle" d="M55,135 h80.833 a10,10 0 0 1 10,10 v50"/>
-    <linearGradient id="pathGridToVehicleColor" x1="0%" y1="0%" x2="100%" y2="100%">
-        <stop offset="0" stop-color="red" />
-        <stop offset="1" stop-color="#cccccc" />
-    </linearGradient>
-    <path id="pathBatteryToHome" d="M195,135 h-80.833 a10,10 0 0 0 -10,10 v50"/>
-    <linearGradient id="pathBatteryToHomeColor" x1="100%" y1="0%" x2="0%" y2="100%">
-        <stop offset="0" stop-color="#ffff00" />
-        <stop offset="1" stop-color="black" />
-    </linearGradient>
-    <path id="pathBatteryToVehicle" d="M195,145 h-5.833 a10,10 0 0 0 -10,10 v40"/>
-    <linearGradient id="pathBatteryToVehicleColor" x1="100%" y1="0%" x2="0%" y2="100%">
-        <stop offset="0" stop-color="#ffff00" />
-        <stop offset="1" stop-color="#cccccc" />
-    </linearGradient>
-    <marker id="arrowGrid" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="5" markerHeight="5" orient="auto">
-        <path d="M 0 0 L 10 5 L 0 10" stroke="#00aa00" fill="transparent" stroke-width="2" />
-    </marker>
-    <marker id="arrowHome" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="5" markerHeight="5" orient="auto">
-        <path d="M 0 0 L 10 5 L 0 10" stroke="black" fill="transparent" stroke-width="2" />
-    </marker>
-    <marker id="arrowVehicle" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="5" markerHeight="5" orient="auto">
-        <path d="M 0 0 L 10 5 L 0 10" stroke="#cccccc" fill="transparent" stroke-width="2" />
-    </marker>
-    <marker id="arrowBattery" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="5" markerHeight="5" orient="auto">
-        <path d="M 0 0 L 10 5 L 0 10" stroke="#00ffff" fill="transparent" stroke-width="2" />
-    </marker>
-</defs>
-<foreignobject class="node" x="100" y="-10" width="50" height="50"> 
-    {{ lib.svgimg('', 'scene_solar_panel', 'icon0') }}
-</foreignobject>
-<foreignobject class="node" x="90" y="30" width="70" height="20"> 
-    {{ basic.print('', item_pvPower, '%,0f W', '', '', 'icon0') }}
-</foreignobject>
-<foreignobject class="node" x="0" y="90" width="50" height="50"> 
-    {{  lib.svgimg('', 'scene_power_grid', 'icon0') }}
-</foreignobject>
-<foreignobject class="node" x="-10" y="130" width="70" height="20"> 
-    {{ basic.print('', item_gridPower, '%,0f W', '', '', 'icon0') }}
-</foreignobject>
-<foreignobject class="node" x="200" y="90" width="50" height="50"> 
-   {{ lib.svgimg('', 'measure_battery_75', 'icon0') }}
-</foreignobject>
-<foreignobject class="node" x="190" y="130" width="70" height="20"> 
-    {{ basic.print('', item_batteryPower, '%,0f W', '', '', 'icon0') }}
- </foreignobject>
-<foreignobject class="node" x="62.5" y="190" width="50" height="50"> 
-    {{ lib.svgimg('', 'scene_summerhouse', 'icon0') }}
-</foreignobject>
-<foreignobject class="node" x="52.5" y="230" width="70" height="20"> 
-    {{ basic.print('', item_housePower, '%,0f W', '', '', 'icon0') }}
- </foreignobject>
-<foreignobject class="node" x="137.5" y="190" width="50" height="50">
-    {{ lib.svgimg('', 'scene_wallbox', 'icon0') }}
-</foreignobject>
-<foreignobject class="node" x="127.5" y="230" width="70" height="20"> 
-    {{ basic.print('', item_vehiclePower, '%,0f W', '', '', 'icon0') }}
- </foreignobject>
-<g id="pvToGrid">
-    <use href="#pathPvToGrid" fill="none" stroke="url('#pathPvToGridColor')" stroke-width="2" marker-end='url(#arrowGrid)'/>
-    <circle cx="0" cy="0" r="2.5">
-        <animateMotion begin="0s" dur="3s" repeatCount="indefinite" >
-            <mpath href="#pathPvToGrid"/>
-        </animateMotion>
-        <animate attributeName="fill" from="orange" to="#00aa00" dur="3s" repeatCount="indefinite" />
-    </circle>
-    <circle cx="0" cy="0" r="2">
-        <animateMotion begin="0.25s" dur="3s" repeatCount="indefinite" >
-            <mpath href="#pathPvToGrid"/>
-        </animateMotion>
-        <animate attributeName="fill" from="orange" to="#00aa00" begin="0.25s" dur="3s" repeatCount="indefinite" />
-    </circle>
-    <circle cx="0" cy="0" r="1.5">
-        <animateMotion begin="0.5s" dur="3s" repeatCount="indefinite" >
-            <mpath href="#pathPvToGrid"/>
-        </animateMotion>
-        <animate attributeName="fill" from="orange" to="#00aa00" begin="0.5s" dur="3s" repeatCount="indefinite" />
-    </circle>
-</g>
-<g id="pvToHome">
-    <use href="#pathPvToHome" fill="none" stroke="url('#pathPvToHomeColor')" stroke-width="2" marker-end='url(#arrowHome)'/>
-    <circle cx="0" cy="0" r="2.5">
-        <animateMotion begin="0s" dur="5s" repeatCount="indefinite" >
-            <mpath href="#pathPvToHome"/>
-        </animateMotion>
-        <animate attributeName="fill" from="orange" to="black" dur="5s" repeatCount="indefinite" />
-    </circle>
-    <circle cx="0" cy="0" r="2">
-        <animateMotion begin="0.25s" dur="5s" repeatCount="indefinite" >
-            <mpath href="#pathPvToHome"/>
-        </animateMotion>
-        <animate attributeName="fill" from="orange" to="black" begin="0.25s" dur="5s" repeatCount="indefinite" />
-    </circle>
-    <circle cx="0" cy="0" r="1.5">
-        <animateMotion begin="0.5s" dur="5s" repeatCount="indefinite" >
-            <mpath href="#pathPvToHome"/>
-        </animateMotion>
-        <animate attributeName="fill" from="orange" to="black" begin="0.5s" dur="5s" repeatCount="indefinite" />
-    </circle>
-</g>
-<g id="pvToVehicle">
-    <use href="#pathPvToVehicle" fill="none" stroke="url('#pathPvToVehicleColor')" stroke-width="2" marker-end='url(#arrowVehicle)'/>
-    <circle cx="0" cy="0" r="2.5">
-        <animateMotion begin="0s" dur="5s" repeatCount="indefinite" >
-            <mpath href="#pathPvToVehicle"/>
-        </animateMotion>
-        <animate attributeName="fill" from="orange" to="#cccccc" dur="5s" repeatCount="indefinite" />
-    </circle>
-    <circle cx="0" cy="0" r="2">
-        <animateMotion begin="0.25s" dur="5s" repeatCount="indefinite" >
-            <mpath href="#pathPvToVehicle"/>
-        </animateMotion>
-        <animate attributeName="fill" from="orange" to="#cccccc" begin="0.25s" dur="5s" repeatCount="indefinite" />
-    </circle>
-    <circle cx="0" cy="0" r="1.5">
-        <animateMotion begin="0.5s" dur="5s" repeatCount="indefinite" >
-            <mpath href="#pathPvToVehicle"/>
-        </animateMotion>
-        <animate attributeName="fill" from="orange" to="#cccccc" begin="0.5s" dur="5s" repeatCount="indefinite" />
-    </circle>
-</g>
-<g id="pvToBattery">
-    <use href="#pathPvToBattery" fill="none" stroke="url('#pathPvToBatteryColor')" stroke-width="2" marker-end='url(#arrowBattery)'/>
-    <circle cx="0" cy="0" r="2 5">
-        <animateMotion begin="0s" dur="3s" repeatCount="indefinite" >
-            <mpath href="#pathPvToBattery"/>
-        </animateMotion>
-        <animate attributeName="fill" from="orange" to="#00ffff" dur="3s" repeatCount="indefinite" />
-    </circle>
-    <circle cx="0" cy="0" r="2">
-        <animateMotion begin="0.25s" dur="3s" repeatCount="indefinite" >
-            <mpath href="#pathPvToBattery"/>
-        </animateMotion>
-        <animate attributeName="fill" from="orange" to="#00ffff" begin="0.25s" dur="3s" repeatCount="indefinite" />
-    </circle>
-    <circle cx="0" cy="0" r="1.5">
-        <animateMotion begin="0.5s" dur="3s" repeatCount="indefinite" >
-            <mpath href="#pathPvToBattery"/>
-        </animateMotion>
-        <animate attributeName="fill" from="orange" to="#00ffff" begin="0.5s" dur="3s" repeatCount="indefinite" />
-    </circle>
-</g>
-<g id="gridToBattery">
-    <use href="#pathGridToBattery" fill="none" stroke="url(#pathGridToBatteryColor)" stroke-width="2" marker-end='url(#arrowBattery)'/>
-    <circle cx="0" cy="0" r="2.5">
-        <animateMotion begin="0s" dur="4s" repeatCount="indefinite" >
-            <mpath href="#pathGridToBattery"/>
-        </animateMotion>
-        <animate attributeName="fill" from="red" to="#00ffff" dur="4s" repeatCount="indefinite" />
-    </circle>
-    <circle cx="0" cy="0" r="2">
-        <animateMotion begin="0.25s" dur="4s" repeatCount="indefinite" >
-            <mpath href="#pathGridToBattery"/>
-        </animateMotion>
-        <animate attributeName="fill" from="red" to="#00ffff" begin="0.25s" dur="4s" repeatCount="indefinite" />
-    </circle>
-    <circle cx="0" cy="0" r="1.5">
-        <animateMotion begin="0.5s" dur="4s" repeatCount="indefinite" >
-            <mpath href="#pathGridToBattery"/>
-        </animateMotion>
-        <animate attributeName="fill" from="red" to="#00ffff" begin="0.5s" dur="4s" repeatCount="indefinite" />
-    </circle>
-</g>
-<g id="batteryToGrid">
-    <use href="#pathBatteryToGrid" fill="none" stroke="url(#pathBatteryToGridColor)" stroke-width="2" marker-end='url(#arrowGrid)'/>
-    <circle cx="0" cy="0" r="2.5">
-        <animateMotion begin="0s" dur="4s" repeatCount="indefinite" >
-            <mpath href="#pathBatteryToGrid"/>
-        </animateMotion>
-        <animate attributeName="fill" from="#ffff00" to="#00aa00" dur="4s" repeatCount="indefinite" />
-    </circle>
-    <circle cx="0" cy="0" r="2">
-        <animateMotion begin="0.25s" dur="4s" repeatCount="indefinite" >
-            <mpath href="#pathBatteryToGrid"/>
-        </animateMotion>
-        <animate attributeName="fill" from="#ffff00" to="#00aa00" begin="0.25s" dur="4s" repeatCount="indefinite" />
-    </circle>
-    <circle cx="0" cy="0" r="1.5">
-        <animateMotion begin="0.5s" dur="4s" repeatCount="indefinite" >
-            <mpath href="#pathBatteryToGrid"/>
-        </animateMotion>
-        <animate attributeName="fill" from="#ffff00" to="#00aa00" begin="0.5s" dur="4s" repeatCount="indefinite" />
-    </circle>
-</g>
-<g id="gridToHome">
-    <use href="#pathGridToHome" fill="none" stroke="url(#pathGridToHomeColor)" stroke-width="2" marker-end='url(#arrowHome)'/>
-    <circle cx="0" cy="0" r="2.5">
-        <animateMotion begin="0s" dur="2s" repeatCount="indefinite" >
-            <mpath href="#pathGridToHome"/>
-        </animateMotion>
-        <animate attributeName="fill" from="red" to="black" dur="2s" repeatCount="indefinite" />
-    </circle>
-    <circle cx="0" cy="0" r="2">
-        <animateMotion begin="0.25s" dur="2s" repeatCount="indefinite" >
-            <mpath href="#pathGridToHome"/>
-        </animateMotion>
-        <animate attributeName="fill" from="red" to="black" begin="0.25s" dur="2s" repeatCount="indefinite" />
-    </circle>
-    <circle cx="0" cy="0" r="1.5">
-        <animateMotion begin="0.5s" dur="2s" repeatCount="indefinite" >
-            <mpath href="#pathGridToHome"/>
-        </animateMotion>
-        <animate attributeName="fill" from="red" to="black" begin="0.5s" dur="2s" repeatCount="indefinite" />
-    </circle>
-</g>
-<g id="gridToVehicle">
-    <use href="#pathGridToVehicle" fill="none" stroke="url(#pathGridToVehicleColor)" stroke-width="2" marker-end='url(#arrowVehicle)'/>
-    <circle cx="0" cy="0" r="2.5">
-        <animateMotion begin="0s" dur="4s" repeatCount="indefinite" >
-            <mpath href="#pathGridToVehicle"/>
-        </animateMotion>
-        <animate attributeName="fill" from="red" to="#cccccc" dur="4s" repeatCount="indefinite" />
-    </circle>
-    <circle cx="0" cy="0" r="2">
-        <animateMotion begin="0.25s" dur="4s" repeatCount="indefinite" >
-            <mpath href="#pathGridToVehicle"/>
-        </animateMotion>
-        <animate attributeName="fill" from="red" to="#cccccc" begin="0.25s" dur="4s" repeatCount="indefinite" />
-    </circle>
-    <circle cx="0" cy="0" r="1.5">
-        <animateMotion begin="0.5s" dur="4s" repeatCount="indefinite" >
-            <mpath href="#pathGridToVehicle"/>
-        </animateMotion>
-        <animate attributeName="fill" from="red" to="#cccccc" begin="0.5s" dur="4s" repeatCount="indefinite" />
-    </circle>
-</g>
-<g id="batteryToHome">
-    <use href="#pathBatteryToHome" fill="none" stroke="url(#pathBatteryToHomeColor)" stroke-width="2" marker-end='url(#arrowHome)'/>
-    <circle cx="0" cy="0" r="2.5">
-        <animateMotion begin="0s" dur="4s" repeatCount="indefinite" >
-            <mpath href="#pathBatteryToHome"/>
-        </animateMotion>
-        <animate attributeName="fill" from="#ffff00" to="black" dur="4s" repeatCount="indefinite" />
-    </circle>
-    <circle cx="0" cy="0" r="2">
-        <animateMotion begin="0.25s" dur="4s" repeatCount="indefinite" >
-            <mpath href="#pathBatteryToHome"/>
-        </animateMotion>
-        <animate attributeName="fill" from="#ffff00" to="black" begin="0.25s" dur="4s" repeatCount="indefinite" />
-    </circle>
-    <circle cx="0" cy="0" r="1.5">
-        <animateMotion begin="0.5s" dur="4s" repeatCount="indefinite" >
-            <mpath href="#pathBatteryToHome"/>
-        </animateMotion>
-        <animate attributeName="fill" from="#ffff00" to="black" begin="0.5s" dur="4s" repeatCount="indefinite" />
-    </circle>
-</g>
-<g id="batteryToVehicle">
-    <use href="#pathBatteryToVehicle" fill="none" stroke="url(#pathBatteryToVehicleColor)" stroke-width="2" marker-end='url(#arrowVehicle)'/>
-    <circle cx="0" cy="0" r="2.5">
-        <animateMotion begin="0s" dur="2s" repeatCount="indefinite" >
-            <mpath href="#pathBatteryToVehicle"/>
-        </animateMotion>
-        <animate attributeName="fill" from="#ffff00" to="#cccccc" dur="2s" repeatCount="indefinite" />
-    </circle>
-    <circle cx="0" cy="0" r="2">
-        <animateMotion begin="0.25s" dur="2s" repeatCount="indefinite" >
-            <mpath href="#pathBatteryToVehicle"/>
-        </animateMotion>
-        <animate attributeName="fill" from="#ffff00" to="#cccccc" begin="0.25s" dur="2s" repeatCount="indefinite" />
-    </circle>
-    <circle cx="0" cy="0" r="1.5">
-        <animateMotion begin="0.5s" dur="2s" repeatCount="indefinite" >
-            <mpath href="#pathBatteryToVehicle"/>
-        </animateMotion>
-        <animate attributeName="fill" from="#ffff00" to="#cccccc" begin="0.5s" dur="2s" repeatCount="indefinite" />
-    </circle>
-</g>
-</svg>
+    <svg viewbox="-10 0 510 130" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+        <rect id='inputPv' x='0' y='50' width='100' height='15' fill='orange'/>
+        <rect id='inputBattery' x='100' y='50' width='100' height='15' fill='#ffff00'/>
+        <rect id='inputGrid' x='200' y='50' width='100' height='15' fill='red'/>
+        <foreignobject id="inputPvIcon" x="0" y="0" width="100" height="50"> 
+            {{ lib.svgimg('', 'scene_solar_panel', 'icon0') }}
+        </foreignobject>
+        <foreignobject id="inputBatteryIcon" x="100" y="0" width="100" height="50"> 
+            {{ icon.battery('', '', item_batterySoC, '0', '100', 'icon0') }}
+        </foreignobject>
+        <foreignobject id="inputGridIcon" x="200" y="0" width="100" height="50"> 
+            {{ lib.svgimg('', 'scene_power_grid', 'icon0') }}
+        </foreignobject>
+        <rect id='outputHouse' x='0' y='65' width='75' height='15' fill='black'/>
+        <rect id='outputVehicle' x='75' y='65' width='75' height='15' fill='#cccccc'/>
+        <rect id='outputBattery' x='150' y='65' width='75' height='15' fill='#00ffff'/>
+        <rect id='outputGrid' x='225' y='65' width='75' height='15' fill='#00aa00'/>
+        <foreignobject id="outputHouseIcon" x="0" y="80" width="100" height="50"> 
+            {{ lib.svgimg('', 'scene_home', 'icon0') }}
+        </foreignobject>
+        <foreignobject id="outputVehicleIcon" x="100" y="80" width="100" height="50"> 
+            {{ lib.svgimg('', 'veh_car_01_charging', 'icon0') }}
+        </foreignobject>
+        <foreignobject id="outputBatteryIcon" x="200" y="80" width="50" height="50"> 
+            {{ icon.battery('', '', item_batterySoC, '0', '100', 'icon0') }}
+        </foreignobject>
+        <foreignobject id="outputGridIcon" x="250" y="80" width="50" height="50"> 
+            {{ lib.svgimg('', 'scene_power_grid', 'icon0') }}
+        </foreignobject>
+    </svg>
 </div>
 {% endmacro %}
