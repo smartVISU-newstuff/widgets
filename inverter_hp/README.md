@@ -4,7 +4,7 @@
 Copy the widget files into smartVISU/dropins/widgets. They will be automatically imported for usage in your visu pages. Each inverter widget must have a unique id if you use more than one on a page.
 
 # Widget call
-{{ inverter_hp.inverter_overview(id, item_pv_power, item_grid_power, item_house_power, item_battery_power, item_soc, item_heatpump, power_format, item_self_sufficiency, self_sufficiency_text, item_own_consumption, own_consumption_text) }}
+{{ inverter_hp.hp(id, item_pv_power, item_grid_power, item_house_power, item_battery_power, item_soc, item_heatpump, power_format, item_self_sufficiency, self_sufficiency_text, item_own_consumption, own_consumption_text) }}
 
 
 # Examples: 
