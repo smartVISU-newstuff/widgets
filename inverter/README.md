@@ -1,4 +1,4 @@
-# Widget for an inverter
+# Widget for an inverter - now with a heat pump
 
 ![grafik](https://github.com/user-attachments/assets/794f5f37-4cb5-45b6-ab57-aca57dfa96b0)
 
