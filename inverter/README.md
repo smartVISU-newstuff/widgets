@@ -12,6 +12,6 @@ Copy the widget files into smartVISU/dropins/widgets. They will be automatically
 # Examples: 
 Use this widget call to achieve the result shown in the image
 ```
-{{inverter.inverter_overview('1', 'System.Pv.Inverter.Messwerte.Leistung_Pv', 'System.Pv.Inverter.Messwerte.Leistung_Netz', 'System.Pv.Inverter.Messwerte.Leistung_Haus', 'System.Pv.Inverter.Messwerte.Leistung_Batterie', 'System.Pv.Inverter.Messwerte.soc_Batterie', '', 'System.Pv.Inverter.Berechnungen.Autarkie', '', 'System.Pv.Inverter.Berechnungen.Eigenverbrauch', '', 'System.Inverter.Messwerte.Leistung_Waermepumpe)}}"
+{{inverter.inverter_overview('1', 'System.Pv.Inverter.Messwerte.Leistung_Pv', 'System.Pv.Inverter.Messwerte.Leistung_Netz', 'System.Pv.Inverter.Messwerte.Leistung_Haus', 'System.Pv.Inverter.Messwerte.Leistung_Batterie', 'System.Pv.Inverter.Messwerte.soc_Batterie', '', 'System.Pv.Inverter.Berechnungen.Autarkie', '', 'System.Pv.Inverter.Berechnungen.Eigenverbrauch', '', 'System.Pv.Inverter.Messwerte.Leistung_Waermepumpe)}}"
 ```
 
