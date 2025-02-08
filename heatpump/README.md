@@ -1,6 +1,7 @@
 # Widget for a heat pump
 
-![image of the widget](https://github.com/Morg42/widgets/blob/master/heatpump/img-heatpump.png?raw=true)
+![image](https://github.com/user-attachments/assets/3c751870-88d7-4484-91dd-d45b1323a7df)
+
 
 
 Copy the widget files into smartVISU/dropins/widgets. They will be automatically imported for usage in your visu pages. Each inverter widget must have a unique id if you use more than one on a page.
