@@ -4,7 +4,7 @@
 
 
 
-Copy the widget files into smartVISU/dropins/widgets. They will be automatically imported for usage in your visu pages. Each inverter widget must have a unique id if you use more than one on a page.
+Copy the widget files into smartVISU/dropins/widgets. They will be automatically imported for usage in your visu pages. Each heatpump widget must have a unique id if you use more than one on a page.
 
 # Widget call
 {{ hp.heatpump(id, item_heatpump_mode, item_flow_temperature, item_reverse_temperature, item_water_temperature, item_compressor_pump_on, item_heating_pump_on, item_water_valve_open, item_compressor_power_percent, item_blower_power_percent, item_root_temperature, item_electric_water_heating_on, [water_temp_hi, water_temp_low, water_temp_target, water_temp_min], [txt_mode_off, txt_mode_warm_water])
