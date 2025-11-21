@@ -1,16 +1,12 @@
 $.widget("sv.power_powerflow", $.sv.widget, {
     initSelector: 'div[data-widget="power.powerflow"]',
 
-    _create: function () {
-        this._super();
-    },
-
     _update: function (response) {
-        let pv = parseFloat(response[0]);        
-        let grid = parseFloat(response[1]);
-        let battery = parseFloat(response[2]);
-        let house = parseFloat(response[3]); 
-	    let vehicle = parseFloat(response[4]);
+        var pv = parseFloat(response[0]);        
+        var grid = parseFloat(response[1]);
+        var battery = parseFloat(response[2]);
+        var house = parseFloat(response[3]); 
+        var vehicle = parseFloat(response[4]);
       
         if(pv > 0 && grid < 0) {
             $('#pvToGrid').toggle(true); 
@@ -62,13 +58,9 @@ $.widget("sv.power_powerflow", $.sv.widget, {
 $.widget("sv.power_powerdistribution", $.sv.widget, {
     initSelector: 'div[data-widget="power.powerdistribution"]',
 
-    _create: function () {
-        this._super();
-    },
-
     _update: function (response) {
-        let pv = splitInputOutut(response[0]); 
-        let grid = splitInputOutut(response[1]);
+        var pv = splitInputOutut(response[0]); 
+        var grid = splitInputOutut(response[1]);
         var battery = splitInputOutut(response[2]);
         var house = splitInputOutut(response[3]); 
     	var vehicle = splitInputOutut(response[4]);
@@ -94,20 +86,18 @@ $.widget("sv.power_powerdistribution", $.sv.widget, {
         arrangeElement("#outputGrid", outputHouseLength + outputVehicleLength + outputBatteryLength, outputGridLength );
         
         function splitInputOutut(source) {
-            let value = parseFloat(source);     
-            let input = Math.max(0, value);
-            let output = value > 0 ? 0 : Math.abs(value);
+            var value = parseFloat(source);     
+            var input = Math.max(0, value);
+            var output = value > 0 ? 0 : Math.abs(value);
             return [input, output];
         }
         function arrangeElement(baseClass, x, width) { 
-            let iconClass = baseClass + "Icon";
+            var iconClass = baseClass + "Icon";
             $(baseClass).attr('x', x * 500); 
             $(iconClass).attr('x', x * 500); 
             $(baseClass).width( width * 500);
             $(iconClass).width( width * 500);
             $(iconClass).toggle(width > 0.1);
 	    };
-
-	
     }
 });
