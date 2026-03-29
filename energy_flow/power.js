@@ -10,87 +10,144 @@ $.widget("sv.power_powerflow", $.sv.widget, {
         var heating = toNumberOrZero(response[5]);
       
         var remainingPv = pv;
-        if(remainingPv > 0 && grid < 0) {
+		var remainingGrid = grid;
+		var remainingBattery = battery;
+		var remainingHouse = house;
+		var remainingVehicle = vehicle;
+		var remainingHeating = heating;
+        
+		// Preferred: Outer Most
+		// PV to Grid
+        if (remainingPv > 0 && remainingGrid < 0) {
             $('#pvToGrid').toggle(true); 
-            remainingPv = remainingPv + grid;
-        }
-        else {
+			var delta = Math.min(remainingPv, -remainingGrid);
+            remainingPv = remainingPv - delta;
+			remainingGrid = remainingGrid + delta;
+        } else {
             $('#pvToGrid').toggle(false); 
         }
-
-        if(remainingPv > 0 && heating > 0) {
-            $('#pvToHeating').toggle(true); 
-            remainingPv = remainingPv - heating;
+		
+		// PV to Battery
+		if (remainingPv > 0 && remainingBattery < 0) {
+            $('#pvToBattery').toggle(true); 
+			var delta = Math.min(remainingPv, -remainingBattery);
+            remainingPv = remainingPv - delta;
+			remainingBattery = remainingBattery + delta;
+        } else {
+            $('#pvToBattery').toggle(false); 
         }
-        else {
-            $('#pvToHeating').toggle(false); 
-        }   
-
-        if(remainingPv > 0 && vehicle > 0) {
-            $('#pvToVehicle').toggle(true); 
-            remainingPv = remainingPv - vehicle;
-        }
-        else {
-            $('#pvToVehicle').toggle(false); 
-        }
-
-        if(remainingPv > 0 && house > 0) {
-            $('#pvToHome').toggle(true); 
-            remainingPv = remainingPv - house;
-        }
-        else {
-            $('#pvToHome').toggle(false); 
-        }
-        $('#pvToBattery').toggle(remainingPv > 0 && battery < 0); 
-
-        var remainingGrid = grid;
-        if(remainingGrid > 0 && house > 0) {
+		
+		// Grid to House
+        if (remainingGrid > 0 && remainingHouse > 0) {
             $('#gridToHome').toggle(true); 
-            remainingGrid = remainingGrid - house;
-        }
-        else {
+            var delta = Math.min(remainingGrid, remainingHouse);
+            remainingGrid = remainingGrid - delta;
+			remainingHouse = remainingHouse - delta;
+        } else {
             $('#gridToHome').toggle(false); 
         }
-        if(remainingGrid > 0 && heating > 0) {
-            $('#gridToHeating').toggle(true); 
-            remainingGrid = remainingGrid - heating;
-        }
-        else {
-            $('#gridToHeating').toggle(false); 
-        }
-        if(remainingGrid > 0 && vehicle > 0) {
-            $('#gridToVehicle').toggle(true); 
-            remainingGrid = remainingGrid - vehicle;
-        }
-        else {
-            $('#gridToVehicle').toggle(false); 
-        }
-        $('#gridToBattery').toggle(remainingGrid > 0 && battery < 0); 
 
-        var remainingBattery = battery;
-        if(remainingBattery > 0 && heating > 0) {
-            $('#batteryToHeating').toggle(true); 
-            remainingBattery = remainingBattery - heating;
-        }
-        else {
-            $('#batteryToHeating').toggle(false); 
-        }
-        if(remainingBattery > 0 && vehicle > 0) {
+		// Battery To Vehicle
+        if (remainingBattery > 0 && remainingVehicle > 0) {
             $('#batteryToVehicle').toggle(true); 
-            remainingBattery = remainingBattery - vehicle;
-        }
-        else {
+            var delta = Math.min(remainingBattery, remainingVehicle);
+            remainingBattery = remainingBattery - delta;
+			remainingVehicle = remainingVehicle - delta;
+        } else {
             $('#batteryToVehicle').toggle(false); 
         }
-
-        if(remainingBattery > 0 && house > 0) {
-            $('#batteryToHome').toggle(true); 
-            remainingBattery = remainingBattery - house;
+		
+		// 2nd: Not center
+		// PV to House
+		if (remainingPv > 0 && remainingHouse > 0) {
+            $('#pvToHome').toggle(true); 
+            var delta = Math.min(remainingPv, remainingHouse);
+            remainingPv = remainingPv - delta;
+			remainingHouse = remainingHouse - delta;
+        } else {
+            $('#pvToHome').toggle(false); 
         }
-        else {
+		
+		// PV to Vehicle
+		if (remainingPv > 0 && remainingVehicle > 0) {
+            $('#pvToVehicle').toggle(true); 
+            var delta = Math.min(remainingPv, remainingVehicle);
+            remainingPv = remainingPv - delta;
+			remainingVehicle = remainingVehicle - delta;
+        } else {
+            $('#pvToVehicle').toggle(false); 
+        }
+		
+		// Grid to Heating
+        if (remainingGrid > 0 && remainingHeating > 0) {
+            $('#gridToHeating').toggle(true); 
+            var delta = Math.min(remainingGrid, remainingHeating);
+            remainingGrid = remainingGrid - delta;
+			remainingHeating = remainingHeating - delta;
+        } else {
+            $('#gridToHeating').toggle(false); 
+        }
+		
+		// Battery To Heating
+        if (remainingBattery > 0 && remainingHeating > 0) {
+            $('#batteryToHeating').toggle(true); 
+            var delta = Math.min(remainingBattery, remainingHeating);
+            remainingBattery = remainingBattery - delta;
+			remainingHeating = remainingHeating - delta;
+        } else {
+            $('#batteryToHeating').toggle(false); 
+        }
+		
+		//Last: Through
+		// PV to Heating
+		 if (remainingPv > 0 && remainingHeating > 0) {
+            $('#pvToHeating').toggle(true); 
+            var delta = Math.min(remainingPv, remainingHeating);
+            remainingPv = remainingPv - delta;
+			remainingHeating = remainingHeating - delta;
+        } else {
+            $('#pvToHeating').toggle(false); 
+        }
+		
+		// Grid to Vehicle
+		if (remainingGrid > 0 && remainingVehicle > 0) {
+            $('#gridToVehicle').toggle(true); 
+            var delta = Math.min(remainingGrid, remainingVehicle);
+            remainingGrid = remainingGrid - delta;
+			remainingVehicle = remainingVehicle - delta;
+        } else {
+            $('#gridToVehicle').toggle(false); 
+        }
+
+        // Grid to Battery
+		if (remainingGrid > 0 && remainingBattery < 0) {
+            $('#gridToBattery').toggle(true); 
+            var delta = Math.min(remainingGrid, -remainingBattery);
+            remainingGrid = remainingGrid - delta;
+			remainingVehicle = remainingVehicle - delta;
+        } else {
+            $('#gridToBattery').toggle(false); 
+        }
+
+		// Battery To House
+        if (remainingBattery > 0 && remainingHouse > 0) {
+            $('#batteryToHome').toggle(true); 
+             var delta = Math.min(remainingGrid, remainingHouse);
+            remainingBattery = remainingBattery - delta;
+			remainingHouse = remainingHouse - delta;
+        } else {
             $('#batteryToHome').toggle(false); 
         }
-        $('#batteryToGrid').toggle(remainingBattery > 0 && grid < 0); 
+		
+		// Battery To Grid
+		if (batteryToGrid > 0 && remainingGrid < 0) {
+            $('#pvToGrid').toggle(true); 
+			var delta = Math.min(remainingBattery, -remainingGrid);
+            remainingBattery = remainingBattery - delta;
+			remainingGrid = remainingGrid + delta;
+        } else {
+            $('#batteryToGrid').toggle(false); 
+        }
 
         $('#batteryIcon, #batteryPower, #batterySoC').toggle(hasItem(2));
         $('#houseIcon, #housePower').toggle(hasItem(3));
